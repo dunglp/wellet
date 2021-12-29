@@ -1,5 +1,5 @@
 import React from 'react';
-import AccountName from 'components/AccountName';
+import AccountName from '../../components/AccountName';
 
 import { PopupAPI } from '@tronlink/lib/api';
 import { RESTORATION_STAGE } from '@tronlink/lib/constants';

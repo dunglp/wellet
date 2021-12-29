@@ -1,10 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import reduxLogger from 'redux-logger';
-import App from 'app';
+import App from './app';
 import Logger from '@tronlink/lib/logger';
 import MessageDuplex from '@tronlink/lib/MessageDuplex';
-import reducer from 'reducers';
+import reducer from './reducers';
 import { addLocaleData } from 'react-intl';
 import en from 'react-intl/locale-data/en';
 import zh from 'react-intl/locale-data/zh';
@@ -13,7 +13,7 @@ import * as Sentry from '@sentry/browser';
 import { Provider } from 'react-redux';
 import { configureStore, getDefaultMiddleware } from 'redux-starter-kit';
 import { PopupAPI } from '@tronlink/lib/api';
-import { setConfirmations } from 'reducers/confirmationsReducer';
+import { setConfirmations } from './reducers/confirmationsReducer';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { version } from '@tronlink/popup/package';
 import { tokensMap } from './tokensMap.js';
@@ -32,7 +32,7 @@ import {
     setLedgerImportAddress,
     setVTokenList,
     setChains
-} from 'reducers/appReducer';
+} from './reducers/appReducer';
 
 import {
     setAccount,
@@ -41,7 +41,7 @@ import {
     setSelectedBankRecordId,
     changeDealCurrencyPage,
     setAirdropInfo
-} from 'reducers/accountsReducer';
+} from './reducers/accountsReducer';
 
 // This should be added into it's own class, and just call IconLibrary.init();
 import {

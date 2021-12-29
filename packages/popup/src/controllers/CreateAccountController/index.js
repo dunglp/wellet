@@ -1,5 +1,5 @@
 import React from 'react';
-import AccountName from 'components/AccountName';
+import AccountName from '../../components/AccountName';
 import Utils from '@tronlink/lib/utils';
 import Lottie from 'react-lottie';
 

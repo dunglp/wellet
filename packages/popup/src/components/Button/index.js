@@ -1,5 +1,5 @@
 import React from 'react';
-import LoadingIndicator from 'assets/images/loader.svg';
+import LoadingIndicator from '../../assets/images/loader.svg';
 
 import { BUTTON_TYPE } from '@tronlink/lib/constants';
 import { FormattedMessage } from 'react-intl';

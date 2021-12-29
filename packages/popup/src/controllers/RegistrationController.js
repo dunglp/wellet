@@ -1,7 +1,7 @@
 import React from 'react';
-import Input from 'components/Input';
-import Button from 'components/Button';
-import InputCriteria from 'components/InputCriteria';
+import Input from '../components/Input';
+import Button from '../components/Button';
+import InputCriteria from '../components/InputCriteria';
 
 import { FormattedMessage } from 'react-intl';
 import { VALIDATION_STATE } from '@tronlink/lib/constants';

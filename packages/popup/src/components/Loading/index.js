@@ -3,7 +3,7 @@
  */
 import React from 'react';
 import Button from '@tronlink/popup/src/components/Button';
-import LoadingGif from 'assets/images/loading_black.gif';
+import LoadingGif from '../../assets/images/loading_black.gif';
 
 import { injectIntl } from 'react-intl';
 

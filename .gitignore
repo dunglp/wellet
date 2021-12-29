@@ -17,6 +17,7 @@ yarn-error.log*
 promo
 package-lock.json
 lerna-debug.log
+tags
 
 # Extension
 /key.pem

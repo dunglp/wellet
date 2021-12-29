@@ -34,7 +34,7 @@ import TransferController from '@tronlink/popup/src/controllers/TransferControll
 
 import 'antd-mobile/dist/antd-mobile.css';
 import 'react-custom-scroll/dist/customScroll.css';
-import 'assets/styles/global.scss';
+import '../assets/styles/global.scss';
 import 'react-toast-mobile/lib/react-toast-mobile.css';
 
 import enMessages from '@tronlink/popup/src/translations/en.json';
