@@ -1,0 +1,32 @@
+{
+  "name": "tronlink",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "lerna run build",
+    "build:react": "lerna run build --scope @tronlink/popup",
+    "build:core": "lerna run build --ignore @tronlink/popup",
+    "update-version": "lerna publish --skip-git --skip-npm --force-publish '*'",
+    "lint": "lerna run lint",
+    "build:zip": "yarn build && npx bestzip chrome-extension.zip dist manifest.json packages/popup/build packages/popup/static"
+  },
+  "devDependencies": {
+    "@babel/plugin-transform-runtime": "^7.1.0",
+    "babel-eslint": "^10.0.1",
+    "babel-plugin-import": "^1.11.0",
+    "eslint": "^5.9.0",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-plugin-class-property": "^1.1.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-jsx-a11y": "^6.1.2",
+    "eslint-plugin-no-null": "^1.0.2",
+    "eslint-plugin-react": "^7.11.1",
+    "lerna": "^3.4.3"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.1.2",
+    "yarn": "^1.13.0"
+  }
+}
