@@ -3,7 +3,10 @@
     https://releases.nixos.org/nixpkgs/nixpkgs-22.05pre340506.5c37ad87222/nixexprs.tar.xz) 
     {} 
 }: with pkgs;
-  stdenv.mkDerivation 
+  mkShell
     { name = "tronclone";
-      buildInputs = [ nodejs-14_x yarn python2Full ];
+      packages = [ nodejs-14_x yarn python2Full ];
+      shellHook = ''
+        echo "[tronclone project sandbox]"
+      '';
     }
