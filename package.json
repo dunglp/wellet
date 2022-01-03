@@ -26,6 +26,7 @@
     "eslint-plugin-no-null": "^1.0.2",
     "eslint-plugin-react": "^7.11.1",
     "lerna": "^3.4.3",
+    "node-polyfill-webpack-plugin": "^1.1.4",
     "readable-stream": "^3.6.0",
     "stream-browserify": "^3.0.0",
     "web-ext": "^6.6.0",
