@@ -28,6 +28,7 @@
     "lerna": "^3.4.3",
     "readable-stream": "^3.6.0",
     "stream-browserify": "^3.0.0",
+    "web-ext": "^6.6.0",
     "webextension-polyfill": "^0.8.0",
     "webpack": "^5.65.0"
   },

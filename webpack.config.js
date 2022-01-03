@@ -31,6 +31,7 @@ module.exports = {
         "zlib": false,
         "http": false,
         "https": false,
+        "buffer": require.resolve("buffer/"), // https://www.npmjs.com/package/buffer#usage
         "stream": require.resolve('stream-browserify'),
         "crypto": require.resolve('crypto-browserify'),
         "crypto-browserify": require.resolve('crypto-browserify'), //if you want to use this module also don't forget npm i crypto-browserify 
@@ -46,6 +47,9 @@ module.exports = {
     new webpack.DefinePlugin({
       ENVIRONMENT: JSON.stringify(mode)
     }),
+		new webpack.ProvidePlugin({
+            Buffer: ['buffer', 'Buffer'],
+        }),
   ],
   mode
 };
