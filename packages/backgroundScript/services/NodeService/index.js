@@ -31,18 +31,18 @@ const NodeService = {
             // },
             'f0b1e38e-7bee-485e-9d3f-69410bf30681': {
                 name: 'Mainnet',
-                fullNode: 'https://api.trongrid.io',
-                solidityNode: 'https://api.trongrid.io',
-                eventServer: 'https://api.trongrid.io',
+                fullNode: 'http://13.213.231.230:16667',
+                solidityNode: 'http://13.213.231.230:16668',
+                eventServer: 'http://13.213.231.230:16667',
                 default: true, // false
                 chain:'_' ,
                 connect: SIDE_CHAIN_ID
             },
             '6739be94-ee43-46af-9a62-690cf0947269': {
                 name: 'Shasta Testnet',
-                fullNode: 'https://api.shasta.trongrid.io',
-                solidityNode: 'https://api.shasta.trongrid.io',
-                eventServer: 'https://api.shasta.trongrid.io',
+                fullNode: 'http://13.213.231.230:16667',
+                solidityNode: 'http://13.213.231.230:16668',
+                eventServer: 'http://13.213.231.230:16667',
                 default: false,
                 chain:'_'
             },
@@ -54,14 +54,14 @@ const NodeService = {
             //     default: true,
             //     chain:SIDE_CHAIN_ID
             // },
-            'a981e232-a995-4c81-9653-c85e4d05f599':{
-                name: 'DappChain',
-                fullNode: 'https://sun.tronex.io',
-                solidityNode: 'https://sun.tronex.io',
-                eventServer: 'https://sun.tronex.io',
-                default: true,
-                chain: SIDE_CHAIN_ID
-            },
+            // 'a981e232-a995-4c81-9653-c85e4d05f599':{
+            //     name: 'DappChain',
+            //     fullNode: 'https://sun.tronex.io',
+            //     solidityNode: 'https://sun.tronex.io',
+            //     eventServer: 'https://sun.tronex.io',
+            //     default: true,
+            //     chain: SIDE_CHAIN_ID
+            // },
 
     },
     _selectedChain:'_',
@@ -113,15 +113,15 @@ const NodeService = {
             eventServer
         } = this.getCurrentNode();
 
-        this.sunWeb = new SunWeb(
-            //{fullNode:'https://api.trongrid.io',solidityNode:'https://api.trongrid.io',eventServer:'https://api.trongrid.io'},
-            //{fullNode:'https://sun.tronex.io',solidityNode:'https://sun.tronex.io',eventServer:'https://sun.tronex.io'},
-            NODE.MAIN,
-            NODE.SIDE,
-            CONTRACT_ADDRESS.MAIN,
-            CONTRACT_ADDRESS.SIDE,
-            SIDE_CHAIN_ID
-        );
+       // this.sunWeb = new SunWeb(
+       //     //{fullNode:'https://api.trongrid.io',solidityNode:'https://api.trongrid.io',eventServer:'https://api.trongrid.io'},
+       //     //{fullNode:'https://sun.tronex.io',solidityNode:'https://sun.tronex.io',eventServer:'https://sun.tronex.io'},
+       //     NODE.MAIN,
+       //     NODE.SIDE,
+       //     CONTRACT_ADDRESS.MAIN,
+       //     CONTRACT_ADDRESS.SIDE,
+       //     SIDE_CHAIN_ID
+       // );
 
         this.tronWeb = new TronWeb(
             fullNode,

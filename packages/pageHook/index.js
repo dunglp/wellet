@@ -7,7 +7,7 @@ import Utils from '@tronlink/lib/utils';
 import { CONTRACT_ADDRESS, SIDE_CHAIN_ID, NODE } from '@tronlink/lib/constants'
 import RequestHandler from './handlers/RequestHandler';
 import ProxiedProvider from './handlers/ProxiedProvider';
-import SunWeb from './SunWeb';
+//import SunWeb from './SunWeb';
 // import SunWeb from './SunWeb/js-sdk/src/index';
 
 const logger = new Logger('pageHook');
@@ -29,16 +29,16 @@ const pageHook = {
 
             if(node.fullNode)
                 this.setNode(node);
-
+            logger.info("Fullnode: ", node.fullNode)
             logger.info('TronLink initiated');
             const href = window.location.origin;
             const c = phishingList.filter(({url})=>{
                 const reg = new RegExp(url);
                 return href.match(reg);
             });
-            if(c.length && !c[0].isVisit){
-                window.location = 'https://www.tronlink.org/phishing.html?href='+href;
-            }
+           // if(c.length && !c[0].isVisit){
+           //     window.location = 'https://www.tronlink.org/phishing.html?href='+href;
+           // }
         }).catch(err => {
             logger.error('Failed to initialise TronWeb', err);
         });
@@ -65,17 +65,17 @@ const pageHook = {
             new ProxiedProvider(),
             new ProxiedProvider()
         );
-        const sunWeb = new SunWeb(
-            tronWeb1,
-            tronWeb2,
-            //{fullNode:'https://api.trongrid.io',solidityNode:'https://api.trongrid.io',eventServer:'https://api.trongrid.io'},
-            //{fullNode:'https://sun.tronex.io',solidityNode:'https://sun.tronex.io',eventServer:'https://sun.tronex.io'},
-            //{fullNode:'http://47.252.84.158:8070',solidityNode:'http://47.252.84.158:8071',eventServer:'http://47.252.81.14:8070'},
-            //{fullNode:'http://47.252.85.90:8070',solidityNode:'http://47.252.85.90:8071',eventServer:'http://47.252.87.129:8070'},
-            CONTRACT_ADDRESS.MAIN,
-            CONTRACT_ADDRESS.SIDE,
-            SIDE_CHAIN_ID
-        );
+       // const sunWeb = new SunWeb(
+       //     tronWeb1,
+       //     tronWeb2,
+       //     //{fullNode:'https://api.trongrid.io',solidityNode:'https://api.trongrid.io',eventServer:'https://api.trongrid.io'},
+       //     //{fullNode:'https://sun.tronex.io',solidityNode:'https://sun.tronex.io',eventServer:'https://sun.tronex.io'},
+       //     //{fullNode:'http://47.252.84.158:8070',solidityNode:'http://47.252.84.158:8071',eventServer:'http://47.252.81.14:8070'},
+       //     //{fullNode:'http://47.252.85.90:8070',solidityNode:'http://47.252.85.90:8071',eventServer:'http://47.252.87.129:8070'},
+       //     CONTRACT_ADDRESS.MAIN,
+       //     CONTRACT_ADDRESS.SIDE,
+       //     SIDE_CHAIN_ID
+       // );
 
 
 
@@ -85,30 +85,30 @@ const pageHook = {
         };
         this.proxiedMethods = {
             setAddress: tronWeb.setAddress.bind(tronWeb),
-            setMainAddress: sunWeb.mainchain.setAddress.bind(sunWeb.mainchain),
-            setSideAddress: sunWeb.sidechain.setAddress.bind(sunWeb.sidechain),
+            //setMainAddress: sunWeb.mainchain.setAddress.bind(sunWeb.mainchain),
+            //setSideAddress: sunWeb.sidechain.setAddress.bind(sunWeb.sidechain),
             sign: tronWeb.trx.sign.bind(tronWeb)
         };
 
         [ 'setPrivateKey', 'setAddress', 'setFullNode', 'setSolidityNode', 'setEventServer' ].forEach(method => {
             tronWeb[ method ] = () => new Error('TronLink has disabled this method');
-            sunWeb.mainchain[ method ] = () => new Error('TronLink has disabled this method');
-            sunWeb.sidechain[ method ] = () => new Error('TronLink has disabled this method');
+            //sunWeb.mainchain[ method ] = () => new Error('TronLink has disabled this method');
+            //sunWeb.sidechain[ method ] = () => new Error('TronLink has disabled this method');
         });
 
         tronWeb.trx.sign = (...args) => (
             this.sign(...args)
         );
 
-        sunWeb.mainchain.trx.sign = (...args) => (
-            this.sign(...args)
-        );
-        sunWeb.sidechain.trx.sign = (...args) => (
-            this.sign(...args)
-        );
+        //sunWeb.mainchain.trx.sign = (...args) => (
+        //    this.sign(...args)
+        //);
+        //sunWeb.sidechain.trx.sign = (...args) => (
+        //    this.sign(...args)
+        //);
 
 
-        window.sunWeb = sunWeb;
+        //window.sunWeb = sunWeb;
         window.tronWeb = tronWeb;
     },
 
@@ -141,10 +141,10 @@ const pageHook = {
             this.proxiedMethods.setSideAddress(address);
             tronWeb.defaultAddress.name = name;
             tronWeb.defaultAddress.type =  type;
-            sunWeb.mainchain.defaultAddress.name = name;
-            sunWeb.mainchain.defaultAddress.type = type;
-            sunWeb.sidechain.defaultAddress.name = name;
-            sunWeb.sidechain.defaultAddress.type = type;
+            //sunWeb.mainchain.defaultAddress.name = name;
+            //sunWeb.mainchain.defaultAddress.type = type;
+            //sunWeb.sidechain.defaultAddress.name = name;
+            //sunWeb.sidechain.defaultAddress.type = type;
             tronWeb.ready = true;
         }
 
@@ -156,13 +156,13 @@ const pageHook = {
         tronWeb.solidityNode.configure(node.solidityNode);
         tronWeb.eventServer.configure(node.eventServer);
 
-        sunWeb.mainchain.fullNode.configure(NODE.MAIN.fullNode);
-        sunWeb.mainchain.solidityNode.configure(NODE.MAIN.solidityNode);
-        sunWeb.mainchain.eventServer.configure(NODE.MAIN.eventServer);
+        //sunWeb.mainchain.fullNode.configure(NODE.MAIN.fullNode);
+        //sunWeb.mainchain.solidityNode.configure(NODE.MAIN.solidityNode);
+        //sunWeb.mainchain.eventServer.configure(NODE.MAIN.eventServer);
 
-        sunWeb.sidechain.fullNode.configure(NODE.SIDE.fullNode);
-        sunWeb.sidechain.solidityNode.configure(NODE.SIDE.solidityNode);
-        sunWeb.sidechain.eventServer.configure(NODE.SIDE.eventServer);
+        //sunWeb.sidechain.fullNode.configure(NODE.SIDE.fullNode);
+        //sunWeb.sidechain.solidityNode.configure(NODE.SIDE.solidityNode);
+        //sunWeb.sidechain.eventServer.configure(NODE.SIDE.eventServer);
     },
 
     setVisited(href){
