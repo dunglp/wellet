@@ -5,6 +5,8 @@
     "packages/*"
   ],
   "scripts": {
+    "firefox": "web-ext run --browser-console --verbose",
+    "chrome": "web-ext run -t chromium --browser-console --verbose",
     "build": "lerna run build",
     "build:react": "lerna run build --scope @tronlink/popup",
     "build:core": "lerna run build --ignore @tronlink/popup",
