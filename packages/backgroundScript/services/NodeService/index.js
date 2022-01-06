@@ -31,21 +31,21 @@ const NodeService = {
             // },
             'f0b1e38e-7bee-485e-9d3f-69410bf30681': {
                 name: 'Mainnet',
-                fullNode: 'http://13.213.231.230:16667',
-                solidityNode: 'http://13.213.231.230:16668',
-                eventServer: 'http://13.213.231.230:16667',
+                fullNode: 'http://172.104.51.182:16667',
+                solidityNode: 'http://172.104.51.182:16668',
+                eventServer: 'http://172.104.51.182:16667',
                 default: true, // false
                 chain:'_' ,
                 connect: SIDE_CHAIN_ID
             },
-            '6739be94-ee43-46af-9a62-690cf0947269': {
-                name: 'Shasta Testnet',
-                fullNode: 'http://13.213.231.230:16667',
-                solidityNode: 'http://13.213.231.230:16668',
-                eventServer: 'http://13.213.231.230:16667',
-                default: false,
-                chain:'_'
-            },
+            //'6739be94-ee43-46af-9a62-690cf0947269': {
+            //    name: 'Shasta Testnet',
+            //    fullNode: 'http://172.104.51.182:16667',
+            //    solidityNode: 'http://172.104.51.182:16668',
+            //    eventServer: 'http://172.104.51.182:16667',
+            //    default: false,
+            //    chain:'_'
+            //},
             // 'a981e232-a995-4c81-9653-c85e4d05f598':{
             //     name: 'SideChain Testnet',
             //     fullNode: 'http://47.252.85.90:8070',
