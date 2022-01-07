@@ -28,7 +28,7 @@ $ bash <(curl -L https://nixos.org/nix/install)
 ```
 * Reproduce the build environment:
 ```sh
-$ nix-shell # enters a shell with the precise environment successfully built this package
+$ nix-shell # enter a shell with the build environment for this package
 ```
 
 #### Manually
