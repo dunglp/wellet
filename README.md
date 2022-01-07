@@ -1,28 +1,46 @@
-# TronLink  
+# Wellet  
 
-TronLink is firstly launched at TRON’s official website and backed by TRON foundation, TronLink is the TRON wallet with the most users, coming in three versions (Chrome Wallet Extension/iOS/Android), and you're looking at the Chrome Wallet Extension for TRON.   
+Wellet is a browser extension implementing wallet functionalities for the
+[Welups](https://welups.com) blockchain. It currently supports Chromium/Chrome and
+Firefox, but should work with any other browser based on Chromium or Firefox's Quantum
+engine.
 
 Main functions:    
 
-Sending and receiving TRX, TRC10 and TRC20 tokens;  
+Sending and receiving WEL, WRC10 and WRC20 tokens;  
 Smart contract calls integrated;    
 
 
 ## Downloads
-**Chrome** &ndash; [Download](https://chrome.google.com/webstore/detail/ibnejdfjmmkpcnlpebklmnkoeoihofec) &nbsp; [![Chrome Web Store](https://img.shields.io/chrome-web-store/d/ogffaloegjglncjfehdfplabnoondfjo.svg?style=flat-square)](https://chrome.google.com/webstore/detail/ibnejdfjmmkpcnlpebklmnkoeoihofec) &nbsp; [![Chrome Web Store](https://img.shields.io/chrome-web-store/rating/ogffaloegjglncjfehdfplabnoondfjo.svg?style=flat-square)](https://chrome.google.com/webstore/detail/ibnejdfjmmkpcnlpebklmnkoeoihofec)
-
+// Chrome and Firefox links to download on respective store
 
 ## Installation
 
-#### Install yarn
-**https://yarnpkg.com/en/docs/install**
+###
 
-#### Install dependencies
+### Setup development environment
+
+#### Using Nix:
+
+* Install [Nix](https://nixos.org/manual/nix/stable/introduction.html):
+```sh
+$ bash <(curl -L https://nixos.org/nix/install)
+```
+* Reproduce the build environment:
+```sh
+$ nix-shell # enters a shell with the precise environment successfully built this package
+```
+
+#### Manually
+* Install [Node.js](https://nodejs.org/en/download)
+* Follow the instruction to install Yarn (**https://yarnpkg.com/en/docs/install**)
+
+### Install dependencies
 ```sh
 $ yarn install
 ```
 
-## Building
+### Building
 ```sh
 # Build all sources
 $ yarn build
@@ -44,7 +62,12 @@ $ yarn build:popup
 $ yarn lint
 ```
 
-## Links
-+ [Website](https://www.tronlink.org/)
-+ [Support](https://t.me/tronlink)
-+ [Twitter](https://twitter.com/TronLinkWallet)
+## Loading into a browser debugging session
+### Firefox:
+```sh
+$ yarn firefox
+```
+### Chrome/Chromium:
+```sh
+$ yarn chrome
+```

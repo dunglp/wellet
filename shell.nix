@@ -4,13 +4,13 @@
     {} 
 }: with pkgs;
   mkShell
-    { name = "tronclone";
+    { name = "Wellet";
       packages = [ 
         nodejs-14_x # node-gyp > 14 doesn't work, see:
                     # https://github.com/nodejs/node/issues/38367
         yarn 
         python2Full ];
       shellHook = ''
-        echo "[tronclone project sandbox]"
+        echo "[Wellet project development environment sandbox]"
       '';
     }
