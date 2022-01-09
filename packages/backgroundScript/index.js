@@ -7,17 +7,10 @@ import Utils from '@tronlink/lib/utils';
 import transactionBuilder from '@tronlink/lib/transactionBuilder';
 import TronWeb from 'tronweb';
 
-import * as Sentry from '@sentry/browser';
 
 import { CONFIRMATION_TYPE } from '@tronlink/lib/constants';
 import { BackgroundAPI } from '@tronlink/lib/api';
 import { version } from './package.json';
-
-// Make error reporting user-configurable
-Sentry.init({
-    dsn: 'http://d29e163582a948cd8addab042f4c65c7@18.220.1.137:9000/6',
-    release: `TronLink@${ version }`
-});
 
 const duplex = new MessageDuplex.Host();
 const logger = new Logger('backgroundScript');

@@ -9,7 +9,6 @@ import { addLocaleData } from 'react-intl';
 import en from 'react-intl/locale-data/en';
 import zh from 'react-intl/locale-data/zh';
 import ja from 'react-intl/locale-data/ja';
-import * as Sentry from '@sentry/browser';
 import { Provider } from 'react-redux';
 import { configureStore, getDefaultMiddleware } from 'redux-starter-kit';
 import { PopupAPI } from '@tronlink/lib/api';
@@ -53,10 +52,6 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 
 addLocaleData([...en, ...zh, ...ja]);
-Sentry.init({
-    dsn: 'http://7b03df289e7d42a7a4d5df9e1651bbd2@18.220.1.137:9000/13',
-    release: `TronLink@${ process.env.REACT_APP_VERSION }`
-});
 
 localStorage.setItem('tokensMap', JSON.stringify(tokensMap));
 
