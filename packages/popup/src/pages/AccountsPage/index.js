@@ -443,9 +443,6 @@ class AccountsPage extends React.Component {
                                 <div className="cell"  onClick={ () => PopupAPI.changeState(APP_STATE.RESTORING) }>
                                     <FormattedMessage id="CREATION.RESTORE.TITLE" />
                                 </div>
-                                <div className="cell"  onClick={ () => PopupAPI.changeState(APP_STATE.LEDGER) }>
-                                    <FormattedMessage id="CREATION.LEDGER.TITLE" />
-                                </div>
                             </div>
                             <div className="row2">
                                 <div className="cell">
