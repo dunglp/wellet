@@ -18,6 +18,7 @@ promo
 package-lock.json
 lerna-debug.log
 tags
+/**/Session.vim
 
 # Extension
 /key.pem
