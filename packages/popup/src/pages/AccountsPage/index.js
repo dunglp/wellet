@@ -48,32 +48,32 @@ class AccountsPage extends React.Component {
         },100);
 
         const { prices, accounts } = this.props;
-        const t = { name: 'TRX', abbr:'trx', id: '_', amount: 0, decimals: 6, price: prices.priceList[ prices.selected ], imgUrl: trxImg };
+        const t = { name: 'WEL', abbr:'wel', id: '_', amount: 0, decimals: 6, price: prices.priceList[ prices.selected ], imgUrl: trxImg };
         PopupAPI.setSelectedToken(t);
         tronscanUrl = 'https://tronscan.org/#';
-        const news = await PopupAPI.getNews();
-        const ieos = await PopupAPI.getIeos();
-        if(news.length > 0) {
-            this.setState({ news });
-        }
-        if(ieos.length > 0) {
-            this.runTime(ieos);
-        }
-        await PopupAPI.setAirdropInfo(accounts.selected.address);
-        const dappList = await PopupAPI.getDappList(false);
-        PopupAPI.setDappList(dappList);
+        //const news = await PopupAPI.getNews();
+        //const ieos = await PopupAPI.getIeos();
+        //if(news.length > 0) {
+        //    this.setState({ news });
+        //}
+        //if(ieos.length > 0) {
+        //    this.runTime(ieos);
+        //}
+        //await PopupAPI.setAirdropInfo(accounts.selected.address);
+        //const dappList = await PopupAPI.getDappList(false);
+        //PopupAPI.setDappList(dappList);
         app.getChains();
     }
 
     runTime(ieos) {
-        for(const o of ieos) {
-            if(o.time >= 0) {
-                o.timer = this.getTime(o.time);
-                o.time--;
-            }
-        }
-        this.setState({ ieos });
-        setTimeout(() => { this.runTime(this.state.ieos); }, 1000);
+        //for(const o of ieos) {
+        //    if(o.time >= 0) {
+        //        o.timer = this.getTime(o.time);
+        //        o.time--;
+        //    }
+        //}
+        //this.setState({ ieos });
+        //setTimeout(() => { this.runTime(this.state.ieos); }, 1000);
     }
 
     getTime(time) {
@@ -144,9 +144,6 @@ class AccountsPage extends React.Component {
                     }}
                     >
                         <span>{accounts.selected.name.length > 30 ? accounts.selected.name.substr(0,30)+'...' : accounts.selected.name}</span>
-                        {
-                            accounts.selected.type === ACCOUNT_TYPE.LEDGER ? <div className="ledger">&nbsp;</div>:null
-                        }
                     </div>
                     <div className='menu' onClick={(e) => { e.stopPropagation();this.setState({ showMenuList: !showMenuList, showNodeList: false }); }}>
                         <div className='dropList menuList' style={ showMenuList ? { width: '160px', height: 30 * (accounts.selected.type !== ACCOUNT_TYPE.LEDGER && chains.selected === '_'?6:2), opacity: 1 } : {}}>
@@ -224,9 +221,7 @@ class AccountsPage extends React.Component {
     }
 
     renderResource(account) {
-        const { nodes } = this.props;
         return (
-            account ?
                 <div className='resource'>
                     <div className='cell'>
                         <div className='title'>
@@ -237,80 +232,12 @@ class AccountsPage extends React.Component {
                         </div>
                         <ProcessBar percentage={(account.netLimit - account.netUsed) / account.netLimit} />
                     </div>
-                    <div className={'cell'+(nodes.selected === 'f0b1e38e-7bee-485e-9d3f-69410bf30681' || nodes.selected === 'f0b1e38e-7bee-485e-9d3f-69410bf30682'?' bankSingle':'')} onClick={ () => {
-                        //PopupAPI.changeState(APP_STATE.TRONBANK);
-                        if(nodes.selected === 'f0b1e38e-7bee-485e-9d3f-69410bf30681' || nodes.selected === 'f0b1e38e-7bee-485e-9d3f-69410bf30682')
-                            window.open('http://www.tronlending.org');
-                    }}>
-                        <div className='title'>
-                            {
-                                nodes.selected === 'f0b1e38e-7bee-485e-9d3f-69410bf30681' || nodes.selected === 'f0b1e38e-7bee-485e-9d3f-69410bf30682' ?
-                                    <span className='bankBox'>
-                                        <FormattedMessage id='CONFIRMATIONS.RESOURCE.ENERGY' />
-                                        {/*<img className='bankArrow' src={require('../../assets/images/new/tronBank/rightArrow.svg')} alt='arrow'/>*/}
-                                        {/*<div className='bankPopover'>*/}
-                                            {/*<div className='popoverTitle'><FormattedMessage id='BANK.INDEX.ENTRANCE' /></div>*/}
-                                        {/*</div>*/}
-                                    </span> :
-                                    <FormattedMessage id='CONFIRMATIONS.RESOURCE.ENERGY' />
-                            }
-                            <div className='num'>
-                                {account.energy - account.energyUsed}<span>/{account.energy}</span>
-                            </div>
-                        </div>
-                        <ProcessBar percentage={(account.energy - account.energyUsed) / account.energy} />
-                    </div>
                 </div>
-                :
-                null
         );
     }
 
     renderIeos(ieos) {
-        if(ieos.length === 0)
-            return null;
-        const { language } = this.props;
-        return (
-            <div className='ieos'>
-                {
-                    ieos.map(v => (
-                        <div className='ieo' onClick={()=>{window.open(v.ieoUrl)}}>
-                            <img src={v.logoUrl} />
-                            <div className='name'>{v.name}</div>
-                            <div className='worth'>
-                                {
-                                        v.time + 1 > 0?
-                                        <div className='ieo_will'>
-                                            {/*<FormattedMessage id='IEOS.LEFT_TIME' values={{day:v.timer[3]}} />*/}
-                                                {
-                                                    language === 'en'?
-                                                        <span>
-                                                            {v.timer[3]>1?v.timer[3]+' days until the sale':(v.timer[3] === 1 ? '1 day until the sale': 'until the sale')}
-                                                        </span>
-                                                        :
-                                                        <FormattedMessage id='IEOS.LEFT_TIME' values={{day:(v.timer[3]>0?(language==='zh'?v.timer[3]+'天':v.timer[3]+'日'):'')}} />
-
-                                                }
-                                            <div className='time'>
-                                                <div className='cell'>{v.timer[0]}</div>
-                                                :
-                                                <div className='cell'>{v.timer[1]}</div>
-                                                :
-                                                <div className='cell'>{v.timer[2]}</div>
-                                            </div>
-                                        </div>
-                                        :
-                                        <div className='ieo_ing'><FormattedMessage id='IEOS.BUY_ING' /></div>
-                                }
-                                <div className='launch'>
-                                    <FormattedMessage id='IEOS.LAUNCH_BASE' />
-                                </div>
-                            </div>
-                        </div>
-                    ))
-                }
-            </div>
-        );
+        
     }
 
     renderTokens(tokens) {
@@ -326,7 +253,7 @@ class AccountsPage extends React.Component {
                         const price = token.price === undefined ? 0 : token.price;
                         const money = (tokenId === '_' || tokenId === CONTRACT_ADDRESS.USDT) ? (price * amount).toFixed(2) : (price * amount * prices.priceList[ prices.selected ]).toFixed(2);
                         return (
-                            <div className='tokenItem' onClick={ () => {
+                            <div className='tokenItem' onClick={ () => { // FIX HERE
                                 let o = { id: tokenId, name: token.name, abbr: token.abbr || token.symbol, decimals: token.decimals, amount, price: token.price, imgUrl: token.imgUrl ? token.imgUrl : token10DefaultImg,isMapping:token.isMapping};
                                 if(tokenId === '_') {
                                     o.frozenBalance = new BigNumber(accounts.selected.frozenBalance)
@@ -456,7 +383,7 @@ class AccountsPage extends React.Component {
         let totalTrx = new BigNumber(0);
         const { showChainList,mnemonic,privateKey,news,ieos,allTokens }  = this.state;
         const id = news.length > 0 ? news[0].id : 0;
-        const { accounts,prices,nodes,setting,language:lng,vTokenList,chains } = this.props;
+        const { accounts,prices,nodes,setting,/*language:lng,*/vTokenList,chains } = this.props;
 
         const { selected: { airdropInfo } } = accounts;
         const mode = 'productionMode';
@@ -507,48 +434,6 @@ class AccountsPage extends React.Component {
                 }
                 <Header showChainList={showChainList} developmentMode={setting.developmentMode} chains={chains} handleSelectChain={this.handleSelectChain.bind(this)} handleShowChainList={this.handleShowChainList.bind(this)} />
                 <div className='space-controller'>
-                    {
-                        nodes.selected === 'f0b1e38e-7bee-485e-9d3f-69410bf30681' && id !== 0 && (!setting.advertising[ id ] || (setting.advertising[ id ] && setting.advertising[ id ][ mode ])) ?
-                            <div className='advertisingWrap'>
-                                <div className='closed' onClick={async () => {
-                                    const advertising = setting.advertising ? setting.advertising : {};
-                                    advertising[ id ] = { developmentMode: true, productionMode: true };
-                                    advertising[ id ][ mode ] = false;
-                                    advertising[ id ][ mode ] = false;
-                                    PopupAPI.setSetting({ ...setting, advertising });
-                                }}>
-                                </div>
-                                {
-                                    news.map(({ language, ...news }) => {
-                                        let l = 1;
-                                        switch(lng) {
-                                            case 'en':
-                                                l = 1;
-                                                break;
-                                            case 'zh':
-                                                l = 2;
-                                                break;
-                                            case 'ja':
-                                                l = 3;
-                                                break;
-                                            default:
-                                                l = 1;
-                                        }
-                                        return (
-                                            language === l ?
-                                                <div onClick={ async () => {
-                                                    const r = await PopupAPI.addCount(news.id);
-                                                    if(r)
-                                                        window.open(news.content_url);
-                                                }}>
-                                                    { news.pic_url ? <img src={news.pic_url} alt='' /> : null }
-                                                    { news.content ? <div><span style={{ webkitBoxOrient: 'vertical' }}>{news.content}</span></div> : null }
-                                                </div> : null
-                                        )
-                                    })
-                                }
-                            </div>:null
-                    }
                     <div className={"accountsWrap"+(setting.openAccountsMenu?" show":"")}>
                         <div className="accounts">
                             <div className="row1">
@@ -653,7 +538,7 @@ export default injectIntl(
     connect(state => ({
         chains:state.app.chains,
         vTokenList:state.app.vTokenList,
-        language: state.app.language,
+        //language: state.app.language,
         accounts: state.accounts,
         prices: state.app.prices,
         nodes: state.app.nodes,
