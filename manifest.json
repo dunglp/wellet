@@ -5,12 +5,15 @@
     "version_name": "1.0.0",
     "description": "The first Welups wallet.",
     "author": "nhatanh002 <nhatanh02@gmail.com>",
-    "content_security_policy": "script-src 'self' 'unsafe-eval' 'sha256-LayQc1iWBC+6WbHHvHZj3uSx3CxrGBHUJBR7si4qf8w=' 'sha256-POEO+wER89cezFVZ27JoP523HJNPMQxmh5Rcz/OZpr4=' 'sha256-IThiKMnsg0UHaLmP7sJxZpd/ohvINImwjxFJyxGFSlk=' https://*.sentry.io https://www.google-analytics.com https://www.googletagmanager.com https://cdnjs.cloudflare.com; object-src 'self'",
+    "content_security_policy": "script-src 'self' 'unsafe-eval' 'sha256-layQc1iWBC+6WbHHvHZj3uSx3CxrGBHUJBR7si4qf8w=' 'sha256-POEO+wER89cezFVZ27JoP523HJNPMQxmh5Rcz/OZpr4=' 'sha256-IThiKMnsg0UHaLmP7sJxZpd/ohvINImwjxFJyxGFSlk=' https://*.sentry.io https://www.google-analytics.com https://www.googletagmanager.com https://cdnjs.cloudflare.com; object-src 'self'; connect-src 'self' http: https: data: blob: filestream:;",
     "permissions": [
         "storage",
         "unlimitedStorage",
         "clipboardWrite",
-        "activeTab"
+        "activeTab",
+        "http://*",
+        "https://*",
+        "<all_urls>"
     ],
     "browser_action": {
         "default_popup": "packages/popup/build/index.html",
