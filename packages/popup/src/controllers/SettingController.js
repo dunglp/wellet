@@ -8,8 +8,8 @@ class SettingController extends React.Component {
         this.state = {
             languages: [
                 { name: 'English', key: 'en', selected: true },
-                { name: '中文', key: 'zh', selected: false },
-                { name: '日本語', key: 'ja', selected: false },
+                //{ name: '中文', key: 'zh', selected: false },
+                //{ name: '日本語', key: 'ja', selected: false },
             ],
             autoLock: [{
                 time: 60 * 1000,
@@ -64,13 +64,6 @@ class SettingController extends React.Component {
                 </div>
                 <div className='greyModal' ref="cell">
                     <div className="optionsWrap">
-                        <div className="option" onClick={ ()=>PopupAPI.changeState(APP_STATE.DAPP_WHITELIST) }>
-                            <div className="txt">
-                                <div className="span">
-                                    <FormattedMessage id="SETTING.TITLE.DAPP_WHITELIST" />
-                                </div>
-                            </div>
-                        </div>
                         <div className="option" onClick={ ()=>PopupAPI.changeState(APP_STATE.NODE_MANAGE) }>
                             <div className="txt">
                                 <div className="span">
@@ -78,7 +71,7 @@ class SettingController extends React.Component {
                                 </div>
                             </div>
                         </div>
-                        <div className="option" onClick={ ()=>{this.setting(2)} }>
+                        <div className="option" onClick={ ()=>{this.setting(1)} }>
                             <div className="txt">
                                 <div className="span">
                                     <FormattedMessage id="SETTING.TITLE.CURRENCY" />
@@ -91,7 +84,7 @@ class SettingController extends React.Component {
                                 </div>
                             </div>
                         </div>
-                        <div className="option" onClick={ ()=>{this.setting(3)} }>
+                        <div className="option" onClick={ ()=>{this.setting(2)} }>
                             <div className="txt">
                                 <div className="span">
                                     <FormattedMessage id="SETTING.TITLE.LANGUAGE" />
@@ -108,7 +101,7 @@ class SettingController extends React.Component {
                                 </div>
                             </div>
                         </div>
-                        <div className="option" onClick={() =>{this.setting(4)}   }>
+                        <div className="option" onClick={() =>{this.setting(3)}   }>
                             <div className="txt">
                                 <div className="span">
                                     <FormattedMessage id="SETTING.TITLE.AUTO_LOCK" />
