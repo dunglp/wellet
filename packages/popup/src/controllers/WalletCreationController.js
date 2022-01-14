@@ -7,7 +7,7 @@ import { PopupAPI } from '@tronlink/lib/api';
 
 const onCreationSelect = () => PopupAPI.changeState(APP_STATE.CREATING);
 const onRestoreSelect = () => PopupAPI.changeState(APP_STATE.RESTORING);
-const onLedgerSelect = () => PopupAPI.changeState(APP_STATE.LEDGER);
+//const onLedgerSelect = () => PopupAPI.changeState(APP_STATE.LEDGER);
 
 
 const WalletCreationController = () => (
@@ -20,7 +20,6 @@ const WalletCreationController = () => (
             <div className="walletOptions">
                 <WalletOption tabIndex={ 1 } name='CREATION.CREATE' onClick={ onCreationSelect } />
                 <WalletOption tabIndex={ 2 } name='CREATION.RESTORE' onClick={ onRestoreSelect } />
-                <WalletOption tabIndex={ 3 } name='CREATION.LEDGER' onClick={ onLedgerSelect } />
             </div>
         </div>
     </div>
