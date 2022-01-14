@@ -55,20 +55,25 @@ addLocaleData([...en, ...zh, ...ja]);
 
 localStorage.setItem('tokensMap', JSON.stringify(tokensMap));
 
+const logger = new Logger('Popup');
+
 let getTokensMap = async function () {
-    let { data } = await axios.get(`https://apilist.tronscan.org/api/token?showAll=1&limit=4000`);
-    for (let i = 0; i < data.data.length; i++) {
-        if (!tokensMap[data.data[i].id]) {
-            tokensMap[data.data[i].id] = data.data[i].name + '_' + data.data[i].id + '_' + data.data[i].precision + '_' + data.data[i].abbr;
+    logger.info("Begin querying for the tokensMap")
+    //let { data } = await axios.get(`https://apilist.tronscan.org/api/tokens?showAll=1&limit=4000`); //FIX
+    let { data } = await axios.get(`https://api-main.welscan.io/tokenrecords?page=1&limit=4000`); //FIX!
+    logger.info("Done querying for the tokensMap")
+    for (let i = 0; i < data.data.result.length; i++) {
+        if (!tokensMap[data.data.result[i]._id]) {
+            tokensMap[data.data.result[i]._id] = data.data.result[i].token_name + '_' + data.data.result[i]._id + '_' + data.data.result[i].precision + '_' + data.data.result[i].token_abbreviation;
         }
     }
+    logger.info("Token map: ", tokensMap)
 
     localStorage.setItem('tokensMap', JSON.stringify(tokensMap));
 };
 
 getTokensMap();
 
-const logger = new Logger('Popup');
 
 export const app = {
     duplex: new MessageDuplex.Popup(),
