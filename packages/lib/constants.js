@@ -16,18 +16,18 @@ export const APP_STATE = {
     TRANSACTIONS: 9, //[x] Show transactions record
     SETTING: 10, //[x] Show setting
     ADD_TRC20_TOKEN: 11, //[x] Show setting
-    TRONBANK: 12, // [x] show TronBank page
-    TRONBANK_RECORD: 13, //[x] show TronBankRecord page
-    TRONBANK_DETAIL: 14, //[X] show TronBankDetail page
-    TRONBANK_HELP: 15,
-    USDT_INCOME_RECORD: 16, //[X] income record for usdt
-    USDT_ACTIVITY_DETAIL: 17,
-    DAPP_LIST: 18, // [X]show dapp list
+    //TRONBANK: 12, // [x] show TronBank page
+    //TRONBANK_RECORD: 13, //[x] show TronBankRecord page
+    //TRONBANK_DETAIL: 14, //[X] show TronBankDetail page
+    //TRONBANK_HELP: 15,
+    //USDT_INCOME_RECORD: 16, //[X] income record for usdt
+    //USDT_ACTIVITY_DETAIL: 17,
+    //DAPP_LIST: 18, // [X]show dapp list
     ASSET_MANAGE: 19, // [X]asset manage
     TRANSACTION_DETAIL: 20, // [X] transaction detail
-    DAPP_WHITELIST: 21, // [X] transaction detail
-    LEDGER: 22, // [X] connect ledger wallet
-    LEDGER_IMPORT_ACCOUNT: 23, // [X] connect ledger wallet
+    //DAPP_WHITELIST: 21, // [X] transaction detail
+    //LEDGER: 22, // [X] connect ledger wallet
+    //LEDGER_IMPORT_ACCOUNT: 23, // [X] connect ledger wallet
     NODE_MANAGE:24, // node manage
     TRANSFER:25 // transfer
 }; // User can delete *all* accounts. This will set the appState to UNLOCKED.

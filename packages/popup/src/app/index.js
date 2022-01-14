@@ -38,17 +38,17 @@ import '../assets/styles/global.scss';
 import 'react-toast-mobile/lib/react-toast-mobile.css';
 
 import enMessages from '@tronlink/popup/src/translations/en.json';
-import zhMessages from '@tronlink/popup/src/translations/zh.json';
-import jaMessages from '@tronlink/popup/src/translations/ja.json';
+//import zhMessages from '@tronlink/popup/src/translations/zh.json';
+//import jaMessages from '@tronlink/popup/src/translations/ja.json';
 class App extends React.Component {
     messages = {
         en: enMessages,
-        zh: zhMessages,
-        ja: jaMessages
+        //zh: zhMessages,
+        //ja: jaMessages
     }
 
     render() {
-        const { appState,accounts,prices,nodes,language,lock,version,authorizeDapps,vTokenList,chains } = this.props;
+        const { appState,accounts,prices,nodes,language='en',lock,version,/*authorizeDapps,*/vTokenList,chains } = this.props;
         let dom = null;
         switch(appState) {
             case APP_STATE.UNINITIALISED:
@@ -69,9 +69,9 @@ class App extends React.Component {
             case APP_STATE.READY:
                 dom = <PageController />;
                 break;
-            case APP_STATE.REQUESTING_CONFIRMATION:
-                dom = <ConfirmationController authorizeDapps={authorizeDapps} />;
-                break;
+            //case APP_STATE.REQUESTING_CONFIRMATION:
+            //    dom = <ConfirmationController authorizeDapps=""/*{authorizeDapps}*/ />;
+            //    break;
             case APP_STATE.RECEIVE:
                 dom = <ReceiveController accounts={accounts} address={accounts.selected.address} />;
                 break;
@@ -90,42 +90,42 @@ class App extends React.Component {
             case APP_STATE.ADD_TRC20_TOKEN:
                 dom = <AddTokenController tokens={accounts.selected.tokens} onCancel={ () => PopupAPI.changeState(APP_STATE.READY) } />;
                 break;
-            case APP_STATE.TRONBANK:
-                dom = <BankController accounts={accounts} language={language} />;
-                break;
-            case APP_STATE.TRONBANK_RECORD:
-                dom = <BankRecordController accounts={accounts} />;
-                break;
-            case APP_STATE.TRONBANK_DETAIL:
-                dom = <BankDetailController accounts={accounts} />;
-                break;
-            case APP_STATE.TRONBANK_HELP:
-                dom = <BankHelplController />;
-                break;
-            case APP_STATE.USDT_INCOME_RECORD:
-                dom = <IncomeRecordController prices={prices} accounts={accounts} onCancel={ () => PopupAPI.changeState(APP_STATE.TRANSACTIONS) } />;
-                break;
-            case APP_STATE.USDT_ACTIVITY_DETAIL:
-                dom = <ActivityDetailController selectedToken={accounts.selectedToken} onCancel={ () => PopupAPI.changeState(APP_STATE.USDT_INCOME_RECORD) } />;
-                break;
-            case APP_STATE.DAPP_LIST:
-                dom = <DappListController onCancel={ () => PopupAPI.changeState(APP_STATE.READY) } />;
-                break;
+            //case APP_STATE.TRONBANK:
+            //    dom = <BankController accounts={accounts} language={language} />;
+            //    break;
+            //case APP_STATE.TRONBANK_RECORD:
+            //    dom = <BankRecordController accounts={accounts} />;
+            //    break;
+            //case APP_STATE.TRONBANK_DETAIL:
+            //    dom = <BankDetailController accounts={accounts} />;
+            //    break;
+            //case APP_STATE.TRONBANK_HELP:
+            //    dom = <BankHelplController />;
+            //    break;
+            //case APP_STATE.USDT_INCOME_RECORD:
+            //    dom = <IncomeRecordController prices={prices} accounts={accounts} onCancel={ () => PopupAPI.changeState(APP_STATE.TRANSACTIONS) } />;
+            //    break;
+            //case APP_STATE.USDT_ACTIVITY_DETAIL:
+            //    dom = <ActivityDetailController selectedToken={accounts.selectedToken} onCancel={ () => PopupAPI.changeState(APP_STATE.USDT_INCOME_RECORD) } />;
+            //    break;
+            //case APP_STATE.DAPP_LIST:
+            //    dom = <DappListController onCancel={ () => PopupAPI.changeState(APP_STATE.READY) } />;
+            //    break;
             case APP_STATE.ASSET_MANAGE:
                 dom = <AssetManageController chains={chains} prices={prices} vTokenList={vTokenList} selected={accounts.selected} onCancel={ () => PopupAPI.changeState(APP_STATE.READY) } />;
                 break;
             case APP_STATE.TRANSACTION_DETAIL:
                 dom = <TransactionDetailController selectedToken={accounts.selectedToken} selected={accounts.selected} onCancel={ () => PopupAPI.changeState(APP_STATE.TRANSACTIONS) } />;
                 break;
-            case APP_STATE.DAPP_WHITELIST:
-                dom = <DappWhitelistController authorizeDapps={authorizeDapps} onCancel={ () => PopupAPI.changeState(APP_STATE.SETTING) } />;
-                break;
-            case APP_STATE.LEDGER:
-                dom = <LedgerController language={language} />;
-                break;
-            case APP_STATE.LEDGER_IMPORT_ACCOUNT:
-                dom = <LedgerAccountImportController chains={chains}  />;
-                break;
+            //case APP_STATE.DAPP_WHITELIST:
+            //    dom = <DappWhitelistController authorizeDapps={authorizeDapps} onCancel={ () => PopupAPI.changeState(APP_STATE.SETTING) } />;
+            //    break;
+            //case APP_STATE.LEDGER:
+            //    dom = <LedgerController language={language} />;
+            //    break;
+            //case APP_STATE.LEDGER_IMPORT_ACCOUNT:
+            //    dom = <LedgerAccountImportController chains={chains}  />;
+            //    break;
             case APP_STATE.NODE_MANAGE:
                 dom = <NodeManageController nodes={nodes} chains={chains}  onCancel={ () => PopupAPI.changeState(APP_STATE.SETTING) } />;
                 break;
@@ -153,6 +153,6 @@ export default connect(state => ({
     prices: state.app.prices,
     lock: state.app.setting.lock,
     version: state.app.version,
-    authorizeDapps: state.app.authorizeDapps,
+    //authorizeDapps: state.app.authorizeDapps,
     chains: state.app.chains
 }))(App);

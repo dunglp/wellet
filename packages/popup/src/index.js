@@ -26,9 +26,9 @@ import {
     setLanguage,
     setSetting,
     setVersion,
-    setDappList,
-    setAuthorizeDapps,
-    setLedgerImportAddress,
+    //setDappList,
+    //setAuthorizeDapps,
+    //setLedgerImportAddress,
     setVTokenList,
     setChains
 } from './reducers/appReducer';
@@ -37,9 +37,9 @@ import {
     setAccount,
     setAccounts,
     setToken,
-    setSelectedBankRecordId,
-    changeDealCurrencyPage,
-    setAirdropInfo
+    //setSelectedBankRecordId,
+    //changeDealCurrencyPage,
+    //setAirdropInfo
 } from './reducers/accountsReducer';
 
 // This should be added into it's own class, and just call IconLibrary.init();
@@ -124,8 +124,8 @@ export const app = {
             confirmations,
             selectedToken,
             language,
-            authorizeDapps,
-            ledgerImportAddress,
+            //authorizeDapps,
+            //ledgerImportAddress,
             vTokenList,
             chains
         ] = await Promise.all([
@@ -137,19 +137,19 @@ export const app = {
             PopupAPI.getConfirmations(),
             PopupAPI.getSelectedToken(),
             PopupAPI.getLanguage(),
-            PopupAPI.getAuthorizeDapps(),
-            PopupAPI.getLedgerImportAddress(),
+            //PopupAPI.getAuthorizeDapps(),
+            //PopupAPI.getLedgerImportAddress(),
             PopupAPI.getVTokenList(),
             PopupAPI.getChains()
         ]);
-        const lang = navigator.language || navigator.browserLanguage;
-        if (lang.indexOf('zh') > -1) {
-            language = language || 'zh';
-        } else if (lang.indexOf('ja') > -1) {
-            language = language || 'ja';
-        } else {
+        //const lang = navigator.language || navigator.browserLanguage;
+        //if (lang.indexOf('zh') > -1) {
+        //    language = language || 'zh';
+        //} else if (lang.indexOf('ja') > -1) {
+        //    language = language || 'ja';
+        //} else {
             language = language || 'en';
-        }
+        //}
         this.store.dispatch(setAppState(appState));
         this.store.dispatch(setNodes(nodes));
         this.store.dispatch(setAccounts(accounts));
@@ -160,8 +160,8 @@ export const app = {
         this.store.dispatch(setLanguage(language));
         this.store.dispatch(setSetting(setting));
         this.store.dispatch(setVersion(version));
-        this.store.dispatch(setAuthorizeDapps(authorizeDapps));
-        this.store.dispatch(setLedgerImportAddress(ledgerImportAddress));
+        //this.store.dispatch(setAuthorizeDapps(authorizeDapps));
+        //this.store.dispatch(setLedgerImportAddress(ledgerImportAddress));
         this.store.dispatch(setVTokenList(vTokenList));
         this.store.dispatch(setChains(chains));
         if (selectedAccount) {
@@ -216,37 +216,37 @@ export const app = {
             setToken(token)
         ));
 
-        this.duplex.on('setLanguage', language => this.store.dispatch(
-            setLanguage(language)
-        ));
+        //this.duplex.on('setLanguage', language => this.store.dispatch(
+        //    setLanguage(language)
+        //));
 
         this.duplex.on('setSetting', setting => this.store.dispatch(
             setSetting(setting)
         ));
 
-        this.duplex.on('setSelectedBankRecordId', id => this.store.dispatch(
-            setSelectedBankRecordId(id)
-        ));
+        //this.duplex.on('setSelectedBankRecordId', id => this.store.dispatch(
+        //    setSelectedBankRecordId(id)
+        //));
 
-        this.duplex.on('changeDealCurrencyPage', status => this.store.dispatch(
-            changeDealCurrencyPage(status)
-        ));
+        //this.duplex.on('changeDealCurrencyPage', status => this.store.dispatch(
+        //    changeDealCurrencyPage(status)
+        //));
 
-        this.duplex.on('setAirdropInfo', airdropInfo => this.store.dispatch(
-            setAirdropInfo(airdropInfo)
-        ));
+        //this.duplex.on('setAirdropInfo', airdropInfo => this.store.dispatch(
+        //    setAirdropInfo(airdropInfo)
+        //));
 
-        this.duplex.on('setDappList', dappList => this.store.dispatch(
-            setDappList(dappList)
-        ));
+        //this.duplex.on('setDappList', dappList => this.store.dispatch(
+        //    setDappList(dappList)
+        //));
 
-        this.duplex.on('setAuthorizeDapps', authorizeDapps => this.store.dispatch(
-            setAuthorizeDapps(authorizeDapps)
-        ));
+        //this.duplex.on('setAuthorizeDapps', authorizeDapps => this.store.dispatch(
+        //    setAuthorizeDapps(authorizeDapps)
+        //));
 
-        this.duplex.on('setLedgerImportAddress', address => this.store.dispatch(
-            setLedgerImportAddress(address)
-        ));
+        //this.duplex.on('setLedgerImportAddress', address => this.store.dispatch(
+        //    setLedgerImportAddress(address)
+        //));
 
         this.duplex.on('setVTokenList', vTokenList => this.store.dispatch(
             setVTokenList(vTokenList)
