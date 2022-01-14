@@ -92,7 +92,7 @@ class PageController extends React.Component {
 }
 
 export default connect(state => ({
-    currentPage: state.app.currentPage
+    currentPage: state.app.currentPage // link redux store's app.currentPage to props.currentPage
 }), {
-    setPage
+    setPage // link setPage reducer-dispatcher to props.setPage
 })(PageController);
