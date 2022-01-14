@@ -36,7 +36,7 @@ export const appReducer = createReducer({
     },
     prices: {
         priceList: {},
-        usdtPriceList:{},
+    //    usdtPriceList:{},
         selected: false
     },
     language: 'en',
@@ -44,11 +44,11 @@ export const appReducer = createReducer({
         developmentMode: false
     },
     version: '',
-    dappList: {
-        recommend:[],
-        used:[]
-    },
-    authorizeDapps: {},
+    //dappList: {
+    //    recommend:[],
+    //    used:[]
+    //},
+    //authorizeDapps: {},
     ledgerImportAddress:[],
     vTokenList:[]
 
@@ -58,7 +58,7 @@ export const appReducer = createReducer({
     },
     [ setPriceList ]: (state, { payload }) => {
         state.prices.priceList = payload[0];
-        state.prices.usdtPriceList = payload[1];
+        //state.prices.usdtPriceList = payload[1];
     },
     [ setCurrency ]: (state, { payload }) => {
         state.prices.selected = payload;
@@ -81,13 +81,13 @@ export const appReducer = createReducer({
     [ setVersion ]: (state, { payload }) => {
         state.version = payload;
     },
-    [ setDappList ]: (state, { payload }) => {
-        state.dappList = payload;
-    },
+    //[ setDappList ]: (state, { payload }) => {
+    //    state.dappList = payload;
+    //},
 
-    [ setAuthorizeDapps ]: (state, { payload }) => {
-        state.authorizeDapps = payload;
-    },
+    //[ setAuthorizeDapps ]: (state, { payload }) => {
+    //    state.authorizeDapps = payload;
+    //},
 
     [ setLedgerImportAddress ]: (state, { payload }) => {
         state.ledgerImportAddress = payload;

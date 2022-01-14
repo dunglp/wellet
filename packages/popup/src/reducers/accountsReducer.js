@@ -25,9 +25,9 @@ export const accountsReducer = createReducer({
             // uncached: 0
         },
         selectedToken: {},
-        selectedBankRecordId: 0,
-        dealCurrencyPage: 0,
-        airdropInfo: {},
+        //selectedBankRecordId: 0,
+        //dealCurrencyPage: 0,
+        //airdropInfo: {},
         hash: ''
     },
     accounts: { },
@@ -61,13 +61,13 @@ export const accountsReducer = createReducer({
     [ setToken ]: (state, { payload }) => {
         state.selectedToken = payload;
     },
-    [ setSelectedBankRecordId ]: (state, { payload }) => {
-        state.selected.setSelectedBankRecordId = payload;
-    },
-    [ changeDealCurrencyPage ]: (state, { payload }) => {
-        state.selected.changeDealCurrencyPage = payload;
-    },
-    [ setAirdropInfo ]: (state, { payload } ) => {
-        state.selected.airdropInfo = payload;
-    }
+    //[ setSelectedBankRecordId ]: (state, { payload }) => {
+    //    state.selected.setSelectedBankRecordId = payload;
+    //},
+    //[ changeDealCurrencyPage ]: (state, { payload }) => {
+    //    state.selected.changeDealCurrencyPage = payload;
+    //},
+    //[ setAirdropInfo ]: (state, { payload } ) => {
+    //    state.selected.airdropInfo = payload;
+    //}
 });
