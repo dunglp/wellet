@@ -1,6 +1,6 @@
 import React from 'react';
 import Button from '@tronlink/popup/src/components/Button';
-import TronWeb from 'tronweb';
+import TronWeb from '@tronlink/tronweb';
 
 import { connect } from 'react-redux';
 import { FormattedMessage, injectIntl } from 'react-intl';

@@ -5,7 +5,7 @@ import StorageService from './services/StorageService';
 import WalletService from './services/WalletService';
 import Utils from '@tronlink/lib/utils';
 import transactionBuilder from '@tronlink/lib/transactionBuilder';
-import TronWeb from 'tronweb';
+import TronWeb from '@tronlink/tronweb';
 
 
 import { CONFIRMATION_TYPE } from '@tronlink/lib/constants';

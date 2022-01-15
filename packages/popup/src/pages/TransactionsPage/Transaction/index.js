@@ -1,6 +1,6 @@
 import React from 'react';
 import moment from 'moment';
-import TronWeb from 'tronweb';
+import TronWeb from '@tronlink/tronweb';
 import BigNumber from 'bignumber.js';
 
 import { SUPPORTED_CONTRACTS } from '@tronlink/lib/constants';

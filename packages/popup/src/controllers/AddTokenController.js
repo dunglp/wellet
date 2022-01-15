@@ -2,7 +2,7 @@ import React from 'react';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import { PopupAPI } from '@tronlink/lib/api';
 import Toast, { T } from 'react-toast-mobile';
-import TronWeb from 'tronweb';
+import TronWeb from '@tronlink/tronweb';
 class AddTokenController extends React.Component {
     constructor(props) {
         super(props);

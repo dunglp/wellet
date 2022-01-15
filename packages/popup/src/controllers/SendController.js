@@ -5,7 +5,7 @@ import { PopupAPI } from "@tronlink/lib/api";
 import Button from '@tronlink/popup/src/components/Button';
 import Loading from '@tronlink/popup/src/components/Loading';
 import { VALIDATION_STATE, APP_STATE, CONTRACT_ADDRESS, ACCOUNT_TYPE, TOP_TOKEN } from '@tronlink/lib/constants';
-import TronWeb from "tronweb";
+import TronWeb from "@tronlink/tronweb";
 import { Toast } from 'antd-mobile';
 import Utils  from '@tronlink/lib/utils';
 const trxImg = require('@tronlink/popup/src/assets/images/new/trx.png');

@@ -3,7 +3,7 @@ import AccountDetails from '@tronlink/popup/src/components/AccountDetails';
 import CustomScroll from 'react-custom-scroll';
 import Input from '@tronlink/popup/src/components/Input';
 import Button from '@tronlink/popup/src/components/Button';
-import TronWeb from 'tronweb';
+import TronWeb from '@tronlink/tronweb';
 import Dropdown from 'react-dropdown';
 
 import { connect } from 'react-redux';

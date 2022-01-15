@@ -6,7 +6,7 @@ import Account from './Account';
 import axios from 'axios';
 import extensionizer from 'extensionizer';
 import Utils from '@tronlink/lib/utils';
-import TronWeb from 'tronweb';
+import TronWeb from '@tronlink/tronweb';
 
 import {
     APP_STATE,

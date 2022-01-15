@@ -2,7 +2,7 @@ import React from 'react';
 import Button from 'components/Button';
 import Input from 'components/Input';
 import CustomScroll from 'react-custom-scroll';
-import TronWeb from 'tronweb';
+import TronWeb from '@tronlink/tronweb';
 
 import { BigNumber } from 'bignumber.js';
 import { connect } from 'react-redux';

@@ -1,7 +1,7 @@
 import React from 'react';
 import Button from '@tronlink/popup/src/components/Button';
 import Alert from '@tronlink/popup/src/components/Alert';
-import TronWeb from 'tronweb';
+import TronWeb from '@tronlink/tronweb';
 import Dropdown from 'react-dropdown';
 import Utils from '@tronlink/lib/utils';
 import { PopupAPI } from '@tronlink/lib/api';

@@ -1,4 +1,4 @@
-import TronWeb from 'tronweb';
+import TronWeb from '@tronlink/tronweb';
 import Logger from '@tronlink/lib/logger';
 import axios from 'axios';
 

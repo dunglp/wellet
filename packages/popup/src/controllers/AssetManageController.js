@@ -4,7 +4,7 @@ import { PopupAPI } from '@tronlink/lib/api';
 import Utils from '@tronlink/lib/utils';
 import Toast, { T } from 'react-toast-mobile';
 import { Switch } from 'antd-mobile';
-import TronWeb from 'tronweb';
+import TronWeb from '@tronlink/tronweb';
 import { TOP_TOKEN,CONTRACT_ADDRESS } from '@tronlink/lib/constants';
 const trxImg = require('@tronlink/popup/src/assets/images/new/trx.png');
 const token10DefaultImg = require('@tronlink/popup/src/assets/images/new/token_10_default.png');

@@ -6,6 +6,7 @@
   "version": "3.1.0",
   "private": true,
   "dependencies": {
+    "@tronlink/tronweb":"^0.1.0",
     "@fortawesome/fontawesome-svg-core": "^1.2.8",
     "@fortawesome/free-regular-svg-icons": "^5.5.0",
     "@fortawesome/free-solid-svg-icons": "^5.5.0",
@@ -35,7 +36,6 @@
     "redux-starter-kit": "^0.2.0",
     "sweetalert2": "^7.29.2",
     "sweetalert2-react-content": "^1.0.1",
-    "tronweb": "^2.7.4",
     "babel-core": "6.26.0",
     "babel-eslint": "7.2.3",
     "babel-jest": "20.0.3",

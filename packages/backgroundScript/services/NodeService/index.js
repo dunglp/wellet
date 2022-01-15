@@ -1,6 +1,6 @@
 import StorageService from '../StorageService';
 import randomUUID from 'uuid/v4';
-import TronWeb from 'tronweb';
+import TronWeb from '@tronlink/tronweb';
 import SunWeb from 'sunweb';
 import Logger from '@tronlink/lib/logger';
 import { CONTRACT_ADDRESS,SIDE_CHAIN_ID,NODE } from '@tronlink/lib/constants';
