@@ -1,13 +1,13 @@
 {
     "ERRORS.UNSUPPORTED_STATE": "State {appState} not yet implemented. Click to force a state refresh",
-    "ERRORS.ALREADY_INITIALISED": "TronLink has already been initialised",
+    "ERRORS.ALREADY_INITIALISED": "Wellet has already been initialised",
     "ERRORS.ACCOUNT_CREATION_FAILED": "Account creation failed",
     "ERRORS.UNLOCK_FAILED": "Account unlock failed",
-    "ERRORS.NOT_LOCKED": "TronLink is not locked",
-    "ERRORS.ALREADY_UNLOCKED": "TronLink is already unlocked",
-    "ERRORS.NOT_SETUP": "TronLink has not been initialised",
+    "ERRORS.NOT_LOCKED": "Wellet is not locked",
+    "ERRORS.ALREADY_UNLOCKED": "Wellet is already unlocked",
+    "ERRORS.NOT_SETUP": "Wellet has not been initialised",
     "ERRORS.INVALID_PASSWORD": "Invalid password supplied",
-    "ERRORS.INVALID_TOKEN": "Not a valid TRC20 token",
+    "ERRORS.INVALID_TOKEN": "Not a valid WRC20 token",
     "ERRORS.TOKEN_ADDED": "Token already added exists in wallet",
     "ERRORS.SEND": "Error Occurred",
 
@@ -55,7 +55,7 @@
     "CREATION.CREATE.CONFIRM.MNEMONIC.DIALOG": "Mnemonic error",
     "CREATION.CREATE.TIP":"Recommend new users to use",
     "CREATION.RESTORE.TITLE": "Restore",
-    "CREATION.RESTORE.TIP":"Recommend for users with existing Tron accounts",
+    "CREATION.RESTORE.TIP":"Recommend for users with existing Wel accounts",
     "CREATION.RESTORE.PRIVATE_KEY.TITLE": "Import by private key",
     "CREATION.RESTORE.MNEMONIC.TITLE": "Import by mnemonic phrase",
     "CREATION.RESTORE.MNEMONIC.RELATED_TO.ACCOUNT.TITLE": "Select account",
@@ -67,14 +67,14 @@
     "CREATION.LEDGER.TITLE": "Hardware",
     "CREATION.LEDGER.TIP": "for Ledger users",
     "CREATION.LEDGER.CONNECT_TITLE": "Connect to hardware wallet",
-    "CREATION.LEDGER.PROCESS_1":"connect Ledger with your PC，<br />and open TRON APP in Ledger",
+    "CREATION.LEDGER.PROCESS_1":"connect Ledger with your PC，<br />and open WEL APP in Ledger",
     "CREATION.LEDGER.PROCESS_2":"check the account address",
     "CREATION.LEDGER.PROCESS_3":"connection completed. You can use it now.",
-    "CREATION.LEDGER.LOADING":"open TRON APP in Ledger",
+    "CREATION.LEDGER.LOADING":"open WEL APP in Ledger",
     "CREATION.LEDGER.CHOOSE_ADDRESS":"check the account address",
     "CREATION.LEDGER.CONNECT":"connect",
     "CREATION.LEDGER.KNOW_MORE":"learn more",
-    "CREATION.LEDGER.CONNECT_TIMEOUT":"connection timed out; please connect Ledger and open TRON APP",
+    "CREATION.LEDGER.CONNECT_TIMEOUT":"connection timed out; please connect Ledger and open WEL APP",
     "CREATION.LEDGER.AUTHORIZE_TIMEOUT":"authorization timed out; please try again",
     "CREATION.LEDGER.REPEAT_IMPORT":"the current account already exists",
     "CREATION.LEDGER.REJECT":"rejected ",
@@ -123,15 +123,15 @@
     "ACCOUNT.SEND.TRANSFER_AMOUNT":"Transfer Amount",
     "ACCOUNT.TRANSFER":"deposit",
     "ACCOUNT.TRANSFER2":"withdraw",
-    "ACCOUNT.TRANSFER.DESC":"\"Deposit\" means to transfer tokens from the main chain to the side chain. TRX and TRC10 can be deposited by default; while TRC20 tokens can only be deposited after the requester has completed the contract deployment. No extra service fee will be charged for deposit.",
+    "ACCOUNT.TRANSFER.DESC":"\"Deposit\" means to transfer tokens from the main chain to the side chain. TRX and WRC10 can be deposited by default; while WRC20 tokens can only be deposited after the requester has completed the contract deployment. No extra service fee will be charged for deposit.",
     "ACCOUNT.TRANSFER.DESC2":"Withdraw means to transfer tokens from the side chain to the main chain. Withdrawal consumes 10 TRX each time as a service fee.",
     "ACCOUNT.TRANSFER.SELECT_CHAIN":"Choose the recipient chain",
     "ACCOUNT.TRANSFER.WARNING.WITHDRAW_FEE":"(Another 10 TRX will be consumed)",
     "ACCOUNT.TRANSFER.WARNING.TRX_NOT_ENOUGH":"Insufficient TRX balance",
     "ACCOUNT.TRANSFER.WARNING.TRX_LIMIT":"Minimal amount: 10",
 
-    "TOKENS.SMART": "Smart TRC20 Tokens",
-    "TOKENS.BASIC": "Basic TRC10 Tokens",
+    "TOKENS.SMART": "Smart WRC20 Tokens",
+    "TOKENS.BASIC": "Basic WRC10 Tokens",
 
     "TRANSACTIONS.NO_DATA": "No data",
     "TRANSACTIONS.CURRENCY": "{amount, number} {currency}",
@@ -164,7 +164,7 @@
     "CONFIRMATIONS.PROPOSAL_ID": "Proposal ID",
     "CONFIRMATIONS.QUANTITY": "Quantity",
     "CONFIRMATIONS.WHITELIST.TITLE": "Enable automatic signing",
-    "CONFIRMATIONS.WHITELIST.BODY": "This allows TronLink to automatically sign similar transactions on your behalf",
+    "CONFIRMATIONS.WHITELIST.BODY": "This allows Wellet to automatically sign similar transactions on your behalf",
     "CONFIRMATIONS.AUTO_AUTHORIZE.DESC": "Add the app to the white list so it will be authenticated automatically. The pop-up window will also stop showing.",
     "CONFIRMATIONS.CLICK_SHOW_PARAMS":"click to display parameters",
 
@@ -245,11 +245,11 @@
     "COMMON.BALANCE":"Balance",
     "COMMON.CURRENT_VERSION":"Current Version V{version}",
 
-    "MENU.ADD_TRC20_TOKEN":"Add TRC20token",
+    "MENU.ADD_TRC20_TOKEN":"Add WRC20token",
     "MENU.ACCOUNT_DETAIL":"Account Detail",
     "MENU.WHITE_LIST":"White list manage",
     "MENU.DELETE_WALLET":"Delete Account",
-    "MENU.ADD_TRC20_TOKEN.INPUT_PLACE_HOLDER":"Please enter the contract address of TRC20token",
+    "MENU.ADD_TRC20_TOKEN.INPUT_PLACE_HOLDER":"Please enter the contract address of WRC20token",
     "MENU.FROZEN_UNFROZEN":"Frozen/Unfrozen",
     "MENU.VOTE":"Vote",
     "MENU.ACCOUNTS.TOTAL_ASSET":"Asset{sign}",
@@ -334,7 +334,7 @@
     "BANK.RENTDETAIL.EXPIRESTIME":"expiration date",
 
     "BANK.RENTNUMMODAL.TITLE":"Rent amount instructions",
-    "BANK.RENTNUMMODAL.CONTENT":"Please fill in the amount of TRX you wish to freeze, and you will get the energy generated by freezing the corresponding amount of TRX. According to the TRON network mechanism, freezing the energy generated by each TRX is related to the freezing amount of the entire network, so the energy will fluctuate in real time.",
+    "BANK.RENTNUMMODAL.CONTENT":"Please fill in the amount of TRX you wish to freeze, and you will get the energy generated by freezing the corresponding amount of TRX. According to the WEL network mechanism, freezing the energy generated by each TRX is related to the freezing amount of the entire network, so the energy will fluctuate in real time.",
     "BANK.RENTNUMMODAL.BUTTON":"Closed",
 
     "BANK.RENTINFO.CONFIRM":"Renting info confirmation",
@@ -377,7 +377,7 @@
     "EXCEPTION.SEND.ENERGY_NOT_ENOUGH_TRX_ERROR":"Insufficient Energy, a small amout of TRX will be consumed, insufficient TRX balance",
     "EXCEPTION.SEND.BANDWIDTH_ENERGY_NOT_ENOUGH_TRX_ERROR":"Insufficient bandwidth and Energy, a small amout of TRX will be consumed, insufficient TRX balance",
     "EXCEPTION.SEND.ADDRESS_UNACTIVATED_TRC20_ERROR":"The address is not activated, 20token cannot be sent. Please transfer TRX to activate the address.",
-    "EXCEPTION.TRANSFER.MAIN_ADDRESS_NO_ACTIVATE":"This address is not activated on the Tron main chain",
+    "EXCEPTION.TRANSFER.MAIN_ADDRESS_NO_ACTIVATE":"This address is not activated on the Wel main chain",
 
     "USDT.MAIN.INCOME_YESTERDAY":"Yesterday's Income {earning}",
     "USDT.TEXT.YESTERDAY_INCOME":"Yesterday's Income",
@@ -426,7 +426,7 @@
     "TRANSACTION_DETAIL.TIME": "Transaction time",
     "TRANSACTION_DETAIL.BLOCK_HEIGHT": "Block Height",
     "TRANSACTION_DETAIL.FEE": "Fee",
-    "TRANSACTION_DETAIL.GO_TRONSCAN": "Go to Tronscan for detailed data",
+    "TRANSACTION_DETAIL.GO_TRONSCAN": "Go to Welscan for detailed data",
     "TRANSACTION_DETAIL.COPYED": "The screenshot is copied to the clipboard",
     "TRANSACTION_DETAIL.ENABLE_COPY": "Copyable",
     "TRANSACTION_DETAIL.HAVE_COPIED": "Copied",
@@ -443,9 +443,9 @@
     "INDEX_ICON_TITLE.SETTING":"set up",
 
     "NOTIFICATIONS.TITLE":"transaction finished",
-    "NOTIFICATIONS.MESSAGE":"go to Tronscan to check details",
+    "NOTIFICATIONS.MESSAGE":"go to Welscan to check details",
 
     "ALERT.UPDATE_DESCRIPTION.TITLE":"Update Description",
-    "ALERT.UPDATE_DESCRIPTION.BODY":"The update mainly supports TRON's official SUN Network. A side chain feature has been added. Now you can transfer your assets between the main chain and the side chain, and use Dapps that have already supported side chain by TronLink. Please note that the side chain does not support ledger yet."
+    "ALERT.UPDATE_DESCRIPTION.BODY":"The update mainly supports WEL's official SUN Network. A side chain feature has been added. Now you can transfer your assets between the main chain and the side chain, and use Dapps that have already supported side chain by Wellet. Please note that the side chain does not support ledger yet."
 
 }
