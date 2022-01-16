@@ -627,7 +627,7 @@ class Wallet extends EventEmitter {
         logger.info(`Importing account '${ name }' from popup`);
 
         const account = new Account(
-            privateKey.match(/^T/) && TronWeb.isAddress(privateKey) ? ACCOUNT_TYPE.LEDGER : ACCOUNT_TYPE.PRIVATE_KEY,
+            privateKey.match(/^W/) && TronWeb.isAddress(privateKey) ? ACCOUNT_TYPE.LEDGER : ACCOUNT_TYPE.PRIVATE_KEY,
             privateKey
         );
 

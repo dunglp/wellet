@@ -1,6 +1,6 @@
 import EventChannel from '@tronlink/lib/EventChannel';
 import Logger from '@tronlink/lib/logger';
-import TronWeb from 'tronweb';
+import TronWeb from '@tronlink/tronweb';
 //import SunWeb from 'sunweb';
 
 import Utils from '@tronlink/lib/utils';

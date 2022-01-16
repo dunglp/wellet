@@ -15,9 +15,13 @@ import SideChain from 'lib/sidechain';
 import { keccak256 } from 'utils/ethersUtils';
 import { ADDRESS_PREFIX } from 'utils/address';
 
+import Logger from '@tronlink/lib/logger';
+
 const DEFAULT_VERSION = '3.5.0';
 
 const FEE_LIMIT = 150000000;
+
+const logger = new Logger('@tronlink/tronweb')
 
 export default class TronWeb extends EventEmitter {
     static providers = providers;
@@ -278,22 +282,27 @@ export default class TronWeb extends EventEmitter {
                 if (!utils.isHex(address))
                     return address;
 
-                return utils.crypto.getBase58CheckAddress(
+                let tronBase58 = utils.crypto.getBase58CheckAddress(
                     utils.code.hexStr2byteArray(address.replace(/^0x/, ADDRESS_PREFIX))
                 );
+                tronBase58[0] = 'W';
+                return tronBase58;
             },
             toHex(address) {
                 if (utils.isHex(address))
                     return address.toLowerCase().replace(/^0x/, ADDRESS_PREFIX);
 
                 return utils.code.byteArray2hexStr(
-                    utils.crypto.decodeBase58Address(address)
+                    utils.crypto.decodeBase58Address(utils.crypto.welBase58toTron(address))
                 ).toLowerCase();
             },
             fromPrivateKey(privateKey, strict = false) {
                 try {
-                    return utils.crypto.pkToAddress(privateKey, strict);
-                } catch {
+                    let ret = utils.crypto.tronBase58toWel(utils.crypto.pkToAddress(privateKey, strict));
+                    logger.info("address from prikey: ", ret)
+                    return ret
+                } catch(e) {
+                    logger.info("error: ",e)
                     return false;
                 }
             }
@@ -403,6 +412,7 @@ export default class TronWeb extends EventEmitter {
     }
 
     static isAddress(address = false) {
+        logger.info("isAddress? ", address)
         if (!utils.isString(address))
             return false;
 
@@ -419,7 +429,7 @@ export default class TronWeb extends EventEmitter {
             }
         }
         try {
-            return utils.crypto.isAddressValid(address);
+            return utils.crypto.isAddressValid(utils.crypto.welBase58toTron(address));
         } catch (err) {
             return false;
         }

@@ -7,7 +7,7 @@ import { FormattedMessage, injectIntl } from 'react-intl';
 import { PopupAPI } from '@tronlink/lib/api';
 import { bytesToString } from "@tronscan/client/src/utils/bytes";
 import { hexStr2byteArray } from "@tronscan/client/src/lib/code";
-import { pkToAddress } from "@tronscan/client/src/utils/crypto";
+import { pkToAddress,tronBase58toWel,welBase58toTron } from "@tronlink/tronweb/src/utils/crypto";
 
 import './KeystoreImport.scss';
 
@@ -36,7 +36,7 @@ class KeystoreImport extends React.Component {
         try {
             const {key, address, salt} = JSON.parse(bytesToString(hexStr2byteArray(contents)));
             const privateKey = Utils.decryptString(password, salt, key);
-            if (Utils.validatePrivateKey(privateKey) && pkToAddress(privateKey) === address) {
+            if (Utils.validatePrivateKey(privateKey) && tronBase58toWel(pkToAddress(privateKey)) === address) {
                 if (address in accounts) {
                     Toast.fail(formatMessage({id: 'EXCEPTION.ACCOUNT_EXIST'}), 3, () => {
                         this.setState({isLoading: false});

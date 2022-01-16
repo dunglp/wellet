@@ -6,6 +6,10 @@ import {byte2hexStr, byteArray2hexStr} from './bytes';
 import {ec as EC} from 'elliptic';
 import {keccak256, sha256} from './ethersUtils';
 
+import Logger from '@tronlink/lib/logger';
+
+const logger = new Logger('utils/crypto')
+
 export function getBase58CheckAddress(addressBytes) {
     const hash0 = SHA256(addressBytes);
     const hash1 = SHA256(hash0);
@@ -131,6 +135,33 @@ export function decode58Check(addressStr) {
     }
 
     return false;
+}
+
+export function tronBase58toWel(tronb58) {
+    if (typeof (tronb58) !== 'string')
+        return false;
+
+    if (tronb58[0] === 'W') {
+      return tronb58;
+    } else {
+      let ret = 'W'+tronb58.slice(1);
+      logger.info("return: ", ret)
+      return ret;
+    }
+}
+
+
+export function welBase58toTron(welb58) {
+  if (typeof (welb58) !== 'string')
+        return false;
+    
+    if (welb58[0] === 'T') {
+      return welb58;
+    } else {
+      let ret = 'T'+welb58.slice(1);
+      logger.info("return: ", ret)
+      return ret;
+    }
 }
 
 export function isAddressValid(base58Str) {

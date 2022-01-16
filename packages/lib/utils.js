@@ -4,7 +4,7 @@ import bip32 from 'bip32';
 import TronWeb from '@tronlink/tronweb';
 import pbkdf2 from 'pbkdf2';
 import aesjs from "aes-js";
-import { isAddressValid,pkToAddress } from "@tronscan/client/src/utils/crypto";
+import { isAddressValid,pkToAddress } from "@tronlink/tronweb/src/utils/crypto";
 import {utils} from 'ethers';
 
 const encryptKey = (password, salt) => {

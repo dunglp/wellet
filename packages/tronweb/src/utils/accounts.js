@@ -3,7 +3,8 @@ import {
     getBase58CheckAddress,
     genPriKey,
     getAddressFromPriKey,
-    getPubKeyFromPriKey
+    getPubKeyFromPriKey,
+    tronBase58toWel
 } from './crypto';
 
 export function generateAccount() {
@@ -18,7 +19,7 @@ export function generateAccount() {
         privateKey,
         publicKey,
         address: {
-            base58: getBase58CheckAddress(addressBytes),
+            base58: tronBase58toWel(getBase58CheckAddress(addressBytes)),
             hex: byteArray2hexStr(addressBytes)
         }
     }
