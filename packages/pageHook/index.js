@@ -137,8 +137,8 @@ const pageHook = {
             tronWeb.ready = false;
         } else {
             this.proxiedMethods.setAddress(address);
-            this.proxiedMethods.setMainAddress(address);
-            this.proxiedMethods.setSideAddress(address);
+            //this.proxiedMethods.setMainAddress(address);
+            //this.proxiedMethods.setSideAddress(address);
             tronWeb.defaultAddress.name = name;
             tronWeb.defaultAddress.type =  type;
             //sunWeb.mainchain.defaultAddress.name = name;

@@ -11,13 +11,13 @@ const logger = new Logger('NodeService');
 const NodeService = {
     _chains:{
         '_':{
-            name:'TRON',
+            name:'WELUPS',
             default:true
         },
-        [ SIDE_CHAIN_ID ]:{
-            name:'DAppChain',
-            default:false
-        }
+        //[ SIDE_CHAIN_ID ]:{
+        //    name:'DAppChain',
+        //    default:false
+        //}
     },
     _nodes: {
             // 'f0b1e38e-7bee-485e-9d3f-69410bf30682': {
@@ -31,12 +31,15 @@ const NodeService = {
             // },
             'f0b1e38e-7bee-485e-9d3f-69410bf30681': {
                 name: 'Mainnet',
+                //fullNode: 'http://172.104.32.164:16667',
+                //solidityNode: 'http://172.104.32.164:16668',
+                //eventServer: 'http://172.104.32.164:16667',
                 fullNode: 'http://172.104.51.182:16667',
                 solidityNode: 'http://172.104.51.182:16668',
                 eventServer: 'http://172.104.51.182:16667',
                 default: true, // false
                 chain:'_' ,
-                connect: SIDE_CHAIN_ID
+                //connect: SIDE_CHAIN_ID
             },
             //'6739be94-ee43-46af-9a62-690cf0947269': {
             //    name: 'Shasta Testnet',

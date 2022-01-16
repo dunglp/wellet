@@ -389,7 +389,7 @@ class AccountsPage extends React.Component {
         const mode = 'productionMode';
         const { formatMessage } = this.props.intl;
         const trx_price = prices.priceList[prices.selected];
-        const trx = { tokenId: '_', name: 'TRX', balance: (accounts.selected.balance + (accounts.selected.frozenBalance ? accounts.selected.frozenBalance: 0)), abbr: 'TRX', decimals: 6, imgUrl: trxImg, price: trx_price,isMapping:true};
+        const trx = { tokenId: '_', name: 'WEL', balance: (accounts.selected.balance + (accounts.selected.frozenBalance ? accounts.selected.frozenBalance: 0)), abbr: 'WEL', decimals: 6, imgUrl: trxImg, price: trx_price,isMapping:true};
         let tokens = { ...accounts.selected.tokens.basic, ...accounts.selected.tokens.smart };
 
         const topArray = [];
