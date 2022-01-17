@@ -142,7 +142,7 @@ class Wallet extends EventEmitter {
             //     return { data: { data: [] } };
             // });
             const { data: { data: { rows: smartTokenPriceList } } } = await axios.get('https://api.trx.market/api/exchange/marketPair/list').catch(e => {
-                logger.error('get trc20 token price fail');
+                logger.error('get wrc20 token price fail');
                 return { data: { data: { rows: [] } } };
             });
             const prices = StorageService.prices;
@@ -649,37 +649,73 @@ class Wallet extends EventEmitter {
 
     async setCache(isResetPhishingList = true ){
         const selectedChain = NodeService._selectedChain;
-        const dapps   = axios.get('https://dappradar.com/api/xchain/dapps/theRest');
-        const dapps2  = axios.get('https://dappradar.com/api/xchain/dapps/list/0');
-        Promise.all([dapps, dapps2]).then(res => {
-            const tronDapps =  res[ 0 ].data.data.list.concat(res[ 1 ].data.data.list).filter(({ protocols: [ type ] }) => type === 'tron').map(({ logo: icon, url: href, title: name }) => ({ icon, href, name }));
-            StorageService.saveAllDapps(tronDapps);
-        });
-        const trc10tokens = axios.get('https://apilist.tronscan.org/api/token?showAll=1&limit=4000&fields=tokenID,name,precision,abbr,imgUrl,isBlack');
-        const trc20tokens = axios.get('https://apilist.tronscan.org/api/tokens/overview?start=0&limit=1000&filter=trc20');
-        const trc20tokens_s = axios.get('https://dappchainapi.tronscan.org/api/tokens/overview?start=0&limit=1000&filter=trc20');
-        Promise.all([trc10tokens, trc20tokens, trc20tokens_s]).then(res => {
+        // No dapps and dapps list in Welups yet
+        //const dapps   = axios.get('https://dappradar.com/api/xchain/dapps/theRest');
+        //const dapps2  = axios.get('https://dappradar.com/api/xchain/dapps/list/0');
+        //Promise.all([dapps, dapps2]).then(res => {
+        //    const tronDapps =  res[ 0 ].data.data.list.concat(res[ 1 ].data.data.list).filter(({ protocols: [ type ] }) => type === 'tron').map(({ logo: icon, url: href, title: name }) => ({ icon, href, name }));
+        //    StorageService.saveAllDapps(tronDapps);
+        //});
+        StorageService.saveAllDapps([]); // placeholder
+
+        //const wrc10tokens = axios.get('https://apilist.tronscan.org/api/token?showAll=1&limit=4000&fields=tokenID,name,precision,abbr,imgUrl,isBlack');
+        //const wrc20tokens = axios.get('https://apilist.tronscan.org/api/tokens/overview?start=0&limit=1000&filter=trc20');
+        // const trc20tokens_s = axios.get('https://dappchainapi.tronscan.org/api/tokens/overview?start=0&limit=1000&filter=trc20');
+        const allTokens = axios.get('https://api-main.welscan.io/tokenrecords?page=1&limit=4000');
+        Promise.all([allTokens/*, trc20tokens_s*/]).then(res => {
             let t = [];
             let t2 = [];
-            res[ 0 ].data.data.concat( res[ 1 ].data.tokens).forEach(({ abbr, name, imgUrl = false, tokenID = false, contractAddress = false, decimal = false, precision = false, isBlack = false }) => {
-                t.push({ tokenId: tokenID ? tokenID.toString() : contractAddress, abbr, name, imgUrl, decimals: precision || decimal || 0, isBlack });
+            res[ 0 ].data.data.result.forEach(({ token_abbreviation, token_name, token_icon = false, _id = false, precision = false, reputation = "" }) => {
+                t.push({ tokenId: _id.toString(), contractAddress: _id.toString(), abbr: token_abbreviation, name: token_name, imgUrl: token_icon, decimals: precision, isBlack: reputation === "OK" ? false:true });
             });
-            res[ 0 ].data.data.concat( res[ 2 ].data.tokens).forEach(({ abbr, name, imgUrl = false, tokenID = false, contractAddress = false, decimal = false, precision = false, isBlack = false }) => {
-                t2.push({ tokenId: tokenID ? tokenID.toString() : contractAddress, abbr, name, imgUrl, decimals: precision || decimal || 0, isBlack });
-            });
+            //res[ 0 ].data.data.concat( res[ 2 ].data.tokens).forEach(({ abbr, name, imgUrl = false, tokenID = false, contractAddress = false, decimal = false, precision = false, isBlack = false }) => {
+            //    t2.push({ tokenId: tokenID ? tokenID.toString() : contractAddress, abbr, name, imgUrl, decimals: precision || decimal || 0, isBlack });
+            //});
             StorageService.saveAllTokens(t,t2);
         });
 
         if(isResetPhishingList) {
-            axios.get(`${API_URL}/api/wallet/official_token`,{headers:{chain:selectedChain==='_'?'MainChain':'DAppChain'}}).then(res=>{
-                StorageService.saveVTokenList(res.data.data);
-                this.emit('setVTokenList',res.data.data);
-            }).catch(e => {
-                this.emit('setVTokenList',StorageService.vTokenList);
-            });
+            // No actual endorsed official tokens list in Wel, commented out for now
+            //axios.get(`${API_URL}/api/wallet/official_token`,{headers:{chain:selectedChain==='_'?'MainChain':'DAppChain'}}).then(res=>{
+            //    StorageService.saveVTokenList(res.data.data);
+            //    this.emit('setVTokenList',res.data.data);
+            //}).catch(e => {
+            //    this.emit('setVTokenList',StorageService.vTokenList);
+            //});
+            // Place holder:
+            let defaultVTokens = [ "WX3TqrQhKQwsr9JmffDCpvnHPQEjTSsLo2",
+                                   "WGhwAci8yc9iUG49EYHHG4dYRWUmtJ6HX4",
+                                   "WSBn3fEJ4T2jgN4zNANowqCDu5Amrvcq4Z",
+                                   "WNv26nED9uEiq2QUg8jKLraANGsvePVKNh",
+                                   "WUbqyEmnqw9VnGX9HgNNwjCTCWDc4NvY2T",
+                                   "WWhP6WRpzHfbgayxziwNLs6eaSEXx1himy",
+                                   "WC7NG6yqFgTYdhVfbepcmi77Mt8ZH25LZx",
+                                   "WBwjpWTNgcH6Kq6jSUiwbCb1gYYGfrohQi",
+                                   "WHaLiDn6vmeJxcM88ZQCMzdPtMP2eTsVfQ",
+                                   "WWLyrhGw9zunBunHGe6cLwmGXu41vE9Ehd",
+                                   "WWMFBAcLuAFFznkyPT1VFNnLr7tL7tKuQp",
+                                   "WQVvxcytJ4vn13XTe66SGbDaEpNiHaZV2q",
+                                   "WLmBJ4ztZDK97oo7vSyyHA8pN5xUbAaQ5p",
+                                   "WQYwqb6LUZxb7A9umiYUYiefWbwBfTyvtz",
+                                   "WEgmFQce5Z3WqBpS58WPPf3Xz5XmRujrNn",
+                                   "WTxDfG6U1Dwkj5xmyiyLmQBg4xfxoNoXHw",
+                                   "WSn5Vyh6jYP9y26HMudpjPvPMPNT62zBiM",
+                                   "WHK1FePxNfPDqdxoCyfbAwAXWKr4yafrWZ",
+                                   "WQUALWY4swk6LeEMJHcXy7QXdeZkRZwq7f",
+                                   "WFXZZVTAC4HTKCAHG66Sxnc4j5DTz8tjRi",
+                                   "WRem49meRB1EzUERjReCACWWQarVx4uejp",
+                                   "WTzcrz483AXNppkoBcJZGRB2gayJnMNhra",
+                                   "WEweutcYrn3SJ9phHysQkumvp5s8dYgtAm",
+                                   "WDfC3g7SHUfETRVwLp3gP9vVeuCuT7PXoE",
+                                   "WT4ffbanqK67PBQqF9axbQmRQjY99sptrV",
+                                   "WUyHdVQyzqExF6GF52p6ba341jCvRPWwGr",
+                                   "WFynPHV2JMz18BsB4HREcuNGoRuh9SBUJ8" ]
+            this.emit('setVTokenList',defaultVTokens);
 
-            const {data: {data: phishingList}} = await axios.get(`${API_URL}/api/activity/website/blacklist`).catch(e => ({data: {data: []}}));
-            this.phishingList = phishingList.map(v => ({url: v, isVisit: false}));
+
+            // No phising list in Welscan yet
+            //const {data: {data: phishingList}} = await axios.get(`${API_URL}/api/activity/website/blacklist`).catch(e => ({data: {data: []}}));
+            this.phishingList = [] //phishingList.map(v => ({url: v, isVisit: false}));
         }
     }
 
