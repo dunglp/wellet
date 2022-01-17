@@ -137,6 +137,21 @@ export function decode58Check(addressStr) {
     return false;
 }
 
+const charConv = (char) => { 
+  switch (char) {
+    case 't': 
+      return 'w';
+    case 'T':
+      return 'W';
+    case 'w':
+      return 't';
+    case 'W':
+      return 'T';
+    default:
+      return char
+  }
+}
+
 export function tronBase58toWel(tronb58) {
     if (typeof (tronb58) !== 'string')
         return false;
@@ -144,9 +159,8 @@ export function tronBase58toWel(tronb58) {
     if (tronb58[0] === 'W') {
       return tronb58;
     } else {
-      let ret = 'W'+tronb58.slice(1);
-      logger.info("return: ", ret)
-      return ret;
+      let ret = [...tronb58].map(charConv)
+      return ret.join("");
     }
 }
 
@@ -158,9 +172,8 @@ export function welBase58toTron(welb58) {
     if (welb58[0] === 'T') {
       return welb58;
     } else {
-      let ret = 'T'+welb58.slice(1);
-      logger.info("return: ", ret)
-      return ret;
+      let ret = [...welb58].map(charConv)
+      return ret.join("");
     }
 }
 
