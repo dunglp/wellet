@@ -3,21 +3,21 @@
     "name": "Wellet",
     "version": "1.0.0",
     "version_name": "1.0.0",
-    "description": "The first Welups wallet.",
+    "description": "Welups wallet for web browsers.",
     "author": "nhatanh002 <nhatanh02@gmail.com>",
-    "content_security_policy": "script-src 'self' 'unsafe-eval' 'sha256-layQc1iWBC+6WbHHvHZj3uSx3CxrGBHUJBR7si4qf8w=' 'sha256-POEO+wER89cezFVZ27JoP523HJNPMQxmh5Rcz/OZpr4=' 'sha256-IThiKMnsg0UHaLmP7sJxZpd/ohvINImwjxFJyxGFSlk=' https://*.sentry.io https://www.google-analytics.com https://www.googletagmanager.com https://cdnjs.cloudflare.com; object-src 'self'; connect-src 'self' http: https: data: blob: filestream:;",
+    "content_security_policy": "script-src 'self' 'unsafe-eval' 'sha256-layQc1iWBC+6WbHHvHZj3uSx3CxrGBHUJBR7si4qf8w=' 'sha256-POEO+wER89cezFVZ27JoP523HJNPMQxmh5Rcz/OZpr4=' 'sha256-IThiKMnsg0UHaLmP7sJxZpd/ohvINImwjxFJyxGFSlk=' https://*.sentry.io https://www.google-analytics.com https://www.googletagmanager.com https://cdnjs.cloudflare.com; object-src 'self' https://welscan.io https://*.welscan.io; connect-src 'self' http: https: data: blob: filestream:;",
     "permissions": [
         "storage",
         "unlimitedStorage",
         "clipboardWrite",
         "activeTab",
-        "http://*",
-        "https://*",
+        "http://*/*",
+        "https://*/*",
         "<all_urls>"
     ],
     "browser_action": {
         "default_popup": "packages/popup/build/index.html",
-        "default_title": "TronLink"
+        "default_title": "Wellet"
     },
     "icons": {
 		"128": "packages/popup/static/icon.png"
