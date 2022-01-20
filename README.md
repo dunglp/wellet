@@ -33,6 +33,9 @@ $ nix-shell # enter a shell with the build environment for this package
 
 #### Manually
 * Install [Node.js](https://nodejs.org/en/download)
+  * The React version the popup uses depends on a node-sass version that works with Node.js
+  14 and would fail to build with Node.js >=16, so make sure to use the right Node.js
+  version.
 * Follow the instruction to install Yarn (**https://yarnpkg.com/en/docs/install**)
 
 ### Install dependencies
