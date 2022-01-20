@@ -46,6 +46,11 @@ $ yarn install
 ### Building
 ```sh
 # Build all sources
+$ yarn build:all
+```
+
+```sh
+# Build everything except the modded Tronweb library
 $ yarn build
 ```
 
@@ -57,6 +62,11 @@ $ yarn build:core
 ```sh
 # Build only the popup component
 $ yarn build:popup
+```
+
+```sh
+# Build only the modded Tronweb library
+$ yarn build:tw
 ```
 
 ## Linting
