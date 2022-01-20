@@ -34,9 +34,12 @@ const NodeService = {
                 //fullNode: 'http://172.104.32.164:16667',
                 //solidityNode: 'http://172.104.32.164:16668',
                 //eventServer: 'http://172.104.32.164:16667',
-                fullNode: 'http://172.104.51.182:16667',
-                solidityNode: 'http://172.104.51.182:16668',
-                eventServer: 'http://172.104.51.182:16667',
+                //fullNode: 'http://172.104.51.182:16667', // testnet
+                //solidityNode: 'http://172.104.51.182:16668',
+                //eventServer: 'http://172.104.51.182:16667',
+                fullNode: 'http://13.213.231.230:16667',
+                solidityNode: 'http://13.213.231.230:16668',
+                eventServer: 'http://13.213.231.230:16667',
                 default: true, // false
                 chain:'_' ,
                 //connect: SIDE_CHAIN_ID
