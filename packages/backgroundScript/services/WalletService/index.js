@@ -707,7 +707,7 @@ class Wallet extends EventEmitter {
             //    this.emit('setVTokenList',StorageService.vTokenList);
             //});
             // Place holder:
-            let defaultVTokens = [ "_",
+            let defaultVTokens = [ 
                                    "WX3TqrQhKQwsr9JmffDCpvnHPQEjTSsLo2",
                                    "WGhwAci8yc9iUG49EYHHG4dYRWUmtJ6HX4",
                                    "WSBn3fEJ4T2jgN4zNANowqCDu5Amrvcq4Z",
@@ -734,7 +734,9 @@ class Wallet extends EventEmitter {
                                    "WDfC3g7SHUfETRVwLp3gP9vVeuCuT7PXoE",
                                    "WT4ffbanqK67PBQqF9axbQmRQjY99sptrV",
                                    "WUyHdVQyzqExF6GF52p6ba341jCvRPWwGr",
-                                   "WFynPHV2JMz18BsB4HREcuNGoRuh9SBUJ8" ]
+                                   "WFynPHV2JMz18BsB4HREcuNGoRuh9SBUJ8",
+                                   "_",]
+
             StorageService.saveVTokenList(defaultVTokens);
             this.emit('setVTokenList',defaultVTokens);
 
