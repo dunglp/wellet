@@ -461,7 +461,7 @@ class Account {
     }
 
     async addSmartToken({ address, name, decimals, symbol }) {
-        logger.info(`Adding TRC20 token '${ address }' ${ name } (${ symbol }) to account '${ this.address }'`);
+        logger.info(`Adding WRC20 token '${ address }' ${ name } (${ symbol }) to account '${ this.address }'`);
 
         let balance = 0;
 

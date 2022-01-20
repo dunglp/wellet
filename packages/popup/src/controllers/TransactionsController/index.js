@@ -46,7 +46,7 @@ class TransactionsController extends React.Component {
         } = this.props;
         const { formatMessage } = this.props.intl;
         const { address, airdropInfo, type } = accounts.selected;
-        const { id = '_', name = 'TRX', decimals = 6, imgUrl, price = 0, amount, balance = 0, frozenBalance = 0 } = accounts.selectedToken;
+        const { id = '_', name = 'WEL', decimals = 6, imgUrl, price = 0, amount, balance = 0, frozenBalance = 0 } = accounts.selectedToken;
         return (
             <div className='insetContainer transactions'>
                 <div className='pageHeader'>
@@ -112,7 +112,7 @@ class TransactionsController extends React.Component {
                                 </div>
                                 :
                                 (
-                                    id.match(/^T/)
+                                    id.match(/^W/)
                                         ?
                                         (
                                             id === CONTRACT_ADDRESS.USDT && airdropInfo.isShow ?

@@ -22,10 +22,10 @@ class TransferController extends React.Component {
             },
             selectedToken: {
                 id: '_',
-                name: 'TRX',
+                name: 'WEL',
                 amount: 0,
                 decimals: 6,
-                abbr: 'TRX'
+                abbr: 'WEL'
             },
             amount: {
                 error: '',
@@ -52,7 +52,7 @@ class TransferController extends React.Component {
     componentWillReceiveProps(nextProps) {
         const { selected } = nextProps.accounts;
         const { selectedToken } = this.state;
-        const field = selectedToken.id.match(/^T/) ? 'smart':'basic';
+        const field = selectedToken.id.match(/^W/) ? 'smart':'basic';
         const balance = selected.tokens[field].hasOwnProperty(selectedToken.id) ? selected.tokens[field][ selectedToken.id ].balance : 0;
         const decimals = selected.tokens[field].hasOwnProperty(selectedToken.id) ? selected.tokens[field][ selectedToken.id ].decimals : 6;
         if(selectedToken.id === '_') {
@@ -251,7 +251,7 @@ class TransferController extends React.Component {
                 }else{
                     func = PopupAPI.withdrawTrx(new BigNumber(amount).shiftedBy(6).toString());
                 }
-            } else if (id.match(/^T/)) {
+            } else if (id.match(/^W/)) {
                 if(chains.selected === '_') {
                     func = PopupAPI.depositTrc20(id, new BigNumber(amount).shiftedBy(decimals).toString());
                 }else{
@@ -293,7 +293,7 @@ class TransferController extends React.Component {
         const { selected } = this.props.accounts;
         const { chains,onCancel } = this.props;
         const { formatMessage } = this.props.intl;
-        const trx = { tokenId: '_', name: 'TRX', balance: selected.balance, frozenBalance:selected.frozenBalance ,abbr: 'TRX', decimals: 6, imgUrl: trxImg,isMapping:true };
+        const trx = { tokenId: '_', name: 'WEL', balance: selected.balance, frozenBalance:selected.frozenBalance ,abbr: 'WEL', decimals: 6, imgUrl: trxImg,isMapping:true };
         let tokens = { ...selected.tokens.basic, ...selected.tokens.smart };
         const topArray = [];
         allTokens.length && TOP_TOKEN[chains.selected === "_" ? 'mainchain':'sidechain'].forEach(v=>{
@@ -308,7 +308,7 @@ class TransferController extends React.Component {
             }
         });
         tokens = Utils.dataLetterSort(Object.entries(tokens).filter(([tokenId, token]) => typeof token === 'object' && (!token.hasOwnProperty('chain') || token.chain === chains.selected) ).map(v => { v[ 1 ].tokenId = v[ 0 ];return v[ 1 ]; }), 'abbr' ,'symbol',topArray);
-        tokens = tokens.map(v=>{ v.isMapping = v.hasOwnProperty('isMapping') ? v.isMapping:( v.tokenId.match(/^T/) ? false : true); return v;}).filter(({isMapping = false})=> isMapping);
+        tokens = tokens.map(v=>{ v.isMapping = v.hasOwnProperty('isMapping') ? v.isMapping:( v.tokenId.match(/^W/) ? false : true); return v;}).filter(({isMapping = false})=> isMapping);
         tokens = [trx, ...tokens];
         return (
             <div className='insetContainer send' onClick={() => this.setState({ isOpen: { account: false, token: false } }) }>

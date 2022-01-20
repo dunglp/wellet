@@ -19,10 +19,10 @@ class SendController extends React.Component {
             },
             selectedToken: {
                 id: '_',
-                name: 'TRX',
+                name: 'WEL',
                 amount: 0,
                 decimals: 6,
-                abbr: 'TRX'
+                abbr: 'WEL'
             },
             recipient: {
                 error: '',
@@ -91,7 +91,7 @@ class SendController extends React.Component {
     componentWillReceiveProps(nextProps) {
         const { selected } = nextProps.accounts;
         const { selectedToken } = this.state;
-        const field = selectedToken.id.match(/^T/) ? 'smart':'basic';
+        const field = selectedToken.id.match(/^W/) ? 'smart':'basic';
         const balance = selected.tokens[field].hasOwnProperty(selectedToken.id) ? selected.tokens[field][ selectedToken.id ].balance : 0;
         const decimals = selected.tokens[field].hasOwnProperty(selectedToken.id) ? selected.tokens[field][ selectedToken.id ].decimals : 6;
         if(selectedToken.id === '_') {
@@ -120,7 +120,7 @@ class SendController extends React.Component {
             isMapping : true,
             imgUrl: trxImg,
             id: '_',
-            name: 'TRX',
+            name: 'WEL',
             decimals: 6,
             amount: new BigNumber(accounts[ address ].balance).shiftedBy(-6).toString(),
             balance : new BigNumber(accounts[ address ].balance - accounts[ address ].frozenBalance).shiftedBy(-6).toString(),
@@ -250,7 +250,7 @@ class SendController extends React.Component {
                     });
                 }
             }
-            if(id.match(/^T/)) {
+            if(id.match(/^W/)) {
                 const valid = this.state.recipient.isActivated ? true : false;
                 if(valid) {
                     const isEnough = new BigNumber(selected.balance).shiftedBy(-6).gte(new BigNumber(1))   ? true : false;
@@ -352,7 +352,7 @@ class SendController extends React.Component {
                     recipient,
                     new BigNumber(amount).shiftedBy(6).toString()
                 );
-            } else if (id.match(/^T/)) {
+            } else if (id.match(/^W/)) {
                 func = PopupAPI.sendSmartToken(
                     recipient,
                     new BigNumber(amount).shiftedBy(decimals).toString(),
@@ -387,7 +387,7 @@ class SendController extends React.Component {
             this.setState({loadingLedger:true});
             if (id === "_") {
                 iframe.postMessage({target:"LEDGER-IFRAME",action:'send trx',data:{toAddress,fromAddress,amount:new BigNumber(amount).shiftedBy(6).toString()}},'*')
-            }else if(id.match(/^T/)){
+            }else if(id.match(/^W/)){
                 iframe.postMessage({target:"LEDGER-IFRAME",action:'send trc20',data:{id,toAddress,fromAddress,amount:new BigNumber(amount).shiftedBy(decimals).toString(),decimals,TokenName:name}},'*')
             }else{
                 iframe.postMessage({target:"LEDGER-IFRAME",action:'send trc10',data:{id,toAddress,fromAddress,amount:new BigNumber(amount).shiftedBy(decimals).toString()}},'*')
@@ -432,7 +432,7 @@ class SendController extends React.Component {
         const {chains} = this.props;
         const { isOpen, selectedToken, loading, amount, recipient, loadingLedger,allTokens } = this.state;
         const { selected, accounts } = this.props.accounts;
-        const trx = { tokenId: '_', name: 'TRX', balance: selected.balance,frozenBalance: selected.frozenBalance, abbr: 'TRX', decimals: 6, imgUrl: trxImg,isMapping:true };
+        const trx = { tokenId: '_', name: 'WEL', balance: selected.balance,frozenBalance: selected.frozenBalance, abbr: 'WEL', decimals: 6, imgUrl: trxImg,isMapping:true };
         let tokens = { ...selected.tokens.basic, ...selected.tokens.smart};
         const topArray = [];
         allTokens.length && TOP_TOKEN[chains.selected === '_' ? 'mainchain':'sidechain'].forEach(v=>{

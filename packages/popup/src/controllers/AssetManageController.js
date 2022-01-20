@@ -33,7 +33,7 @@ class AssetManageController extends React.Component {
 
     renderDeleteToken(tokens, deleteToken) {
         if(deleteToken.show) {
-            const field = deleteToken.tokenId.match(/^T/) ? 'smart' : 'basic';
+            const field = deleteToken.tokenId.match(/^W/) ? 'smart' : 'basic';
             const { imgUrl = false, name, abbr = false, symbol = false } = tokens[ field ][ deleteToken.tokenId ];
             return (
                 <div className='deleteTokenWrap'>
@@ -75,7 +75,7 @@ class AssetManageController extends React.Component {
         const { selected } = this.props;
         const { deleteToken, filterTokens } = this.state;
         const { tokenId } = deleteToken;
-        const field = tokenId.match(/^T/) ? 'smart' : 'basic';
+        const field = tokenId.match(/^W/) ? 'smart' : 'basic';
         selected.tokens[ field ][ tokenId ].isLocked = true;
         const fs = filterTokens.map(({ tokenId: id, ...token }) => {
             if(id === tokenId)
@@ -91,7 +91,7 @@ class AssetManageController extends React.Component {
         const { selected, onCancel, vTokenList, prices, chains  } = this.props;
         const { address, allTokens, filterTokens, deleteToken } = this.state;
         const trx_price = prices.priceList[prices.selected];
-        const trx = { tokenId: '_', name: 'TRX', balance: (selected.balance + (selected.frozenBalance ? selected.frozenBalance: 0)), abbr: 'TRX', decimals: 6, imgUrl: trxImg, price: trx_price}
+        const trx = { tokenId: '_', name: 'WEL', balance: (selected.balance + (selected.frozenBalance ? selected.frozenBalance: 0)), abbr: 'WEL', decimals: 6, imgUrl: trxImg, price: trx_price}
         let tokens = { ...selected.tokens.basic, ...selected.tokens.smart };
         const topArray = [];
         TOP_TOKEN[ chains.selected === '_'? 'mainchain':'sidechain' ].forEach(v=>{
@@ -161,7 +161,7 @@ class AssetManageController extends React.Component {
                                     const regexp = new RegExp(value, 'i');
                                     fTokens = allTokens.filter(({isBlack})=> !isBlack).filter(({ name, abbr }) => name.match(regexp) || abbr.match(regexp));
                                     fTokens = fTokens.map(({ tokenId, ...token }) => {
-                                        const field = tokenId.match(/^T/) ? 'smart' : 'basic';
+                                        const field = tokenId.match(/^W/) ? 'smart' : 'basic';
                                         const name = token.name.match(regexp) ? token.name.split(token.name.match(regexp)[ 0 ]).join('<i>' + token.name.match(regexp)[ 0 ] + '</i>') : token.name;
                                         const abbr = token.abbr.match(regexp) ? token.abbr.split(token.abbr.match(regexp)[ 0 ]).join('<i>' + token.abbr.match(regexp)[ 0 ] + '</i>') : token.abbr;
                                         token.isList = selected.tokens[ field ].hasOwnProperty(tokenId) && (!selected.tokens[ field ][ tokenId ].hasOwnProperty('isLocked') || !selected.tokens[ field ][ tokenId ].isLocked ) ? true : false;
@@ -189,7 +189,7 @@ class AssetManageController extends React.Component {
                                             <div className='desc'>
                                                 <div className={'row1'+(isVerify?' isVerify':'') } dangerouslySetInnerHTML={{__html: html}}></div>
                                                 <div className='row2'>
-                                                    {tokenId.match(/^T/) ? 'contract' : 'ID'} : { tokenId.match(/^T/) ? tokenId.substr(0, 7) + '...' + tokenId.substr(-7) : tokenId}
+                                                    {tokenId.match(/^W/) ? 'contract' : 'ID'} : { tokenId.match(/^W/) ? tokenId.substr(0, 7) + '...' + tokenId.substr(-7) : tokenId}
                                                 </div>
                                             </div>
                                             {
@@ -197,7 +197,7 @@ class AssetManageController extends React.Component {
                                                     null
                                                     :
                                                 <Switch color='#636ACC' checked={isList} onClick={(e) => {
-                                                    const field = tokenId.match(/^T/) ? 'smart' : 'basic';
+                                                    const field = tokenId.match(/^W/) ? 'smart' : 'basic';
                                                     const filters = filterTokens.map(({ tokenId: id, ...token }) => {
                                                         if (id === tokenId)
                                                             token.isList = !isList;
@@ -250,14 +250,14 @@ class AssetManageController extends React.Component {
                                                 null
                                                     :
                                                 <div className='row2'>
-                                                    {tokenId.match(/^T/) ? 'contract' : 'ID'}:{ tokenId.match(/^T/) ? tokenId.substr(0, 7) + '...' + tokenId.substr(-7) : tokenId}
+                                                    {tokenId.match(/^W/) ? 'contract' : 'ID'}:{ tokenId.match(/^W/) ? tokenId.substr(0, 7) + '...' + tokenId.substr(-7) : tokenId}
                                                 </div>
                                             }
                                         </div>
                                         {
                                             !isTop ?
                                             <Switch color='#636ACC' checked={!isLocked} onClick={(e) => {
-                                                const field = tokenId.match(/^T/) ? 'smart' : 'basic';
+                                                const field = tokenId.match(/^W/) ? 'smart' : 'basic';
                                                 if (balance > 0) {
                                                     selected.tokens[field][tokenId].isLocked = !isLocked;
                                                     if (filterTokens.length) {

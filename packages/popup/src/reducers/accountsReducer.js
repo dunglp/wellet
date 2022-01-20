@@ -31,7 +31,7 @@ export const accountsReducer = createReducer({
         hash: ''
     },
     accounts: { },
-    selectedToken: { id: '_', name: 'TRX', decimals: 6, amount: 0 }
+    selectedToken: { id: '_', name: 'WEL', decimals: 6, amount: 0 }
 }, {
     [ setAccount ]: (state, { payload: { transactions, ...account } }) => {
         state.selected = account;

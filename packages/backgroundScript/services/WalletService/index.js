@@ -801,7 +801,7 @@ class Wallet extends EventEmitter {
     }
 
     getSelectedToken() {
-        return JSON.stringify(StorageService.selectedToken) === '{}' ? { id: '_', name: 'TRX', abbr:'trx', amount: 0, decimals: 6 } : StorageService.selectedToken;
+        return JSON.stringify(StorageService.selectedToken) === '{}' ? { id: '_', name: 'WEL', abbr:'wel', amount: 0, decimals: 6 } : StorageService.selectedToken;
     }
 
     setLanguage(language) {
