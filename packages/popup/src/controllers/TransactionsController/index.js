@@ -59,8 +59,8 @@ class TransactionsController extends React.Component {
                     {
                         id !== '_' ?
                             <span className='detail' onClick={() => {
-                                let url = 'https://tronscan.org/#/';
-                                url += (id.match(/^T/) ? 'token20/' + id : 'token/' + id);
+                                let url = 'https://api-main.welscan.io/tokenrecord/'+id;
+                                //url += (id.match(/^W/) ? 'token20/' + id : 'token721/' + id);
                                 window.open(url);
                             }
                             }

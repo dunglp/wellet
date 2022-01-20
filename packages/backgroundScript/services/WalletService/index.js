@@ -141,18 +141,23 @@ class Wallet extends EventEmitter {
             //     logger.error('get trc10 token price fail');
             //     return { data: { data: [] } };
             // });
-            const { data: { data: { rows: smartTokenPriceList } } } = await axios.get('https://api.trx.market/api/exchange/marketPair/list').catch(e => {
+            //const { data: { data: { rows: smartTokenPriceList } } } = await axios.get('https://api.trx.market/api/exchange/marketPair/list').catch(e => {
+            const { data: { data: { result: smartTokenPriceList } } } = await axios.get('https://api-main.welscan.io/tokenrecords?page=1&limit=4000').catch(e => {
                 logger.error('get wrc20 token price fail');
                 return { data: { data: { rows: [] } } };
             });
             const prices = StorageService.prices;
+            logger.info("Storage's prices: ", StorageService.prices)
+            logger.info("original tokens list retrieved: ", smartTokenPriceList)
             //basicPrice = basicTokenPriceList;
             basicPrice = [];
-            smartPrice = smartTokenPriceList;
-            usdtPrice = prices.usdtPriceList ? prices.usdtPriceList[ prices.selected ] : 0;
+            smartPrice = smartTokenPriceList.filter( ({token_record_type}) => token_record_type === "WRC20");
+            logger.info("smartPrice retrieved: ", smartPrice)
+
+            //usdtPrice = prices.usdtPriceList ? prices.usdtPriceList[ prices.selected ] : 0;
             for (const account of accounts) {
                 if (account.address === this.selectedAccount) {
-                    Promise.all([account.update(basicPrice, smartPrice, usdtPrice)]).then(() => {
+                    Promise.all([account.update(basicPrice, smartPrice/*, usdtPrice*/)]).then(() => {
                         if (account.address === this.selectedAccount) {
                             this.emit('setAccount', this.selectedAccount);
                         }
@@ -160,7 +165,7 @@ class Wallet extends EventEmitter {
                         logger.error(`update account ${account.address} fail`, e);
                     });
                 } else {
-                    await account.update(basicPrice, smartPrice, usdtPrice);
+                    await account.update(basicPrice, smartPrice/*, usdtPrice*/);
                 }
             }
             this.emit('setAccounts', this.getAccounts());
@@ -174,12 +179,29 @@ class Wallet extends EventEmitter {
         if(!StorageService.ready)
             return;
 
-        const prices = axios('https://min-api.cryptocompare.com/data/price?fsym=TRX&tsyms=USD,CNY,GBP,EUR,BTC,ETH');
-        const usdtPrices = axios('https://min-api.cryptocompare.com/data/price?fsym=USDT&tsyms=USD,CNY,GBP,EUR,BTC,ETH');
-        Promise.all([prices, usdtPrices]).then(res => {
-            StorageService.setPrices(res[0].data, res[1].data);
-            this.emit('setPriceList', [res[0].data, res[1].data]);
-        }).catch(e => {
+        //const prices = axios('https://min-api.cryptocompare.com/data/price?fsym=TRX&tsyms=USD,CNY,GBP,EUR,BTC,ETH');
+        //const usdtPrices = axios('https://min-api.cryptocompare.com/data/price?fsym=USDT&tsyms=USD,CNY,GBP,EUR,BTC,ETH');
+        const prices = axios('https://price-api.crypto.com/price/v1/exchange/welups-blockchain')
+        Promise.all([prices]).then(res => {
+            //StorageService.setPrices(res[0].data, res[1].data);
+            logger.info("Get price list: ", res[0].data)
+            const fiat = res[0].data.fiat
+            const cryp = res[0].data.crypto
+            const savePrices = 
+              { USD: fiat.usd,
+                CNY: fiat.cny,
+                GBP: fiat.gbp,
+                EUR: fiat.eur,
+                BTC: cryp.btc,
+                ETH: cryp.eth, 
+              }
+            logger.info("Gonna setPrices: ", savePrices)
+            StorageService.setPrices(savePrices, null);
+            logger.info("Price list set to storage: ", StorageService.prices)
+
+            //this.emit('setPriceList', [res[0].data, res[1].data]);
+            this.emit('setPriceList', [savePrices,null])}
+            ).catch(e => {
             logger.error('Failed to update prices',e);
         });
 
@@ -662,16 +684,18 @@ class Wallet extends EventEmitter {
         //const wrc20tokens = axios.get('https://apilist.tronscan.org/api/tokens/overview?start=0&limit=1000&filter=trc20');
         // const trc20tokens_s = axios.get('https://dappchainapi.tronscan.org/api/tokens/overview?start=0&limit=1000&filter=trc20');
         const allTokens = axios.get('https://api-main.welscan.io/tokenrecords?page=1&limit=4000');
+        logger.info("allTokens: ", allTokens)
         Promise.all([allTokens/*, trc20tokens_s*/]).then(res => {
             let t = [];
             let t2 = [];
             res[ 0 ].data.data.result.forEach(({ token_abbreviation, token_name, token_icon = false, _id = false, precision = false, reputation = "" }) => {
-                t.push({ tokenId: _id.toString(), contractAddress: _id.toString(), abbr: token_abbreviation, name: token_name, imgUrl: token_icon, decimals: precision, isBlack: reputation === "OK" ? false:true });
+                t.push({ tokenId: _id.toString(), contractAddress: _id.toString(), abbr: token_abbreviation, name: token_name, imgUrl: token_icon, decimals: precision, isBlack: reputation === "OK" || reputation === "Neutral" ? false:true });
             });
             //res[ 0 ].data.data.concat( res[ 2 ].data.tokens).forEach(({ abbr, name, imgUrl = false, tokenID = false, contractAddress = false, decimal = false, precision = false, isBlack = false }) => {
             //    t2.push({ tokenId: tokenID ? tokenID.toString() : contractAddress, abbr, name, imgUrl, decimals: precision || decimal || 0, isBlack });
             //});
             StorageService.saveAllTokens(t,t2);
+            logger.info("Saved tokens: ", StorageService.allTokens)
         });
 
         if(isResetPhishingList) {
@@ -683,7 +707,8 @@ class Wallet extends EventEmitter {
             //    this.emit('setVTokenList',StorageService.vTokenList);
             //});
             // Place holder:
-            let defaultVTokens = [ "WX3TqrQhKQwsr9JmffDCpvnHPQEjTSsLo2",
+            let defaultVTokens = [ "_",
+                                   "WX3TqrQhKQwsr9JmffDCpvnHPQEjTSsLo2",
                                    "WGhwAci8yc9iUG49EYHHG4dYRWUmtJ6HX4",
                                    "WSBn3fEJ4T2jgN4zNANowqCDu5Amrvcq4Z",
                                    "WNv26nED9uEiq2QUg8jKLraANGsvePVKNh",
@@ -710,6 +735,7 @@ class Wallet extends EventEmitter {
                                    "WT4ffbanqK67PBQqF9axbQmRQjY99sptrV",
                                    "WUyHdVQyzqExF6GF52p6ba341jCvRPWwGr",
                                    "WFynPHV2JMz18BsB4HREcuNGoRuh9SBUJ8" ]
+            StorageService.saveVTokenList(defaultVTokens);
             this.emit('setVTokenList',defaultVTokens);
 
 
@@ -1022,118 +1048,55 @@ class Wallet extends EventEmitter {
         };
     }
 
-    async getTransactionsByTokenId({ tokenId, fingerprint = '', direction = "all" ,limit = 30 }) {
-        const selectedChain = NodeService._selectedChain;
-        const { fullNode } = NodeService.getCurrentNode();
-        const address = this.selectedAccount;
-        let params = {limit};
-        let requestUrl = selectedChain === '_' ? 'https://apilist.tronscan.org' : 'https://dappchainapi.tronscan.org';
-        // if(selectedChain === '_') {
-        //     params.fingerprint = fingerprint;
-        //     if (!tokenId.match(/^T/)) {
-        //         requestUrl = `${fullNode}/v1/accounts/${address}/transactions`;
-        //         if (direction === 'to') {
-        //             params.only_to = true;
-        //         } else if (direction === 'from') {
-        //             params.only_from = true;
-        //         }
-        //         params.token_id = tokenId === '_' ? 'trx' : tokenId;
-        //         const {data: {data: records, meta: {fingerprint: finger}}} = await axios.get(requestUrl, {
-        //             params,
-        //             timeout: 5000
-        //         }).catch(err => ({data: {data: [], meta: {fingerprint: ''}}}));
-        //         let lists = records.map(record => {
-        //             let fromAddress = '';
-        //             let toAddress = '';
-        //             let amount = 0;
-        //             let timestamp = 0;
-        //             let hash = '';
-        //             if (record['internal_tx_id']) {
-        //                 fromAddress = TronWeb.address.fromHex(record['from_address']);
-        //                 toAddress = TronWeb.address.fromHex(record['to_address']);
-        //                 amount = record['data']['call_value'][tokenId];
-        //                 timestamp = record['block_timestamp'];
-        //                 hash = record['tx_id'];
-        //             } else {
-        //                 const value = record['raw_data']['contract'][0]['parameter']['value'];
-        //                 fromAddress = TronWeb.address.fromHex(value['owner_address']);
-        //                 toAddress = TronWeb.address.fromHex(value['to_address']);
-        //                 amount = value['amount'];
-        //                 timestamp = record['raw_data']['timestamp'];
-        //                 hash = record['txID']
-        //             }
-        //             return {fromAddress, toAddress, amount, timestamp, hash};
-        //         });
-        //         return {records: lists, finger};
-        //     } else {
-        //         params['event_name'] = 'Transfer';
-        //         if (direction === 'to') {
-        //             params.filters = `{"to":"${TronWeb.address.toHex(address).replace(/41/, '0x')}"}`;
-        //         } else if (direction === 'from') {
-        //             params.filters = `{"from":"${TronWeb.address.toHex(address).replace(/41/, '0x')}"}`;
-        //         }
-        //         requestUrl = `${fullNode}/v1/contracts/${tokenId}/events`;
-        //         const {data: {data: records, meta: {fingerprint: finger}}} = await axios.get(requestUrl, {
-        //             params,
-        //             timeout: 5000
-        //         }).catch(r => ({data: {data: [], meta: {fingerprint: ''}}}));
-        //         let lists = records.map(record => {
-        //             const fromAddress = TronWeb.address.fromHex(record['result']['from'].replace(/^0x/, '41'));
-        //             const toAddress = TronWeb.address.fromHex(record['result']['to'].replace(/^0x/, '41'));
-        //             const amount = record['result']['value'];
-        //             const timestamp = record['block_timestamp'];
-        //             const hash = record['transaction_id'];
-        //             return {fromAddress, toAddress, amount, timestamp, hash};
-        //         });
-        //         return {records: lists, finger};
-        //     }
-        // } else {
-            let newRecord = [];
-            const finger = fingerprint || 0;
-            params.start = limit * finger;
-            if(!tokenId.match(/^T/)) {
-                if(tokenId === '_') {
-                    requestUrl += '/api/simple-transaction';
-                } else {
-                    requestUrl += '/api/simple-transfer';
-                    params.token_id = tokenId;
-                }
-                if(direction === 'all') {
-                    params = {...params, address};
-                } else if(direction === 'to') {
-                    params = { ...params, from: address };
-                } else {
-                    params = { ...params, to: address };
-                }
-                const { data: { data: records } } = await axios.get(requestUrl, { params }).catch(err => ({ data: { data: [], total: 0 }}));
+  async getTransactionsByTokenId({ tokenId, fingerprint = '', direction = "all" ,limit = 30 }) {
+    const selectedChain = NodeService._selectedChain;
+    const { fullNode } = NodeService.getCurrentNode();
+    const address = this.selectedAccount;
+    let params = {limit};
+    let requestUrl =  'https://api-main.welscan.io';
 
-                newRecord = records.filter(({contractType,contractData})=>![2,5,11,12,30,31].includes(contractType) || (contractType === 31 && contractData.hasOwnProperty('call_value')) ).map(({hash, transactionHash = '', timestamp, contractData = {},toAddress,ownerAddress,transferFromAddress = '',transferToAddress= '' ,amount})=>{
-                    return {hash : hash || transactionHash,timestamp,toAddress : toAddress || transferToAddress || ownerAddress,fromAddress:ownerAddress || transferFromAddress,amount:contractData['call_value'] || contractData.amount || amount || 0};
-                });
+    let newRecord = [];
+    const finger = fingerprint || 0;
+    params.start = 0;
+    params.end = 0;
+    params.num = 1;
+    params.sort = 'desc'
+    params.limit = limit * finger;
+    if(!tokenId.match(/^W/) && tokenId === '_' ) {
+        requestUrl += '/address/transactions/'+address;
+      } else {
+        requestUrl += '/contract/transactions/'+tokenId;
+      }
+      const transFilter = ({from_address, to_address}) => {
+        switch (direction) {
+          case 'to':
+            return to_address === address
+          case 'from':
+            return from_address === address
+          case 'all':
+          default:
+            return (to_address === address) || (from_address === address)
+        }
+      }
+    const { data: { data: { result: records } } } = 
+        await axios.get(requestUrl, { params }).
+        catch(err => ({ data: { result: [], total: 0 }}));
+      logger.info(`Token ${ tokenId } transactions record: `, records)
+      newRecord = records.
+        filter(transFilter).
+        map(
+          ( {hash, timestamp, to_address, from_address, amount} ) => {
+            return {
+              hash : hash,
+              timestamp: timestamp,
+              toAddress : to_address,
+              fromAddress: from_address,
+              amount: amount
+            }});
 
-                return { records: newRecord, finger };
-            } else {
-                params.address = address;
-                params.contract = tokenId;
-                const { data: { data: transactions } } = await axios.get(`${requestUrl}/api/contract/events`, {
-                    params
-                }).catch(err => {
-                    return { data: { data: [] } };
-                });
-                const transactions2 = transactions.map(({transactionHash,transferFromAddress,transferToAddress,amount,timestamp})=>{
-                    return {fromAddress:transferFromAddress,toAddress:transferToAddress,hash:transactionHash,timestamp,amount};
-                });
-                if(direction === 'all') {
-                    return { records: transactions2, finger};
-                }else if(direction === 'to') {
-                    return { records: transactions2.filter(({ fromAddress }) => fromAddress === address),finger };
-                }else {
-                    return { records: transactions2.filter(({ toAddress })=> toAddress === address),finger };
-                }
-            }
-
-        //}
-    }
+      return { records: newRecord, finger };
+  }
+      
 
     async getNews() {
         const apiUrl = API_URL;
@@ -1215,17 +1178,31 @@ class Wallet extends EventEmitter {
     }
 
     async setTransactionDetail(hash) {
-        const selectedChain = NodeService._selectedChain;
-        const requestUrl = selectedChain === '_'?'https://apilist.tronscan.org':'https://dappchainapi.tronscan.org';
+        //const selectedChain = NodeService._selectedChain;
+        const requestUrl = 'https://api-main.welscan.io';
         //const reauestUrl = 'https://apilist.tronscan.org';
-        const res = await axios.get(`${requestUrl}/api/transaction-info`, { params: { hash } }).catch(e=>false);
+        const res = await axios.get(`${requestUrl}/transaction-info/${hash}`).catch(e=>false);
         if(res) {
-            let { confirmed, ownerAddress, toAddress, hash, block,timestamp = 0 ,cost, tokenTransferInfo = false, trigger_info, contractType, contractData } = res.data;
-            if( contractType === 31 && tokenTransferInfo ) {
-                ownerAddress = tokenTransferInfo.from_address;
-                toAddress = tokenTransferInfo.to_address;
-            }
-            this.accounts[ this.selectedAccount ].transactionDetail = { confirmed, timestamp, ownerAddress, toAddress, hash, block, cost, tokenTransferInfo, trigger_info, contractType, contractData };
+
+            let { confirmed, 
+                  contract: 
+                    { parameter: 
+                        { raw : 
+                          { owner_address: ownerAddress, 
+                            to_address: toAddress } 
+                        },
+                      type
+                    },
+                  hash,
+                  block_number: block,
+                  timestamp = 0,
+                  //consume_energy,
+                  energy_fee,
+                  bandwidth_fee,
+                  //energy_usage
+                  } = res.data.data;
+
+            this.accounts[ this.selectedAccount ].transactionDetail = { confirmed, timestamp, ownerAddress, toAddress, hash, block, cost: { energy_fee, net_fee: bandwidth_fee }, tokenTransferInfo: parameter, contractType: type, contractData: { amount } };
             this.emit('setAccount', this.selectedAccount);
         }
         return res;
@@ -1277,7 +1254,7 @@ class Wallet extends EventEmitter {
                             notifyId=>{}
                         );
                         extensionizer.notifications.onClicked.addListener(notifyId=>{
-                            window.open('https://tronscan.org/#/transaction/'+notifyId)
+                            window.open('https://welscan.io/transaction/'+notifyId)
                         });
                     } else {}
                 })
@@ -1285,29 +1262,35 @@ class Wallet extends EventEmitter {
         },10000);
     }
 
+    // sidechain stuff
     async depositTrx(amount){
         return await this.accounts[ this.selectedAccount ].depositTrx(amount);
     }
 
+    // sidechain stuff
     async withdrawTrx(amount){
         return await this.accounts[ this.selectedAccount ].withdrawTrx(amount);
 
     }
 
+    // sidechain stuff
     async depositTrc10({id,amount}){
         return await this.accounts[ this.selectedAccount ].depositTrc10(id,amount);
     }
 
+    // sidechain stuff
     async withdrawTrc10({id,amount}){
         return await this.accounts[ this.selectedAccount ].withdrawTrc10(id,amount);
 
     }
 
+    // sidechain stuff
     async depositTrc20({contract_address,amount}){
         return await this.accounts[ this.selectedAccount ].depositTrc20(contract_address,amount);
 
     }
 
+    // sidechain stuff
     async withdrawTrc20({contract_address,amount}){
         return await this.accounts[ this.selectedAccount ].withdrawTrc20(contract_address,amount);
 

@@ -10,8 +10,8 @@ import {
     ACCOUNT_TYPE,
     CONTRACT_ADDRESS,
     FEE,
-    TOP_TOKEN,
-    API_URL
+    //TOP_TOKEN,
+    //API_URL
 } from '@tronlink/lib/constants';
 import axios from 'axios';
 
@@ -210,17 +210,18 @@ class Account {
      * smartTokenPriceList  trc20token price list(source from trxmarket)
      * usdtPrice            price of usdt
      **/
-    async update(basicTokenPriceList = [], smartTokenPriceList = [], usdtPrice = 0) {
+    async update(basicTokenPriceList = [], smartTokenPriceList = []/*, usdtPrice = 0*/) {
 
         if (!StorageService.allTokens[NodeService._selectedChain === '_' ? 'mainchain' : 'sidechain'].length) return;
         const selectedChain = NodeService._selectedChain;
         const { address } = this;
         logger.info(`Requested update for ${ address }`);
-        const { data: { data: smartTokens } } = await axios.get(`${API_URL}/api/wallet/trc20_info`, {
-            headers: { chain: selectedChain === '_' ? 'MainChain' : 'DAppChain' },
-            params: { address }
-        }).catch(e => {
-            return { data: { data: [] } };
+        //const { data: { data: smartTokens } } = await axios.get(`${API_URL}/api/wallet/trc20_info`, {
+        //    headers: { chain: selectedChain === '_' ? 'MainChain' : 'DAppChain' },
+        //    params: { address }
+        //   return { data: { data: [] } };
+        const { data: { data: {result: smartTokens } } } = await axios.get(`https://api-main.welscan.io/address/token/${address}`, {params: { page: 1, limit: 4000 } }).catch(e => {
+            return { data: { data: { result: [] } } };
         });
         try {
             const node = NodeService.getNodes().selected;
@@ -231,7 +232,38 @@ class Account {
                 logger.info(`Account ${address} does not exist on the network`);
                 this.reset();
                 return true;
+                //account = { // default value for account for debugging purpose
+                //  "address": address,
+                //  "balance": 0,
+                //  "account_resource": {},
+                //  "owner_permission": {
+                //    "permission_name": "owner",
+                //    "threshold": 1,
+                //    "keys": [
+                //      {
+                //        "address": address,
+                //        "weight": 1
+                //      }
+                //    ]
+                //  },
+                //  "active_permission": [
+                //    {
+                //      "type": "Active",
+                //      "id": 2,
+                //      "permission_name": "active",
+                //      "threshold": 1,
+                //      "operations": "7fff1fc0033e0300000000000000000000000000000000000000000000000000",
+                //      "keys": [
+                //        {
+                //          "address": address,
+                //          "weight": 1
+                //        }
+                //      ]
+                //    }
+                //  ]
+                //}
             }
+
             const addSmartTokens = Object.entries(this.tokens.smart).filter(([tokenId, token]) => !token.hasOwnProperty('abbr'));
             for (const [tokenId, token] of addSmartTokens) {
                 const contract = await NodeService.tronWeb.contract().at(tokenId).catch(e => false);
@@ -264,17 +296,17 @@ class Account {
             for (const { key, value } of filteredTokens) {
                 let token = this.tokens.basic[key] || false;
                 const filter = basicTokenPriceList.length ? basicTokenPriceList.filter(({ first_token_id }) => first_token_id === key) : [];
-                const trc20Filter = smartTokenPriceList.length ? smartTokenPriceList.filter(({ fTokenAddr, sTokenAddr }) => key === fTokenAddr && sTokenAddr === this.trxAddress) : [];
+                const trc20Filter = smartTokenPriceList.length ? smartTokenPriceList.filter(({ _id: fTokenAddress }) => key === fTokenAddr) : [];
                 let { precision = 0, price } = filter.length ? filter[0] : (trc20Filter.length ? {
-                    price: trc20Filter[0].price,
-                    precision: trc20Filter[0].sPrecision
+                    price: trc20Filter[0].price_wel,
+                    precision: trc20Filter[0].precision
                 } : { price: 0, precision: 0 });
                 price = price / Math.pow(10, precision);
                 if (node === 'f0b1e38e-7bee-485e-9d3f-69410bf30681' || node === 'a981e232-a995-4c81-9653-c85e4d05f599') {
                     if (StorageService.allTokens[NodeService._selectedChain === '_' ? 'mainchain' : 'sidechain'].filter(({ tokenId }) => tokenId === key).length === 0) return;
                     const {
-                        name = 'TRX',
-                        abbr = 'TRX',
+                        name = 'WEL',
+                        abbr = 'WEL',
                         decimals = 6,
                         imgUrl = false
                     } = StorageService.allTokens[NodeService._selectedChain === '_' ? 'mainchain' : 'sidechain'].filter(({ tokenId }) => tokenId === key)[0];
@@ -321,16 +353,18 @@ class Account {
                 }
             }
             //const smartTokens = account.trc20token_balances.filter(v => v.balance >= 0);
-            const sTokens = smartTokens.map(({ tokenAddress }) => tokenAddress);
+            const sTokens = smartTokens.map(({ contract_address: tokenAddress }) => tokenAddress);
             Object.entries(this.tokens.smart).forEach(([tokenId, token]) => {
                 if (!sTokens.includes(tokenId) && token.hasOwnProperty('abbr')) {
                     delete this.tokens.smart[tokenId];
                 }
             });
-            for (let { tokenAddress, logoUrl = false, decimals = 6, isMapping, name, shortName, balance } of smartTokens) {
+            const allWRC20s = smartTokenPriceList
+            for (let { _id: tokenAddress, token_icon: logoUrl = false, precision: decimals = 6, isMapping = false, token_name: name, token_abbreviation: shortName,  /*balance,*/ price_wel } of allWRC20s) {
                 let token = this.tokens.smart[tokenAddress] || false;
-                const filter = smartTokenPriceList.filter(({ fTokenAddr, sTokenAddr }) => fTokenAddr === tokenAddress && sTokenAddr === this.trxAddress);
-                const price = filter.length ? new BigNumber(filter[0].price).shiftedBy(-decimals).toString() : 0;
+                //const filter = smartTokenPriceList.filter(({ _id: fTokenAddr }) => fTokenAddr === tokenAddress);
+                //const price = filter.length ? new BigNumber(filter[0].price_wel).shiftedBy(-decimals).toString() : 0;
+                const price = new BigNumber(price_wel).shiftedBy(-decimals).toString();
 
                 token = {
                     price: 0,
@@ -345,89 +379,13 @@ class Account {
 
                 this.tokens.smart[tokenAddress] = {
                     ...token,
-                    price: tokenAddress === CONTRACT_ADDRESS.USDT ? usdtPrice : price,
-                    balance,
+                    //price: tokenAddress === CONTRACT_ADDRESS.USDT ? usdtPrice : price,
+                    price,
+                    balance: smartTokens[tokenAddress].balanceOf,
                     chain: selectedChain
                 };
-                //this.tokens.smart[ tokenAddress ] = !TOP_TOKEN[selectedChain === '_' ? 'mainchain':'sidechain'].includes(tokenAddress) ? {...this.tokens.smart[ tokenAddress ],chain:selectedChain} : this.tokens.smart[ tokenAddress ];
-                //console.log(tokenAddress, this.tokens.smart[ tokenAddress ]);
             }
-            //} else {
-            // const account = await NodeService.tronWeb.trx.getUnconfirmedAccount(address);
-            // if (!account.address) {
-            //     logger.info(`Account ${address} does not exist on the network`);
-            //     this.reset();
-            //     return true;
-            // }
-            // const filteredTokens = (account.assetV2 || []).filter(({ value }) => {
-            //     return value > 0;
-            // });
-            // if (filteredTokens.length > 0) {
-            //     for (const { key, value } of filteredTokens) {
-            //         let token = this.tokens.basic[ key ] || false;
-            //         const filter = basicTokenPriceList.length ? basicTokenPriceList.filter(({ first_token_id }) => first_token_id === key):[];
-            //         const trc20Filter = smartTokenPriceList.length ? smartTokenPriceList.filter(({ fTokenAddr }) => key === fTokenAddr) : [];
-            //         let { precision = 0, price } = filter.length ? filter[ 0 ] : (trc20Filter.length ? {
-            //             price: trc20Filter[ 0 ].price,
-            //             precision: trc20Filter[ 0 ].sPrecision
-            //         } : { price: 0, precision: 0 });
-            //         price = price / Math.pow(10, precision);
-            //         if ((!token && !StorageService.tokenCache.hasOwnProperty(key)))
-            //             await StorageService.cacheToken(key);
-            //
-            //         if (StorageService.tokenCache.hasOwnProperty(key)) {
-            //             const {
-            //                 name,
-            //                 abbr,
-            //                 decimals,
-            //                 imgUrl = false
-            //             } = StorageService.tokenCache[ key ];
-            //
-            //             token = {
-            //                 balance: 0,
-            //                 name,
-            //                 abbr,
-            //                 decimals,
-            //                 imgUrl
-            //             };
-            //         }
-            //         this.tokens.basic[ key ] = {
-            //             ...token,
-            //             balance: value,
-            //             price
-            //         };
-            //     }
-            // } else {
-            //     this.tokens.basic = {};
-            // }
-            // //this.tokens.smart = {};
-            // const addSmartTokens = Object.entries(this.tokens.smart).filter(([tokenId, token]) => !token.hasOwnProperty('abbr') );
-            // for (const [tokenId, token] of addSmartTokens) {
-            //     const contract = await NodeService.tronWeb.contract().at(tokenId).catch(e => false);
-            //     if (contract) {
-            //         let balance;
-            //         const number = await contract.balanceOf(address).call();
-            //         if (number.balance) {
-            //             balance = new BigNumber(number.balance).toString();
-            //         } else {
-            //             balance = new BigNumber(number).toString();
-            //         }
-            //         if (typeof token.name === 'object') {
-            //             const token2 = await NodeService.getSmartToken(tokenId);
-            //             this.tokens.smart[ tokenId ] = token2;
-            //         } else {
-            //             this.tokens.smart[ tokenId ] = token;
-            //         }
-            //         this.tokens.smart[ tokenId ].imgUrl = false;
-            //         this.tokens.smart[ tokenId ].balance = balance;
-            //         this.tokens.smart[ tokenId ].price = 0;
-            //     } else {
-            //         this.tokens.smart[ tokenId ].balance = 0;
-            //         this.tokens.smart[ tokenId ].price = 0;
-            //     }
-            // }
-            // this.balance = account.balance || 0;
-            // }
+
             let totalOwnTrxCount = new BigNumber(this.balance + this.frozenBalance).shiftedBy(-6);
             Object.entries({ ...this.tokens.basic, ...this.tokens.smart }).map(([tokenId, token]) => {
                 if (token.price !== 0 && !token.isLocked) {
@@ -480,12 +438,21 @@ class Account {
             logger.error(`add smart token ${address} ${name} fail`, e);
         }
 
+
+      const {
+        imgUrl = false,
+        isMapping = false,
+      } = StorageService.allTokens[NodeService._selectedChain === '_' ? 'mainchain' : 'sidechain'].filter(({ tokenId }) => tokenId === address)[0];
+
         this.tokens.smart[address] = {
             balance,
             decimals,
             symbol,
+            imgUrl,
+            isMapping,
             name
         };
+      logger.info("[Add smart token] All tokens in account after added: ", this.tokens )
 
         return this.save();
     }
