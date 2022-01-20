@@ -245,7 +245,7 @@ class AssetManageController extends React.Component {
                                                 }
                                             </div>
                                             {
-                                                tokenId === '_'
+                                                (tokenId === '_' || !tokenId)
                                                     ?
                                                 null
                                                     :
