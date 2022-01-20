@@ -236,11 +236,19 @@ const NodeService = {
                 balance = new BigNumber(number).toString();
             }
 
+        const {
+          imgUrl = false,
+          isMapping = false,
+        } = StorageService.allTokens[NodeService._selectedChain === '_' ? 'mainchain' : 'sidechain'].filter(({ tokenId }) => tokenId === address)[0];
+
+
             return {
                 name: typeof name === 'object' ? name._name: name,
                 symbol: typeof symbol === 'object' ? symbol._symbol: symbol,
                 decimals: typeof decimals === 'object' ? decimals._decimals: decimals,
-                balance
+                balance,
+                imgUrl,
+                isMapping
             };
         } catch(ex) {
             logger.error(`Failed to fetch token ${ address }:`, ex);
