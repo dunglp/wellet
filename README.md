@@ -73,7 +73,7 @@ $ yarn build:tw
 
 ## Linting
 ```sh
-# Run linter over the ./packages folder
+# Run linter over ./packages
 $ yarn lint
 ```
 
