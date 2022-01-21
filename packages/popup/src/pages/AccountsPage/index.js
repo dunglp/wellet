@@ -153,7 +153,7 @@ class AccountsPage extends React.Component {
                             </div>
                             {
                                 accounts.selected.type !== ACCOUNT_TYPE.LEDGER && chains.selected === '_' ?
-                                    <div onClick={(e) => { e.stopPropagation();window.open(`${tronscanUrl}/account?from=tronlink&type=frozen`); }} className='item'>
+                                  <div onClick={(e) => { e.stopPropagation();window.open(`${tronscanUrl}/user/freeze-balance`);}} className='item'>
                                         <span className='icon frozen'>&nbsp;</span>
                                         <FormattedMessage id='MENU.FROZEN_UNFROZEN' />
                                     </div>
@@ -162,7 +162,7 @@ class AccountsPage extends React.Component {
                             }
                             {
                                 accounts.selected.type !== ACCOUNT_TYPE.LEDGER && chains.selected === '_' ?
-                                    <div onClick={(e) => { e.stopPropagation();window.open(`${tronscanUrl}/sr/votes?from=tronlink`); }} className='item'>
+                                    <div onClick={(e) => { e.stopPropagation();window.open(`${tronscanUrl}/votes`); }} className='item'>
                                         <span className='icon vote'>&nbsp;</span>
                                         <FormattedMessage id='MENU.VOTE' />
                                     </div>
@@ -181,7 +181,7 @@ class AccountsPage extends React.Component {
                             {
                                 accounts.selected.type !== ACCOUNT_TYPE.LEDGER && chains.selected === '_'
                                     ?
-                                    <div onClick={(e) => { e.stopPropagation();window.open(`${tronscanUrl}/account?from=tronlink`) }} className='item'>
+                                    <div onClick={(e) => { e.stopPropagation();window.open(`${tronscanUrl}/accounts/${ accounts.selected.address }`) }} className='item'>
                                         <span className='icon link'>&nbsp;</span>
                                         <FormattedMessage id='MENU.ACCOUNT_DETAIL' />
                                     </div>
