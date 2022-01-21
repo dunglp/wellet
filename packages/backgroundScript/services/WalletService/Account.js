@@ -266,11 +266,16 @@ class Account {
                 //  ]
                 //}
             }
+            logger.info("Fetched account from network: ", account)
 
             const addSmartTokens = Object.entries(this.tokens.smart).filter(([tokenId, token]) => !token.hasOwnProperty('abbr'));
+            logger.info("[update account] this.tokens: ", this.tokens)
+            logger.debug("[update account] addSmartTokens: ", addSmartTokens)
             for (const [tokenId, token] of addSmartTokens) {
+                logger.debug("[update account] get smart contract at token ID", tokenId)
                 const contract = await NodeService.tronWeb.contract().at(tokenId).catch(e => false);
                 if (contract) {
+                logger.debug("[update account] smart contract", contract)
                     let balance;
                     const number = await contract.balanceOf(address).call();
                     if (number.balance) {
@@ -283,6 +288,7 @@ class Account {
                             throw new Error(`get token ${tokenId} info fail`);
                         });
                         this.tokens.smart[tokenId] = token2;
+                      logger.debug(`[update account] token at ${ tokenId}: `, token2)
                     }
                     this.tokens.smart[tokenId].balance = balance;
                     this.tokens.smart[tokenId].price = 0;
@@ -299,18 +305,18 @@ class Account {
           logger.info("[update account] frozenBalance: ", this.frozenBalance)
           const filteredTokens = (!account.assetV2)? [] : account.assetV2.filter(({ value }) => value >= 0);
 
-            logger.info("[update account] balance: ", this.balance)
-            logger.info("[update account] filteredTokens: ", filteredTokens)
+            logger.debug("[update account] balance: ", this.balance)
+            logger.debug("[update account] filteredTokens: ", filteredTokens)
 
             for (const { key, value } of filteredTokens) {
                 let token = this.tokens.basic[key] || false;
 
-                logger.info("[update account] token: ", token)
+                logger.debug("[update account] token: ", token)
 
                 const filter = basicTokenPriceList.length ? basicTokenPriceList.filter(({ first_token_id }) => first_token_id === key) : [];
-              logger.info("[update account] filter: ", filter)
+              logger.debug("[update account] filter: ", filter)
                 const trc20Filter = smartTokenPriceList.length ? smartTokenPriceList.filter(({ _id: fTokenAddr }) => key === fTokenAddr) : [];
-              logger.info("[update account] trc20Filter: ", trc20Filter)
+              logger.debug("[update account] trc20Filter: ", trc20Filter)
                 let { precision = 0, price } = filter.length ? filter[0] : (trc20Filter.length ? {
                     price: trc20Filter[0].price_wel,
                     precision: trc20Filter[0].precision
@@ -367,6 +373,7 @@ class Account {
                 }
             }
             //const smartTokens = account.trc20token_balances.filter(v => v.balance >= 0);
+          logger.debug("[update account] smartTokens got from network: ", smartTokens)
             const sTokens = smartTokens.map(({ contract_address: tokenAddress }) => tokenAddress);
             Object.entries(this.tokens.smart).forEach(([tokenId, token]) => {
                 if (!sTokens.includes(tokenId) && token.hasOwnProperty('abbr')) {
@@ -376,6 +383,8 @@ class Account {
             const allWRC20s = smartTokenPriceList
             for (let { _id: tokenAddress, token_icon: logoUrl = false, precision: decimals = 6, isMapping = false, token_name: name, token_abbreviation: shortName,  /*balance,*/ price_wel } of allWRC20s) {
                 let token = this.tokens.smart[tokenAddress] || false;
+              logger.debug("[update account] current token in allWRC20s: ", token)
+
                 //const filter = smartTokenPriceList.filter(({ _id: fTokenAddr }) => fTokenAddr === tokenAddress);
                 //const price = filter.length ? new BigNumber(filter[0].price_wel).shiftedBy(-decimals).toString() : 0;
                 const price = new BigNumber(price_wel).shiftedBy(-decimals).toString();
@@ -390,7 +399,11 @@ class Account {
                     isLocked: token.hasOwnProperty('isLocked') ? token.isLocked : false,
                     isMapping
                 };
-
+                
+              logger.debug("[update account] updated token: ", token)
+              
+                
+              logger.debug("[update account] this.tokens.smart[tokenAddress]: ", this.tokens.smart[tokenAddress])
                 this.tokens.smart[tokenAddress] = {
                     ...token,
                     //price: tokenAddress === CONTRACT_ADDRESS.USDT ? usdtPrice : price,
@@ -398,7 +411,10 @@ class Account {
                     balance: ( !smartTokens[tokenAddress] )?0:smartTokens[tokenAddress].balanceOf,
                     chain: selectedChain
                 };
+              logger.debug("[update account] this.tokens.smart[tokenAddress] token: ", this.tokens.smart[tokenAddress])
             }
+            
+            logger.info("[update account] finishing up... ")
 
             let totalOwnTrxCount = new BigNumber(this.balance + this.frozenBalance).shiftedBy(-6);
             Object.entries({ ...this.tokens.basic, ...this.tokens.smart }).map(([tokenId, token]) => {
@@ -410,6 +426,7 @@ class Account {
             });
             this.asset = totalOwnTrxCount.toNumber();
             this.lastUpdated = Date.now();
+            logger.info("[update account] beginning updateBalance()")
             await Promise.all([
                 this.updateBalance(),
             ]);
@@ -468,7 +485,7 @@ class Account {
             isMapping,
             name
         };
-      logger.info(`[Add smart token] All tokens in account after added ${ tokenID }:` , this.tokens )
+      logger.debug(`[Add smart token] All tokens in account after added ${ tokenID }:` , this.tokens )
 
         return this.save();
     }

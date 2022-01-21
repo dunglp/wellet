@@ -133,6 +133,8 @@ class MessageDuplexChild extends EventEmitter {
     send(action, data, requiresAck = true) {
         const { governor } = this;
 
+        logger.debug('Action sent to backgroundService: ', action)
+        logger.debug('Payload sent to backgroundService: ', data)
         if(!governor.isConnected && !governor.hasTimedOut) {
             return new Promise((resolve, reject) => governor.queue.push({
                 action,
@@ -145,20 +147,23 @@ class MessageDuplexChild extends EventEmitter {
         if(!governor.isConnected && governor.hasTimedOut)
             return Promise.reject('Failed to establish connection to extension');
 
-        if(!requiresAck)
+        if(!requiresAck) {
+            logger.info('Not requiring Ack, proceeding...')
             return this.channel.postMessage({ action, data, noAck: true });
+        }
 
         return new Promise((resolve, reject) => {
             const messageID = randomUUID();
 
             this.outgoing.set(messageID, resolve);
-
+            logger.debug(`Begin to postMessage, action: ${ action }, messageID: ${ messageID }, payload: `, data)
             this.channel.postMessage({
                 action,
                 data,
                 messageID,
                 noAck: false
             });
+            logger.info(`Action ${ action } dispatched to backgroundScript`)
         });
     }
 }

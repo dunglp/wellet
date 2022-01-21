@@ -1152,7 +1152,9 @@ class Wallet extends EventEmitter {
     }
 
     async getAccountInfo(address) {
+        logger.debug("[getAccountInfo] receiving address: ", address)
         const account = await NodeService.tronWeb.trx.getUnconfirmedAccount(address)
+        logger.debug("[getAccountInfo] received account from mainchain: ", account)
         return { mainchain: account }
         //return {
         //    mainchain: await NodeService.tronWeb.mainchain.trx.getUnconfirmedAccount(address),

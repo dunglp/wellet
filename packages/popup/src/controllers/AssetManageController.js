@@ -1,6 +1,7 @@
 import React from 'react';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import { PopupAPI } from '@tronlink/lib/api';
+import Logger from '@tronlink/lib/logger'
 import Utils from '@tronlink/lib/utils';
 import Toast, { T } from 'react-toast-mobile';
 import { Switch } from 'antd-mobile';
@@ -8,6 +9,9 @@ import TronWeb from '@tronlink/tronweb';
 import { TOP_TOKEN,CONTRACT_ADDRESS } from '@tronlink/lib/constants';
 const trxImg = require('@tronlink/popup/src/assets/images/new/trx.png');
 const token10DefaultImg = require('@tronlink/popup/src/assets/images/new/token_10_default.png');
+
+const logger = new Logger("AssetManageController")
+
 class AssetManageController extends React.Component {
     constructor(props) {
         super(props);
@@ -28,7 +32,9 @@ class AssetManageController extends React.Component {
     async componentDidMount() {
         const { chains } = this.props;
         const allTokens = await PopupAPI.getAllTokens(chains.selected);
+        logger.debug("allTokens got: ", allTokens)
         this.setState({ allTokens: Utils.dataLetterSort(allTokens, 'abbr') });
+        logger.info("allTokens set")
     }
 
     renderDeleteToken(tokens, deleteToken) {
@@ -87,12 +93,15 @@ class AssetManageController extends React.Component {
     }
 
     render() {
+        logger.debug("this.state: ", this.state)
+        logger.debug("this.props: ", this.props)
         const { formatMessage } = this.props.intl;
         const { selected, onCancel, vTokenList, prices, chains  } = this.props;
         const { address, allTokens, filterTokens, deleteToken } = this.state;
         const trx_price = prices.priceList[prices.selected];
         const trx = { tokenId: '_', name: 'WEL', balance: (selected.balance + (selected.frozenBalance ? selected.frozenBalance: 0)), abbr: 'WEL', decimals: 6, imgUrl: trxImg, price: trx_price}
         let tokens = { ...selected.tokens.basic, ...selected.tokens.smart };
+        logger.debug("[render] tokens: ", tokens)
         const topArray = [];
         TOP_TOKEN[ chains.selected === '_'? 'mainchain':'sidechain' ].forEach(v=>{
             if(tokens.hasOwnProperty(v)){
@@ -105,6 +114,7 @@ class AssetManageController extends React.Component {
                 allTokens.length && topArray.push({...allTokens.filter(({tokenId})=> tokenId === v)[0],price:'0',balance:'0',isLocked:false})
             }
         });
+        logger.debug("[render] topArray: ", topArray)
         tokens = Utils.dataLetterSort(Object.entries(tokens).filter(([tokenId, token]) => typeof token === 'object' ).map(v => { v[ 1 ].tokenId = v[ 0 ];return v[ 1 ]; }).filter(v => v.balance > 0 || (v.balance == 0 && !v.isLocked) ), 'abbr', 'symbol',topArray);
         tokens = [trx, ...tokens];
         tokens = tokens.filter(({tokenId, ...token})=>!token.hasOwnProperty('chain') || token.chain === chains.selected).map(({tokenId,...token})=>{

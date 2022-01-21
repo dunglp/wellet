@@ -47,12 +47,14 @@ class MessageDuplexHost extends EventEmitter {
             url
         }));
 
-        channel.onMessage.addListener(message => (
+        channel.onMessage.addListener(message => {
+            logger.debug('backgroundScript receiving message: ', message)
+            logger.debug('from: ', name)
             this.handleMessage(name, {
                 ...message,
                 hostname
             })
-        ));
+        });
 
         channel.onDisconnect.addListener(() => {
             // logger.info(`Connection ${ name }:${ uuid } disconnected`);
@@ -74,7 +76,7 @@ class MessageDuplexHost extends EventEmitter {
 
     handleMessage(source, message) {
         // logger.info(`Received message from ${ source }:`, message);
-
+        logger.debug("backgroundScript handling message: ", message)
         const {
             noAck = false,
             hostname,
@@ -89,8 +91,10 @@ class MessageDuplexHost extends EventEmitter {
         if(source == 'tab' && ![ 'tabRequest' ].includes(action))
             return logger.error(`Droping unauthorized tab request: ${ action }`, data);
 
-        if(noAck)
-            return this.emit(action, { hostname, data });
+        if(noAck) { 
+          logger.info("Not requiring Ack, proceeding...")
+          return this.emit(action, { hostname, data });
+        }
 
         this.incoming.set(messageID, res => (
             this.send(source, 'messageReply', {
@@ -98,7 +102,10 @@ class MessageDuplexHost extends EventEmitter {
                 ...res
             }, false)
         ));
-
+        
+        logger.debug(`Emitting event to notify backgroundScript: `, action)
+        logger.debug("payload: ", data )
+        logger.debug("hostname: ", hostname)
         this.emit(action, {
             resolve: res => {
                 if(!this.incoming.get(messageID))
@@ -117,6 +124,7 @@ class MessageDuplexHost extends EventEmitter {
             data,
             hostname
         });
+        logger.info(`Event ${ action } emitted`)
     }
 
     handleReply({ messageID, error, res }) {

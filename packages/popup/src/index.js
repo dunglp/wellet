@@ -69,8 +69,7 @@ let getTokensMap = async function () {
             tokensMap[data.data.result[i]._id] = data.data.result[i].token_name + '_' + data.data.result[i]._id + '_' + data.data.result[i].precision + '_' + data.data.result[i].token_abbreviation;
         }
     }
-    logger.info("Token map: ", tokensMap)
-
+    
     localStorage.setItem('tokensMap', JSON.stringify(tokensMap));
 };
 
@@ -206,9 +205,10 @@ export const app = {
             setAccounts(accounts)
         ));
 
-        this.duplex.on('setPriceList', priceList => this.store.dispatch(
-            setPriceList(priceList)
-        ));
+        this.duplex.on('setPriceList', priceList => {
+          logger.debug("Set price list in redux store: ", priceList)
+          this.store.dispatch(setPriceList(priceList))
+        });
 
         this.duplex.on('setCurrency', currency => this.store.dispatch(
             setCurrency(currency)

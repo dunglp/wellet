@@ -13,11 +13,15 @@ import { CONTRACT_ADDRESS, APP_STATE, BUTTON_TYPE, ACCOUNT_TYPE, TOP_TOKEN, WELS
 import { FormattedMessage, injectIntl } from 'react-intl';
 import { app } from "@tronlink/popup/src";
 import Alert from '@tronlink/popup/src/components/Alert';
+import Logger from '@tronlink/lib/logger'
 import './AccountsPage.scss';
 import '@tronlink/popup/src/controllers/PageController/Header/Header.scss';
 const trxImg = require('@tronlink/popup/src/assets/images/new/trx.png');
 const token10DefaultImg = require('@tronlink/popup/src/assets/images/new/token_10_default.png');
 let tronscanUrl = '';
+
+const logger = new Logger("AccountsPage")
+
 class AccountsPage extends React.Component {
     constructor() {
         super();
@@ -247,6 +251,9 @@ class AccountsPage extends React.Component {
             <div className='tokens'>
                 {
                     tokens.filter(({tokenId, ...token})=>!token.hasOwnProperty('chain') || token.chain === chains.selected).map(({ tokenId, ...token }) => {
+
+                        logger.debug("[tokens list] Original token to render:", token)
+
                         const amount = new BigNumber(token.balance)
                             .shiftedBy(-token.decimals)
                             .toString();
@@ -264,6 +271,7 @@ class AccountsPage extends React.Component {
                                         .toString();
                                 }
                                 PopupAPI.setSelectedToken(o);
+                                logger.debug("[Tokens list] set token o and change state to TRANSACTIONS: ", o)
                                 PopupAPI.changeState(APP_STATE.TRANSACTIONS);
                             }}
                             >
@@ -391,7 +399,7 @@ class AccountsPage extends React.Component {
         const trx_price = prices.priceList[prices.selected];
         const trx = { tokenId: '_', name: 'WEL', balance: (accounts.selected.balance + (accounts.selected.frozenBalance ? accounts.selected.frozenBalance: 0)), abbr: 'WEL', decimals: 6, imgUrl: trxImg, price: trx_price,isMapping:true};
         let tokens = { ...accounts.selected.tokens.basic, ...accounts.selected.tokens.smart };
-
+        logger.debug("[Render] all tokens in selected account: ", tokens)
         const topArray = [];
         TOP_TOKEN[chains.selected === '_' ? 'mainchain':'sidechain'].forEach(v=>{
             if(tokens.hasOwnProperty(v)){

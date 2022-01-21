@@ -8,6 +8,9 @@ import { VALIDATION_STATE, APP_STATE, CONTRACT_ADDRESS, ACCOUNT_TYPE, TOP_TOKEN 
 import TronWeb from "@tronlink/tronweb";
 import { Toast } from 'antd-mobile';
 import Utils  from '@tronlink/lib/utils';
+import Logger from '@tronlink/lib/logger';
+
+const logger = new Logger("SendController")
 const trxImg = require('@tronlink/popup/src/assets/images/new/trx.png');
 class SendController extends React.Component {
     constructor(props) {
@@ -138,6 +141,7 @@ class SendController extends React.Component {
     }
 
     async onRecipientChange(address) {
+        logger.info("recipient address: ", address)
         const { selectedAddress } = this.state;
         const { chains } = this.props;
         const recipient = {
@@ -153,6 +157,7 @@ class SendController extends React.Component {
             recipient.error = 'EXCEPTION.SEND.ADDRESS_FORMAT_ERROR';
         } else {
             const account = await PopupAPI.getAccountInfo( address );
+            logger.debug("Account gotten: ", account)
             if(!account[chains.selected === '_'? 'mainchain' : 'sidechain' ].address) {
                 recipient.isActivated = false;
                 recipient.valid = true;
@@ -434,6 +439,8 @@ class SendController extends React.Component {
     render() {
         const {chains} = this.props;
         const { isOpen, selectedToken, loading, amount, recipient, loadingLedger,allTokens } = this.state;
+        logger.debug("[render] this.state: ", this.state)
+        logger.debug("[render] this.props: ", this.props)
         const { selected, accounts } = this.props.accounts;
         const trx = { tokenId: '_', name: 'WEL', balance: selected.balance,frozenBalance: selected.frozenBalance, abbr: 'WEL', decimals: 6, imgUrl: trxImg,isMapping:true };
         let tokens = { ...selected.tokens.basic, ...selected.tokens.smart};
