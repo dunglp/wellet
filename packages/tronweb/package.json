@@ -1,7 +1,7 @@
 {
     "name": "@tronlink/tronweb",
     "version": "0.1.0",
-    "description": "JavaScript SDK that encapsulates the TRON HTTP API",
+    "description": "Modded version of tronweb to use with the Welups blockchain",
     "main": "dist/TronWeb.node.js",
     "scripts": {
         "prepare": "npm run build",
@@ -68,20 +68,8 @@
         "webpack-node-externals": "^3.0.0"
     },
     "author": {
-        "name": "Kondax",
-        "url": "https://github.com/Kondax"
+        "name": "nhatanh002",
+        "url": "https://github.com/nhatanh002"
     },
-    "contributors": [
-        {
-            "name": "Francesco Sullo",
-            "url": "https://github.com/sullof"
-        },
-        {
-            "name": "TRON-US",
-            "url": "https://github.com/tron-us"
-        }
-    ],
-    "homepage": "https://github.com/tronprotocol/tronweb",
-    "license": "MIT",
-    "repository": "https://github.com/tronprotocol/tronweb.git"
+    "repository": "https://github.com/nhatanh002/wellet"
 }
