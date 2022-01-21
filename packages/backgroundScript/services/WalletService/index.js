@@ -1071,32 +1071,41 @@ class Wallet extends EventEmitter {
       } else {
         requestUrl += '/contract/transactions/'+tokenId;
       }
-      const transFilter = ({from_address, to_address}) => {
-        switch (direction) {
-          case 'to':
-            return to_address === address
-          case 'from':
-            return from_address === address
-          case 'all':
-          default:
-            return (to_address === address) || (from_address === address)
-        }
+    logger.debug("[getTransbyTokenId] requestURL: ", requestUrl)
+
+    const transFilter = ({ contract: { parameter: { raw: { owner_address: fromAddress, to_address: toAddress } } } }) => {
+      switch (direction) {
+        case 'to':
+          return toAddress === address
+        case 'from':
+          return fromAddress === address
+        case 'all':
+        default:
+          return (toAddress === address) || (fromAddress === address)
       }
-    const { data: { data: { result: records } } } = 
+    }
+
+    const res =
         await axios.get(requestUrl, { params }).
         catch(err => ({ data: { result: [], total: 0 }}));
-      logger.info(`Token ${ tokenId } transactions record: `, records)
-      newRecord = records.
-        filter(transFilter).
-        map(
-          ( {hash, timestamp, to_address, from_address, amount} ) => {
-            return {
-              hash : hash,
-              timestamp: timestamp,
-              toAddress : to_address,
-              fromAddress: from_address,
-              amount: amount
-            }});
+    logger.debug(`[getTransactionsByTokenId] fetched result: `, res)
+    const { data: { data: { result: records } } } = res
+
+    logger.debug(`[getTransactionsByTokenId] Token ${ tokenId } transactions record: `, records)
+    newRecord = records.
+      filter(transFilter).
+      map(
+        //( {hash, timestamp, to_address, from_address, amount} ) => {
+        ( { hash, timestamp, contract: { parameter: { raw: { owner_address: fromAddress, to_address: toAddress, amount } } } } ) => {
+          return {
+            hash : hash,
+            timestamp: timestamp,
+            toAddress : toAddress,
+            fromAddress: fromAddress,
+            amount: amount
+          }});
+
+    logger.debug(`[getTransactionsByTokenId] Processed transactions record: `, newRecord)
 
       return { records: newRecord, finger };
   }
