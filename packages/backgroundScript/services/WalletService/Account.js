@@ -537,7 +537,7 @@ class Account {
                 return Promise.resolve(transaction.txID);
             }
         } catch (ex) {
-            logger.error('Failed to send TRX:', ex);
+            logger.error('Failed to send WEL:', ex);
             return Promise.reject(ex);
         }
     }
