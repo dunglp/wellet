@@ -176,11 +176,29 @@ export const TOP_TOKEN = {
 export const SIDE_CHAIN_ID = '41E209E4DE650F0150788E8EC5CAFA240A23EB8EB7';
 //export const SIDE_CHAIN_ID = '413AF23F37DA0D48234FDD43D89931E98E1144481B';
 
+
+//
+export const devMode = true
+
+const devWelscan = 'https://explorer-dev.welscan.io'
+const devWelscanAPI =  'https://api-devnet.welscan.io'
+
+const welscan = 'https://welscan.io'
+const welscanAPI =  'https://api-main.welscan.io'
+
+export const WELSCAN = devMode?devWelscan:welscan
+export const WELSCAN_API = devMode?devWelscanAPI:welscanAPI
+
+
+const DEV_MAIN = {fullNode: 'http://172.104.51.182:16667', solidityNode: 'http://172.104.51.182:16668', eventServer: 'http://172.104.51.182:16667'} // test net
+const MAIN = {fullNode: 'http://13.213.231.230:16667', solidityNode: 'http://13.213.231.230:16668', eventServer: 'http://13.213.231.230:16667'}
+
 export const NODE = {
     //MAIN: {fullNode:'http://47.252.84.158:8070',solidityNode:'http://47.252.84.158:8071',eventServer:'http://47.252.81.14:8070'},
     //SIDE: {fullNode:'http://47.252.85.90:8070',solidityNode:'http://47.252.85.90:8071',eventServer:'http://47.252.87.129:8070'},
-  //MAIN: {fullNode: 'http://172.104.51.182:16667', solidityNode: 'http://172.104.51.182:16668', eventServer: 'http://172.104.51.182:16667'}, // test net
-  MAIN: {fullNode: 'http://13.213.231.230:16667', solidityNode: 'http://13.213.231.230:16668', eventServer: 'http://13.213.231.230:16667'},
+  //MAIN_DEV: {fullNode: 'http://172.104.51.182:16667', solidityNode: 'http://172.104.51.182:16668', eventServer: 'http://172.104.51.182:16667'}, // test net
+  //MAIN: {fullNode: 'http://13.213.231.230:16667', solidityNode: 'http://13.213.231.230:16668', eventServer: 'http://13.213.231.230:16667'},
+  MAIN: devMode?DEV_MAIN:MAIN
   //MAIN: {fullNode: 'http://172.104.32.164:16667', solidityNode: 'http://172.104.32.164:16668', eventServer: 'http://172.104.32.164:16667'},
   //SIDE: {fullNode: 'http://54.169.140.55:16667', solidityNode: 'http://54.169.140.55:16668', eventServer: 'http://54.169.140.55:16667'}
 };

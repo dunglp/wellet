@@ -5,7 +5,7 @@ import { Toast } from 'antd-mobile';
 import { BigNumber } from 'bignumber.js';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import { PopupAPI } from '@tronlink/lib/api';
-import { APP_STATE, CONTRACT_ADDRESS, ACCOUNT_TYPE } from '@tronlink/lib/constants';
+import { APP_STATE, CONTRACT_ADDRESS, ACCOUNT_TYPE, WELSCAN_API } from '@tronlink/lib/constants';
 
 BigNumber.config({ EXPONENTIAL_AT: [-20, 30] });
 const token10DefaultImg = require('@tronlink/popup/src/assets/images/new/token_10_default.png');
@@ -59,7 +59,7 @@ class TransactionsController extends React.Component {
                     {
                         id !== '_' ?
                             <span className='detail' onClick={() => {
-                                let url = 'https://api-main.welscan.io/tokenrecord/'+id;
+                                let url = `${ WELSCAN_API }/tokenrecord/`+id;
                                 //url += (id.match(/^W/) ? 'token20/' + id : 'token721/' + id);
                                 window.open(url);
                             }

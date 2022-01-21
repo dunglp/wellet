@@ -9,7 +9,7 @@ import Header from '@tronlink/popup/src/controllers/PageController/Header';
 import ProcessBar from '@tronlink/popup/src/components/ProcessBar';
 import Button from '@tronlink/popup/src/components/Button';
 import { connect } from 'react-redux';
-import { CONTRACT_ADDRESS, APP_STATE, BUTTON_TYPE, ACCOUNT_TYPE, TOP_TOKEN } from '@tronlink/lib/constants';
+import { CONTRACT_ADDRESS, APP_STATE, BUTTON_TYPE, ACCOUNT_TYPE, TOP_TOKEN, WELSCAN } from '@tronlink/lib/constants';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import { app } from "@tronlink/popup/src";
 import Alert from '@tronlink/popup/src/components/Alert';
@@ -50,7 +50,7 @@ class AccountsPage extends React.Component {
         const { prices, accounts } = this.props;
         const t = { name: 'WEL', abbr:'wel', id: '_', amount: 0, decimals: 6, price: prices.priceList[ prices.selected ], imgUrl: trxImg };
         PopupAPI.setSelectedToken(t);
-        tronscanUrl = 'https://welscan.io';
+        tronscanUrl = WELSCAN;
         //const news = await PopupAPI.getNews();
         //const ieos = await PopupAPI.getIeos();
         //if(news.length > 0) {

@@ -12,7 +12,9 @@ import {
     APP_STATE,
     ACCOUNT_TYPE,
     CONTRACT_ADDRESS,
-    API_URL
+    API_URL,
+    WELSCAN_API,
+    WELSCAN
 } from '@tronlink/lib/constants';
 
 const logger = new Logger('WalletService');
@@ -142,7 +144,7 @@ class Wallet extends EventEmitter {
             //     return { data: { data: [] } };
             // });
             //const { data: { data: { rows: smartTokenPriceList } } } = await axios.get('https://api.trx.market/api/exchange/marketPair/list').catch(e => {
-            const { data: { data: { result: smartTokenPriceList } } } = await axios.get('https://api-main.welscan.io/tokenrecords?page=1&limit=4000').catch(e => {
+            const { data: { data: { result: smartTokenPriceList } } } = await axios.get(`${ WELSCAN_API }/tokenrecords?page=1&limit=4000`).catch(e => {
                 logger.error('get wrc20 token price fail');
                 return { data: { data: { rows: [] } } };
             });
@@ -161,7 +163,7 @@ class Wallet extends EventEmitter {
                         if (account.address === this.selectedAccount) {
                             this.emit('setAccount', this.selectedAccount);
                         }
-                    }).catch(e => {
+                    }).catch((e) => {
                         logger.error(`update account ${account.address} fail`, e);
                     });
                 } else {
@@ -683,7 +685,7 @@ class Wallet extends EventEmitter {
         //const wrc10tokens = axios.get('https://apilist.tronscan.org/api/token?showAll=1&limit=4000&fields=tokenID,name,precision,abbr,imgUrl,isBlack');
         //const wrc20tokens = axios.get('https://apilist.tronscan.org/api/tokens/overview?start=0&limit=1000&filter=trc20');
         // const trc20tokens_s = axios.get('https://dappchainapi.tronscan.org/api/tokens/overview?start=0&limit=1000&filter=trc20');
-        const allTokens = axios.get('https://api-main.welscan.io/tokenrecords?page=1&limit=4000');
+        const allTokens = axios.get(`${ WELSCAN_API }/tokenrecords?page=1&limit=4000`);
         logger.info("allTokens: ", allTokens)
         Promise.all([allTokens/*, trc20tokens_s*/]).then(res => {
             let t = [];
@@ -1055,7 +1057,7 @@ class Wallet extends EventEmitter {
     const { fullNode } = NodeService.getCurrentNode();
     const address = this.selectedAccount;
     let params = {limit};
-    let requestUrl =  'https://api-main.welscan.io';
+    let requestUrl =  WELSCAN_API;
 
     let newRecord = [];
     const finger = fingerprint || 0;
@@ -1181,7 +1183,7 @@ class Wallet extends EventEmitter {
 
     async setTransactionDetail(hash) {
         //const selectedChain = NodeService._selectedChain;
-        const requestUrl = 'https://api-main.welscan.io';
+        const requestUrl = WELSCAN_API
         //const reauestUrl = 'https://apilist.tronscan.org';
         const res = await axios.get(`${requestUrl}/transaction-info/${hash}`).catch(e=>false);
         if(res) {
@@ -1256,7 +1258,7 @@ class Wallet extends EventEmitter {
                             notifyId=>{}
                         );
                         extensionizer.notifications.onClicked.addListener(notifyId=>{
-                            window.open('https://welscan.io/transaction/'+notifyId)
+                            window.open(WELSCAN+'/'+notifyId)
                         });
                     } else {}
                 })

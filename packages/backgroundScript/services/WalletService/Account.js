@@ -10,6 +10,8 @@ import {
     ACCOUNT_TYPE,
     CONTRACT_ADDRESS,
     FEE,
+    WELSCAN,
+    WELSCAN_API,
     //TOP_TOKEN,
     //API_URL
 } from '@tronlink/lib/constants';
@@ -220,7 +222,8 @@ class Account {
         //    headers: { chain: selectedChain === '_' ? 'MainChain' : 'DAppChain' },
         //    params: { address }
         //   return { data: { data: [] } };
-        const { data: { data: {result: smartTokens } } } = await axios.get(`https://api-main.welscan.io/address/token/${address}`, {params: { page: 1, limit: 4000 } }).catch(e => {
+        const { data: { data: {result: smartTokens } } } = await axios.get(`${ WELSCAN_API }/address/token/${address}`, {params: { page: 1, limit: 4000 } }).catch(e => {
+          logger.info(`Error when getting smartTokens for ${ address }:`, e)
             return { data: { data: { result: [] } } };
         });
         try {

@@ -3,7 +3,7 @@ import randomUUID from 'uuid/v4';
 import TronWeb from '@tronlink/tronweb';
 import SunWeb from 'sunweb';
 import Logger from '@tronlink/lib/logger';
-import { CONTRACT_ADDRESS,SIDE_CHAIN_ID,NODE } from '@tronlink/lib/constants';
+import { CONTRACT_ADDRESS,SIDE_CHAIN_ID,NODE,devMode } from '@tronlink/lib/constants';
 import { BigNumber } from 'bignumber.js';
 
 const logger = new Logger('NodeService');
@@ -34,12 +34,12 @@ const NodeService = {
                 //fullNode: 'http://172.104.32.164:16667',
                 //solidityNode: 'http://172.104.32.164:16668',
                 //eventServer: 'http://172.104.32.164:16667',
-                //fullNode: 'http://172.104.51.182:16667', // testnet
-                //solidityNode: 'http://172.104.51.182:16668',
-                //eventServer: 'http://172.104.51.182:16667',
-                fullNode: 'http://13.213.231.230:16667',
-                solidityNode: 'http://13.213.231.230:16668',
-                eventServer: 'http://13.213.231.230:16667',
+              fullNode: devMode? 'http://172.104.51.182:16667':'http://13.213.231.230:16667',
+                solidityNode: devMode? 'http://172.104.51.182:16':'http://13.213.231.230:16667',
+                eventServer: devMode? 'http://172.104.51.182:166':'http://13.213.231.230:16667',
+                //fullNode: 'http://13.213.231.230:16667',
+                //solidityNode: 'http://13.213.231.230:16668',
+                //eventServer: 'http://13.213.231.230:16667',
                 default: true, // false
                 chain:'_' ,
                 //connect: SIDE_CHAIN_ID

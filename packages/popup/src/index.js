@@ -18,6 +18,8 @@ import { version } from '@tronlink/popup/package';
 import { tokensMap } from './tokensMap.js';
 import axios from 'axios';
 
+import { WELSCAN, WELSCAN_API } from '@tronlink/lib/constants'
+
 import {
     setAppState,
     setCurrency,
@@ -60,7 +62,7 @@ const logger = new Logger('Popup');
 let getTokensMap = async function () {
     logger.info("Begin querying for the tokensMap")
     //let { data } = await axios.get(`https://apilist.tronscan.org/api/tokens?showAll=1&limit=4000`); //FIX
-    let { data } = await axios.get(`https://api-main.welscan.io/tokenrecords?page=1&limit=4000`); //FIX!
+    let { data } = await axios.get(`${ WELSCAN_API }/tokenrecords?page=1&limit=4000`); //FIX!
     logger.info("Done querying for the tokensMap")
     for (let i = 0; i < data.data.result.length; i++) {
         if (!tokensMap[data.data.result[i]._id]) {

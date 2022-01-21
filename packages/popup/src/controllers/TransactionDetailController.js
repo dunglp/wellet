@@ -5,6 +5,8 @@ import { BigNumber } from 'bignumber.js';
 import ReactTooltip from 'react-tooltip';
 import { Popover } from 'antd-mobile';
 import CopyToClipboard from 'react-copy-to-clipboard';
+import { WELSCAN_API } from '@tronlink/lib/constants'
+
 const myImg = src => <img src={`https://gw.alipayobjects.com/zos/rmsportal/${src}.svg`} className='am-icon am-icon-xs' alt="" />;
 class TransactionDetailController extends React.Component {
     constructor(props) {
@@ -136,7 +138,7 @@ class TransactionDetailController extends React.Component {
                                 null
                         }
                     </div>
-                    <div className='part3' onClick={() => window.open(`https://api-main.welscan.io/transactions/${t.hash}`)}>
+                    <div className='part3' onClick={() => window.open(`${ WELSCAN_API }/transactions/${t.hash}`)}>
                         <FormattedMessage id='TRANSACTION_DETAIL.GO_TRONSCAN' />
                     </div>
                 </div>
