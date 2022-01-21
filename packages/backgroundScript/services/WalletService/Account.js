@@ -266,10 +266,10 @@ class Account {
                 //  ]
                 //}
             }
-            logger.info("Fetched account from network: ", account)
+            logger.debug("Fetched account from network: ", account)
 
             const addSmartTokens = Object.entries(this.tokens.smart).filter(([tokenId, token]) => !token.hasOwnProperty('abbr'));
-            logger.info("[update account] this.tokens: ", this.tokens)
+            logger.debug("[update account] this.tokens: ", this.tokens)
             logger.debug("[update account] addSmartTokens: ", addSmartTokens)
             for (const [tokenId, token] of addSmartTokens) {
                 logger.debug("[update account] get smart contract at token ID", tokenId)
@@ -302,7 +302,7 @@ class Account {
 
             this.frozenBalance = (account.frozen && account.frozen[0]['frozen_balance'] || 0) + (account['account_resource']['frozen_balance_for_energy'] && account['account_resource']['frozen_balance_for_energy']['frozen_balance'] || 0) + (account['delegated_frozen_balance_for_bandwidth'] || 0) + (account['account_resource']['delegated_frozen_balance_for_energy'] || 0);
             this.balance = account.balance || 0
-          logger.info("[update account] frozenBalance: ", this.frozenBalance)
+          logger.debug("[update account] frozenBalance: ", this.frozenBalance)
           const filteredTokens = (!account.assetV2)? [] : account.assetV2.filter(({ value }) => value >= 0);
 
             logger.debug("[update account] balance: ", this.balance)
@@ -441,7 +441,7 @@ class Account {
     async updateBalance() {
         const { address } = this;
         const res = await NodeService.tronWeb.trx.getAccountResources(address);
-      logger.info(`[updateBalance] getAccountResources for address ${ address }: `, res)
+      logger.debug(`[updateBalance] getAccountResources for address ${ address }: `, res)
         const { EnergyLimit = 0, EnergyUsed = 0, freeNetLimit, NetLimit = 0, freeNetUsed = 0, NetUsed = 0, TotalEnergyWeight, TotalEnergyLimit } = res
         this.energy = EnergyLimit;
         this.energyUsed = EnergyUsed;

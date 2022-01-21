@@ -298,8 +298,10 @@ export default class TronWeb extends EventEmitter {
             },
             fromPrivateKey(privateKey, strict = false) {
                 try {
+                    //logger.info("prikey: ", privateKey)
+                    //logger.info("prikey to Tron address: ", utils.crypto.pkToAddress(privateKey))
                     let ret = utils.crypto.tronBase58toWel(utils.crypto.pkToAddress(privateKey, strict));
-                    logger.info("address from prikey: ", ret)
+                    //logger.info("address from prikey: ", ret)
                     return ret
                 } catch(e) {
                     logger.info("error: ",e)

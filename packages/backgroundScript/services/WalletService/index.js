@@ -149,12 +149,12 @@ class Wallet extends EventEmitter {
                 return { data: { data: { rows: [] } } };
             });
             const prices = StorageService.prices;
-            logger.info("Storage's prices: ", StorageService.prices)
-            logger.info("original tokens list retrieved: ", smartTokenPriceList)
+            logger.debug("Storage's prices: ", StorageService.prices)
+            logger.debug("original tokens list retrieved: ", smartTokenPriceList)
             //basicPrice = basicTokenPriceList;
             basicPrice = [];
             smartPrice = smartTokenPriceList.filter( ({token_record_type}) => token_record_type === "WRC20");
-            logger.info("smartPrice retrieved: ", smartPrice)
+            logger.debug("smartPrice retrieved: ", smartPrice)
 
             //usdtPrice = prices.usdtPriceList ? prices.usdtPriceList[ prices.selected ] : 0;
             for (const account of accounts) {
@@ -186,7 +186,7 @@ class Wallet extends EventEmitter {
         const prices = axios('https://price-api.crypto.com/price/v1/exchange/welups-blockchain')
         Promise.all([prices]).then(res => {
             //StorageService.setPrices(res[0].data, res[1].data);
-            logger.info("Get price list: ", res[0].data)
+            logger.debug("Get price list: ", res[0].data)
             const fiat = res[0].data.fiat
             const cryp = res[0].data.crypto
             const savePrices = 
@@ -197,9 +197,9 @@ class Wallet extends EventEmitter {
                 BTC: cryp.btc,
                 ETH: cryp.eth, 
               }
-            logger.info("Gonna setPrices: ", savePrices)
+            logger.debug("Gonna setPrices: ", savePrices)
             StorageService.setPrices(savePrices, null);
-            logger.info("Price list set to storage: ", StorageService.prices)
+            logger.debug("Price list set to storage: ", StorageService.prices)
 
             //this.emit('setPriceList', [res[0].data, res[1].data]);
             this.emit('setPriceList', [savePrices,null])}
@@ -686,7 +686,7 @@ class Wallet extends EventEmitter {
         //const wrc20tokens = axios.get('https://apilist.tronscan.org/api/tokens/overview?start=0&limit=1000&filter=trc20');
         // const trc20tokens_s = axios.get('https://dappchainapi.tronscan.org/api/tokens/overview?start=0&limit=1000&filter=trc20');
         const allTokens = axios.get(`${ WELSCAN_API }/tokenrecords?page=1&limit=4000`);
-        logger.info("allTokens: ", allTokens)
+        logger.debug("allTokens: ", allTokens)
         Promise.all([allTokens/*, trc20tokens_s*/]).then(res => {
             let t = [];
             let t2 = [];
@@ -697,7 +697,7 @@ class Wallet extends EventEmitter {
             //    t2.push({ tokenId: tokenID ? tokenID.toString() : contractAddress, abbr, name, imgUrl, decimals: precision || decimal || 0, isBlack });
             //});
             StorageService.saveAllTokens(t,t2);
-            logger.info("Saved tokens: ", StorageService.allTokens)
+            logger.debug("Saved tokens: ", StorageService.allTokens)
         });
 
         if(isResetPhishingList) {

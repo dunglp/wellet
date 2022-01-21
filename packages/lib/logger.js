@@ -15,6 +15,10 @@ export default class Logger {
         const formatted = this._formatMessage(logType, data);
         logType === 'error' && data.length=== 1 && window.bugout.log(data);
         logType === 'error' && data.length=== 2 && window.bugout.log([data[0],data[1].stack]);
+        if (logType === 'debug') {
+          console.debug(...formatted);
+          return;
+        }
         console.log(...formatted);
     }
 
