@@ -16,9 +16,7 @@ Smart contract calls integrated;
 
 ## Installation
 
-###
-
-### Setup development environment
+### Development environment setup
 
 #### Using Nix:
 
@@ -38,9 +36,13 @@ $ nix-shell # enter a shell with the build environment for this package
   version.
 * Follow the instruction to install Yarn (**https://yarnpkg.com/en/docs/install**)
 
-### Install dependencies
+### Installing dependencies
 ```sh
 $ yarn install
+```
+### Bootstrapping monorepo
+```sh
+$ yarn lerna bootstrap 
 ```
 
 ### Building
