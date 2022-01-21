@@ -17,7 +17,6 @@
     "extensionizer": "^1.0.1",
     "pbkdf2": "^3.0.17",
     "uuid": "^3.3.2",
-    "@tronlink/tronweb": "^0.1.0",
     "ethers": "^4.0.7"
   },
   "scripts": {

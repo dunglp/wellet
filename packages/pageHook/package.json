@@ -11,7 +11,6 @@
   },
   "dependencies": {
     "ethers": "^4.0.33",
-    "@tronlink/tronweb": "^0.1.0",
     "sunweb": "^1.0.7"
   }
 }
