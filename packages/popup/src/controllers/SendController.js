@@ -152,7 +152,7 @@ class SendController extends React.Component {
             recipient.valid = false;
             recipient.error = 'EXCEPTION.SEND.ADDRESS_FORMAT_ERROR';
         } else {
-            const account = await PopupAPI.getAccountInfo(address);
+            const account = await PopupAPI.getAccountInfo( address );
             if(!account[chains.selected === '_'? 'mainchain' : 'sidechain' ].address) {
                 recipient.isActivated = false;
                 recipient.valid = true;
@@ -168,7 +168,10 @@ class SendController extends React.Component {
             }
         }
         this.setState({
-            recipient
+          recipient: {
+            value: recipient.value,
+            valid: recipient.valid
+          }
         });
     }
 

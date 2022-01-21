@@ -1152,10 +1152,13 @@ class Wallet extends EventEmitter {
     }
 
     async getAccountInfo(address) {
-        return {
-            mainchain: await NodeService.sunWeb.mainchain.trx.getUnconfirmedAccount(address),
-            sidechain: await NodeService.sunWeb.sidechain.trx.getUnconfirmedAccount(address),
-        };
+        const account = await NodeService.tronWeb.trx.getUnconfirmedAccount(address)
+        return { mainchain: account }
+        //return {
+        //    mainchain: await NodeService.tronWeb.mainchain.trx.getUnconfirmedAccount(address),
+        //    //mainchain: await NodeService.sunWeb.mainchain.trx.getUnconfirmedAccount(address),
+        //    //sidechain: await NodeService.sunWeb.sidechain.trx.getUnconfirmedAccount(address),
+        //};
     }
 
     setGaEvent({ eventCategory, eventAction, eventLabel, referrer }) {
