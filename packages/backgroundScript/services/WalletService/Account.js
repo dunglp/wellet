@@ -292,14 +292,25 @@ class Account {
                 }
                 this.tokens.smart[tokenId].isLocked = token.hasOwnProperty('isLocked') ? token.isLocked : false;
             }
+            logger.info("[update account] frozen balance calculation...")
 
             this.frozenBalance = (account.frozen && account.frozen[0]['frozen_balance'] || 0) + (account['account_resource']['frozen_balance_for_energy'] && account['account_resource']['frozen_balance_for_energy']['frozen_balance'] || 0) + (account['delegated_frozen_balance_for_bandwidth'] || 0) + (account['account_resource']['delegated_frozen_balance_for_energy'] || 0);
-            this.balance = account.balance || 0;
-            const filteredTokens = (account.assetV2 || []).filter(({ value }) => value >= 0);
+            this.balance = account.balance || 0
+          logger.info("[update account] frozenBalance: ", this.frozenBalance)
+          const filteredTokens = (!account.assetV2)? [] : account.assetV2.filter(({ value }) => value >= 0);
+
+            logger.info("[update account] balance: ", this.balance)
+            logger.info("[update account] filteredTokens: ", filteredTokens)
+
             for (const { key, value } of filteredTokens) {
                 let token = this.tokens.basic[key] || false;
+
+                logger.info("[update account] token: ", token)
+
                 const filter = basicTokenPriceList.length ? basicTokenPriceList.filter(({ first_token_id }) => first_token_id === key) : [];
-                const trc20Filter = smartTokenPriceList.length ? smartTokenPriceList.filter(({ _id: fTokenAddress }) => key === fTokenAddr) : [];
+              logger.info("[update account] filter: ", filter)
+                const trc20Filter = smartTokenPriceList.length ? smartTokenPriceList.filter(({ _id: fTokenAddr }) => key === fTokenAddr) : [];
+              logger.info("[update account] trc20Filter: ", trc20Filter)
                 let { precision = 0, price } = filter.length ? filter[0] : (trc20Filter.length ? {
                     price: trc20Filter[0].price_wel,
                     precision: trc20Filter[0].precision
@@ -384,7 +395,7 @@ class Account {
                     ...token,
                     //price: tokenAddress === CONTRACT_ADDRESS.USDT ? usdtPrice : price,
                     price,
-                    balance: smartTokens[tokenAddress].balanceOf,
+                    balance: ( !smartTokens[tokenAddress] )?0:smartTokens[tokenAddress].balanceOf,
                     chain: selectedChain
                 };
             }
@@ -412,7 +423,9 @@ class Account {
 
     async updateBalance() {
         const { address } = this;
-        const { EnergyLimit = 0, EnergyUsed = 0, freeNetLimit, NetLimit = 0, freeNetUsed = 0, NetUsed = 0, TotalEnergyWeight, TotalEnergyLimit } = await NodeService.tronWeb.trx.getAccountResources(address);
+        const res = await NodeService.tronWeb.trx.getAccountResources(address);
+      logger.info(`[updateBalance] getAccountResources for address ${ address }: `, res)
+        const { EnergyLimit = 0, EnergyUsed = 0, freeNetLimit, NetLimit = 0, freeNetUsed = 0, NetUsed = 0, TotalEnergyWeight, TotalEnergyLimit } = res
         this.energy = EnergyLimit;
         this.energyUsed = EnergyUsed;
         this.netLimit = freeNetLimit + NetLimit;
@@ -455,7 +468,7 @@ class Account {
             isMapping,
             name
         };
-      logger.info("[Add smart token] All tokens in account after added: ", this.tokens )
+      logger.info(`[Add smart token] All tokens in account after added ${ tokenID }:` , this.tokens )
 
         return this.save();
     }
