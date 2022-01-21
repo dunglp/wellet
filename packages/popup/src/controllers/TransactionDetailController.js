@@ -131,7 +131,7 @@ class TransactionDetailController extends React.Component {
                                             </Popover>
                                     </div>
                                     <div className='content'>
-                                        {new BigNumber(t.cost.energy_fee + t.cost.net_fee).shiftedBy(-6).toString()} TRX
+                                        {new BigNumber(t.cost.energy_fee + t.cost.net_fee).shiftedBy(-6).toString()} WEL
                                     </div>
                                 </div>
                                 :

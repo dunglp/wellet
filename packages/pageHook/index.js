@@ -30,7 +30,7 @@ const pageHook = {
             if(node.fullNode)
                 this.setNode(node);
             logger.info("Fullnode: ", node.fullNode)
-            logger.info('TronLink initiated');
+            logger.info('Wellet initiated');
             const href = window.location.origin;
             const c = phishingList.filter(({url})=>{
                 const reg = new RegExp(url);
@@ -40,27 +40,27 @@ const pageHook = {
            //     window.location = 'https://www.tronlink.org/phishing.html?href='+href;
            // }
         }).catch(err => {
-            logger.error('Failed to initialise TronWeb', err);
+            logger.error('Failed to initialise welWeb', err);
         });
     },
 
     _bindTronWeb() {
-        if(window.tronWeb !== undefined)
-            logger.warn('TronWeb is already initiated. TronLink will overwrite the current instance');
+        if(window.welWeb !== undefined)
+            logger.warn('welWeb is already initiated. Wellet will overwrite the current instance');
 
-        const tronWeb = new TronWeb(
+        const welWeb = new TronWeb(
             new ProxiedProvider(),
             new ProxiedProvider(),
             new ProxiedProvider()
         );
 
-        const tronWeb1 = new TronWeb(
+        const welWeb1 = new TronWeb(
             new ProxiedProvider(),
             new ProxiedProvider(),
             new ProxiedProvider()
         );
 
-        const tronWeb2 = new TronWeb(
+        const welWeb2 = new TronWeb(
             new ProxiedProvider(),
             new ProxiedProvider(),
             new ProxiedProvider()
@@ -79,24 +79,24 @@ const pageHook = {
 
 
 
-        tronWeb.extension = {}; //add a extension object for black list
-        tronWeb.extension.setVisited=(href)=>{
+        welWeb.extension = {}; //add a extension object for black list
+        welWeb.extension.setVisited=(href)=>{
             this.setVisited(href);
         };
         this.proxiedMethods = {
-            setAddress: tronWeb.setAddress.bind(tronWeb),
+            setAddress: welWeb.setAddress.bind(welWeb),
             //setMainAddress: sunWeb.mainchain.setAddress.bind(sunWeb.mainchain),
             //setSideAddress: sunWeb.sidechain.setAddress.bind(sunWeb.sidechain),
-            sign: tronWeb.trx.sign.bind(tronWeb)
+            sign: welWeb.trx.sign.bind(welWeb)
         };
 
         [ 'setPrivateKey', 'setAddress', 'setFullNode', 'setSolidityNode', 'setEventServer' ].forEach(method => {
-            tronWeb[ method ] = () => new Error('TronLink has disabled this method');
+            welWeb[ method ] = () => new Error('Wellet has disabled this method');
             //sunWeb.mainchain[ method ] = () => new Error('TronLink has disabled this method');
             //sunWeb.sidechain[ method ] = () => new Error('TronLink has disabled this method');
         });
 
-        tronWeb.trx.sign = (...args) => (
+        welWeb.trx.sign = (...args) => (
             this.sign(...args)
         );
 
@@ -109,7 +109,7 @@ const pageHook = {
 
 
         //window.sunWeb = sunWeb;
-        window.tronWeb = tronWeb;
+        window.welWeb = welWeb;
     },
 
     _bindEventChannel() {
@@ -129,32 +129,32 @@ const pageHook = {
 
     setAddress({address,name,type}) {
         // logger.info('TronLink: New address configured');
-        if(!tronWeb.isAddress(address)){
-            tronWeb.defaultAddress = {
+        if(!welWeb.isAddress(address)){
+            welWeb.defaultAddress = {
                 hex: false,
                 base58: false
             };
-            tronWeb.ready = false;
+            welWeb.ready = false;
         } else {
             this.proxiedMethods.setAddress(address);
             //this.proxiedMethods.setMainAddress(address);
             //this.proxiedMethods.setSideAddress(address);
-            tronWeb.defaultAddress.name = name;
-            tronWeb.defaultAddress.type =  type;
+            welWeb.defaultAddress.name = name;
+            welWeb.defaultAddress.type =  type;
             //sunWeb.mainchain.defaultAddress.name = name;
             //sunWeb.mainchain.defaultAddress.type = type;
             //sunWeb.sidechain.defaultAddress.name = name;
             //sunWeb.sidechain.defaultAddress.type = type;
-            tronWeb.ready = true;
+            welWeb.ready = true;
         }
 
     },
 
     setNode(node) {
         // logger.info('TronLink: New node configured');
-        tronWeb.fullNode.configure(node.fullNode);
-        tronWeb.solidityNode.configure(node.solidityNode);
-        tronWeb.eventServer.configure(node.eventServer);
+        welWeb.fullNode.configure(node.fullNode);
+        welWeb.solidityNode.configure(node.solidityNode);
+        welWeb.eventServer.configure(node.eventServer);
 
         //sunWeb.mainchain.fullNode.configure(NODE.MAIN.fullNode);
         //sunWeb.mainchain.solidityNode.configure(NODE.MAIN.solidityNode);
@@ -193,7 +193,7 @@ const pageHook = {
         if(!transaction)
             return callback('Invalid transaction provided');
 
-        if(!tronWeb.ready)
+        if(!welWeb.ready)
             return callback('User has not unlocked wallet');
         this.request('sign', {
             transaction,

@@ -10,7 +10,7 @@ const contentScript = {
     eventChannel: new EventChannel('contentScript'),
 
     init() {
-        logger.info('Initialising TronLink');
+        logger.info('Initialising Wellet');
 
         this.registerListeners();
         this.inject();
@@ -47,7 +47,7 @@ const contentScript = {
             injectionSite.children[ 0 ]
         );
 
-        logger.info('TronLink injected');
+        logger.info('Wellet injected');
     }
 };
 

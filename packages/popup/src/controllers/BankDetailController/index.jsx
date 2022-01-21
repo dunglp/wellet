@@ -38,9 +38,9 @@ class BankDetailController extends React.Component {
         const requestUrl = getBankOrderInfoApi();
         const recordDetail = await PopupAPI.getBankRecordDetail(_id, requestUrl);
         const orderList = [
-            { id: 'BANK.RENTDETAIL.RENTNUM', type: 0, value: `${recordDetail.freeze_amount / Math.pow(10, 6)}TRX` },
+            { id: 'BANK.RENTDETAIL.RENTNUM', type: 0, value: `${recordDetail.freeze_amount / Math.pow(10, 6)}WEL` },
             { id: 'BANK.RENTDETAIL.RENTTIME', type: 2, value: recordDetail.days },
-            { id: 'BANK.RENTDETAIL.PAYNUM', type: 0, value: `${recordDetail.pay_amount / Math.pow(10, 6)}TRX` },
+            { id: 'BANK.RENTDETAIL.PAYNUM', type: 0, value: `${recordDetail.pay_amount / Math.pow(10, 6)}WEL` },
             { id: 'BANK.RENTDETAIL.PAYTIME', type: 0, value: Utils.timetransTime(recordDetail.create_time) },
             { id: 'BANK.RENTDETAIL.EXPIRESTIME', type: 0, value: Utils.timetransTime(recordDetail.expire_time) },
         ];

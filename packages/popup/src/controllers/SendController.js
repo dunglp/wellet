@@ -468,7 +468,7 @@ class SendController extends React.Component {
                         </div>
                         <div className='otherInfo'>
                             <FormattedMessage id='COMMON.BALANCE'/>:&nbsp;
-                            {selected.balance / Math.pow(10, 6)} TRX
+                            {selected.balance / Math.pow(10, 6)} WEL
                         </div>
                     </div>
                     <div className={'input-group' + (recipient.error ? ' error' : '')}>

@@ -533,9 +533,9 @@ class BankController extends React.Component {
         const orderList = [
             { id: 'BANK.RENTINFO.PAYADDRESS', user: 1, value: selected.address },
             { id: 'BANK.RENTINFO.RECEIVEADDRESS', user: 1, value: recipientVal },
-            { id: 'BANK.RENTINFO.RENTNUM', tip: 1, value: `${rentNum.value}TRX` },
+            { id: 'BANK.RENTINFO.RENTNUM', tip: 1, value: `${rentNum.value}WEL` },
             { id: 'BANK.RENTINFO.RENTDAY', type: 3, value: rentDay.value },
-            { id: 'BANK.RENTINFO.PAYNUM', type: 0, value: `${rentUnit.cost}TRX` },
+            { id: 'BANK.RENTINFO.PAYNUM', type: 0, value: `${rentUnit.cost}WEL` },
         ];
         const saveCost = parseFloat(rentUnit.cost / discount * (1 - discount));
         const myImg = src => { return require(`../../assets/images/new/tronBank/${src}.svg`); };
@@ -623,7 +623,7 @@ class BankController extends React.Component {
                                         onBlur={ (e) => this.handlerRentNumChange(e, 2)}
                                         className='commonInput rentNumInput'
                                         placeholder={ formatMessage({ id: 'BANK.INDEX.FREEZEPLACEHOLDER' }) + `（${rentNumMin}-${rentNumMax}）`}
-                                    /><span>TRX</span>
+                                    /><span>WEL</span>
                                 </div>
                                 { rentNum.formatError ?
                                     <div className='errorMsg'>
@@ -683,17 +683,17 @@ class BankController extends React.Component {
                             {rentNum.valid && rentDay.valid ?
                                 <section className='calculation'>
                                     <div className='info'>
-                                        <span>{rentNum.value}TRX*{rentDay.value}</span>
+                                        <span>{rentNum.value}WEL*{rentDay.value}</span>
                                         <span className='numInfo'>{rentDay.value > 2 ? <FormattedMessage id='BANK.INDEX.RENTDAYUNITS'/> : <FormattedMessage id='BANK.INDEX.RENTDAYUNIT'/>}</span>
                                         <span className='pointColor'>
-                                            <FormattedMessage id='BANK.INDEX.RENTCONST' /> {rentUnit.cost} TRX
+                                            <FormattedMessage id='BANK.INDEX.RENTCONST' /> {rentUnit.cost} WEL
                                         </span>
                                     </div>
                                     <div className='curNum'>
                                         {
                                             language === 'en' ?
                                                 <span>
-                                                    (<span className='pointColor'>{ saveCost.toFixed(2) }TRX </span>saved than burn-TRX,<span className='pointColor'>{rentNum.value}TRX</span> required to freeze)
+                                                    (<span className='pointColor'>{ saveCost.toFixed(2) }WEL </span>saved than burn-WEL,<span className='pointColor'>{rentNum.value}WEL</span> required to freeze)
                                                 </span>
                                                 :
                                                 <span>
@@ -702,7 +702,7 @@ class BankController extends React.Component {
                                                     <span className='pointColor'>
                                                         <FormattedMessage id='BANK.INDEX.ESTIMATESAVE'/>{ saveCost.toFixed(2) }trx
                                                     </span>,<FormattedMessage id='BANK.INDEX.ESTIMATEINFO'/>
-                                                    <span className='pointColor'>{rentNum.value}TRX</span>
+                                                    <span className='pointColor'>{rentNum.value}WEL</span>
                                                     )
                                                 </span>
                                         }
@@ -713,7 +713,7 @@ class BankController extends React.Component {
                                         {
                                             language === 'en' ?
                                                 <span>
-                                                    renting {defaultUnit.num * 10}k energy * {defaultUnit.day} day costs {defaultUnit.cost}TRX
+                                                    renting {defaultUnit.num * 10}k energy * {defaultUnit.day} day costs {defaultUnit.cost}WEL
                                                 </span>
                                                 :
                                                 <FormattedMessage id='BANK.INDEX.RENTINTRODUCE' values={{ ...defaultUnit }} />
