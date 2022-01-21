@@ -274,7 +274,7 @@ class TransactionsController extends React.Component {
                             :
                             null
                     }
-                    {
+                    {/*
                         accounts.selectedToken.isMapping && type !== ACCOUNT_TYPE.LEDGER ?
                             <button className='transfer' onClick={(e) => {
                                 PopupAPI.changeState(APP_STATE.TRANSFER);
@@ -282,7 +282,7 @@ class TransactionsController extends React.Component {
                                 <FormattedMessage id={'ACCOUNT.TRANSFER' + (chains.selected === '_' ? '' : '2')}/>
                             </button>
                             :
-                            null
+                            null */
                     }
 
                 </div>
