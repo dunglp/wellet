@@ -40,7 +40,7 @@ class Header extends React.Component {
                     <div className={'selectedChain '+(chains.selected === '_'?'selected1':'selected2')+(showChainList?' showList':'')} onClick={handleShowChainList}>
                         {/*<img src={logo} alt=""/>*/}
                         <span>{chains.chains[chains.selected].name}</span>
-                        <div className='chainWrap' style={showChainList?{height:120,padding:'10px 0'}:{height:0}}>
+                        <div className='chainWrap' style={showChainList?{height:130,padding:'10px 0'}:{height:0}}>
                             {
                                 Object.entries(chains.chains).map(([chainId,{name}])=>{
                                    return <div className='item' onClick={(e)=>{
