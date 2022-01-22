@@ -425,6 +425,8 @@
     "TRANSACTION_DETAIL.ID": "Transaction ID",
     "TRANSACTION_DETAIL.TIME": "Transaction time",
     "TRANSACTION_DETAIL.BLOCK_HEIGHT": "Block Height",
+    "TRANSACTION_DETAIL.BLOCK_REF": "Block",
+    "TRANSACTION_DETAIL.BLOCK_CONFIRMED": "Blocks Confirmed",
     "TRANSACTION_DETAIL.FEE": "Fee",
     "TRANSACTION_DETAIL.GO_TRONSCAN": "Go to Welscan for detailed data",
     "TRANSACTION_DETAIL.COPYED": "The screenshot is copied to the clipboard",

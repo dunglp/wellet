@@ -5,7 +5,7 @@ import { BigNumber } from 'bignumber.js';
 import ReactTooltip from 'react-tooltip';
 import { Popover } from 'antd-mobile';
 import CopyToClipboard from 'react-copy-to-clipboard';
-import { WELSCAN_API } from '@tronlink/lib/constants'
+import { WELSCAN } from '@tronlink/lib/constants'
 
 const myImg = src => <img src={`https://gw.alipayobjects.com/zos/rmsportal/${src}.svg`} className='am-icon am-icon-xs' alt="" />;
 class TransactionDetailController extends React.Component {
@@ -96,14 +96,40 @@ class TransactionDetailController extends React.Component {
                         </div>
                         <div className='cell'>
                             <div className='title'>
-                                <FormattedMessage id='TRANSACTION_DETAIL.BLOCK_HEIGHT' />
+                                <FormattedMessage id='TRANSACTION_DETAIL.BLOCK_REF' />
                             </div>
                             <CopyToClipboard text={ t.block } onCopy={(e) => this.copy('block')}>
                                 <div className='content'>
                                     <a data-tip={formatMessage({ id: 'TRANSACTION_DETAIL.ENABLE_COPY' })} data-for='block'>
-                                        { t.block }
+                                        { t.tokenTransferInfo.ref_block_num }
                                     </a>
                                     <ReactTooltip id='block' effect='solid' />
+                                </div>
+                            </CopyToClipboard>
+                        </div>
+                        <div className='cell'>
+                            <div className='title'>
+                                <FormattedMessage id='TRANSACTION_DETAIL.BLOCK_HEIGHT' />
+                            </div>
+                            <CopyToClipboard text={ t.block } onCopy={(e) => this.copy('block_height')}>
+                                <div className='content'>
+                                    <a data-tip={formatMessage({ id: 'TRANSACTION_DETAIL.ENABLE_COPY' })} data-for='block_height'>
+                                        { t.block }
+                                    </a>
+                                    <ReactTooltip id='block_height' effect='solid' />
+                                </div>
+                            </CopyToClipboard>
+                        </div>
+                        <div className='cell'>
+                            <div className='title'>
+                                <FormattedMessage id='TRANSACTION_DETAIL.BLOCK_CONFIRMED' />
+                            </div>
+                            <CopyToClipboard text={ t.block } onCopy={(e) => this.copy('block_confirmed')}>
+                                <div className='content'>
+                                    <a data-tip={formatMessage({ id: 'TRANSACTION_DETAIL.ENABLE_COPY' })} data-for='block_confirmed'>
+                                        { t.tokenTransferInfo.num_of_blocks - t.tokenTransferInfo.ref_block_num }
+                                    </a>
+                                    <ReactTooltip id='block_confirmed' effect='solid' />
                                 </div>
                             </CopyToClipboard>
                         </div>
@@ -138,7 +164,7 @@ class TransactionDetailController extends React.Component {
                                 null
                         }
                     </div>
-                    <div className='part3' onClick={() => window.open(`${ WELSCAN_API }/transactions/${t.hash}`)}>
+                    <div className='part3' onClick={() => window.open(`${ WELSCAN }/transaction/${t.hash}`)}>
                         <FormattedMessage id='TRANSACTION_DETAIL.GO_TRONSCAN' />
                     </div>
                 </div>
