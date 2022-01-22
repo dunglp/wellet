@@ -1195,36 +1195,96 @@ class Wallet extends EventEmitter {
         return StorageService.hasOwnProperty('allTokens') ? (selectedChain === '_' ? StorageService.allTokens.mainchain : StorageService.allTokens.sidechain) : {};
     }
 
-    async setTransactionDetail(hash) {
-        //const selectedChain = NodeService._selectedChain;
-        const requestUrl = WELSCAN_API
-        //const reauestUrl = 'https://apilist.tronscan.org';
-        const res = await axios.get(`${requestUrl}/transaction-info/${hash}`).catch(e=>false);
-        if(res) {
+  async setTransactionDetail(_hash) {
+    //const selectedChain = NodeService._selectedChain;
+    const requestUrl = WELSCAN_API
+    logger.debug("[setTransactionDetail] received payload from popup: ", _hash)
+    const {data : { data : res } } = await axios.get(`${requestUrl}/transactions/${ _hash }`).
+      catch( (e) => {
+        logger.debug("[setTransactionDetail] error: ", e)
+        return {data: { data: { confirmed: false, 
+          contract: 
+          { parameter: 
+            { raw : 
+              { owner_address: false, 
+                to_address: false,
+                energy_fee: false,
+                bandwidth_fee: false,
+                consume_bandwidth: false,
+                energy_usage: false,
+                amount: false
+              },
+            },
+            type: false,
+          },
+          hash: _hash,
+          timestamp: false,
+          asset_name: false,
+          confirmed: false,
+          expiration: false,
+          num_of_blocks: false,
+          ref_block_bytes: false,
+          ref_block_hash: false,
+          ref_block_num: false,
+          ret: false,
+          script: false,
+        } }}})
 
-            let { confirmed, 
-                  contract: 
-                    { parameter: 
-                        { raw : 
-                          { owner_address: ownerAddress, 
-                            to_address: toAddress } 
-                        },
-                      type
-                    },
-                  hash,
-                  block_number: block,
-                  timestamp = 0,
-                  //consume_energy,
-                  energy_fee,
-                  bandwidth_fee,
-                  //energy_usage
-                  } = res.data.data;
+    const { confirmed, 
+      contract: 
+      { parameter:
+        { raw : 
+          { owner_address, 
+            to_address,
+            energy_fee,
+            bandwidth_fee,
+            consume_bandwidth,
+            energy_usage,
+            amount
+          } 
+        },
+        type
+      },
+      hash,
+      timestamp = 0,
+      //consume_energy,
+      //energy_usage
+    } = res
 
-            this.accounts[ this.selectedAccount ].transactionDetail = { confirmed, timestamp, ownerAddress, toAddress, hash, block, cost: { energy_fee, net_fee: bandwidth_fee }, tokenTransferInfo: parameter, contractType: type, contractData: { amount } };
-            this.emit('setAccount', this.selectedAccount);
-        }
-        return res;
-    }
+    const nTransactionDetail = { 
+      confirmed: confirmed,
+      timestamp: timestamp,
+      ownerAddress: owner_address,
+      toAddress: to_address,
+      hash: hash,
+      block: res.num_of_blocks,
+      cost: {
+        energy_fee: energy_fee,
+        net_fee: bandwidth_fee,
+        energy_usage,
+        consume_bandwidth
+      },
+      tokenTransferInfo: {
+        asset_name: res.asset_name,
+        confirmed: res.confirmed,
+        expiration: res.expiration,
+        num_of_blocks: res.num_of_blocks,
+        ref_block_bytes: res.ref_block_bytes,
+        ref_block_hash: res.ref_block_hash,
+        ref_block_num: res.ref_block_num,
+        ret: res.ret,
+        script: res.script,
+        timestamp: res.timestamp,
+        amount_str: amount.toString(),
+      },
+      contractType: type,
+      contractData: { amount }
+    };
+
+    this.accounts[ this.selectedAccount ].transactionDetail = nTransactionDetail
+    this.emit('setAccount', this.selectedAccount);
+    return res;
+  }
 
     getAuthorizeDapps(){
         return StorageService.hasOwnProperty('authorizeDapps') ? StorageService.authorizeDapps : {};
