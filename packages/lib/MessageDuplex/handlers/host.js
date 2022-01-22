@@ -96,12 +96,13 @@ class MessageDuplexHost extends EventEmitter {
           return this.emit(action, { hostname, data });
         }
 
-        this.incoming.set(messageID, res => (
-            this.send(source, 'messageReply', {
-                messageID,
-                ...res
-            }, false)
-        ));
+      this.incoming.set(messageID, res => { 
+        logger.debug(`Replying to ${ source } with result: `, res)
+        this.send(source, 'messageReply', {
+        messageID,
+        ...res
+      }, false)
+      });
         
         logger.debug(`Emitting event to notify backgroundScript: `, action)
         logger.debug("payload: ", data )
@@ -111,12 +112,14 @@ class MessageDuplexHost extends EventEmitter {
                 if(!this.incoming.get(messageID))
                     return logger.warn(`Message ${ messageID } expired`);
 
+                logger.debug(`resolving ${ action } with result: `, res)
                 this.incoming.get(messageID)({ error: false, res });
                 this.incoming.delete(messageID);
             },
             reject: res => {
                 if(!this.incoming.get(messageID))
                     return logger.warn(`Message ${ messageID } expired`);
+                logger.debug(`rejecting ${ action } with result: `, res)
 
                 this.incoming.get(messageID)({ error: true, res });
                 this.incoming.delete(messageID);
@@ -128,6 +131,7 @@ class MessageDuplexHost extends EventEmitter {
     }
 
     handleReply({ messageID, error, res }) {
+        logger.debug("Replying message: ", messageID, ", with result and error: ", res, error)
         if(!this.outgoing.has(messageID))
             return;
 
@@ -150,20 +154,24 @@ class MessageDuplexHost extends EventEmitter {
 
         // return Promise.reject('Target channel does not exist');
 
+        logger.debug(`send message to ${ target }: action=${ action }, payload=`, data)
+
         if(!requiresAck) {
-            return this.channels.get(target).forEach(({ channel }) => (
-                channel.postMessage({ action, data, noAck: true })
-            ));
+          return this.channels.get(target).forEach(({ channel }) => {                 
+            channel.postMessage({ action, data, noAck: true })
+            logger.debug(`posted action ${ action } to ${ target }`)
+          });
         }
 
         return new Promise((resolve, reject) => {
-            const messageID = randomUUID();
+          const messageID = randomUUID();
 
-            this.outgoing.set(messageID, resolve);
+          this.outgoing.set(messageID, resolve);
 
-            this.channels.get(target).forEach(({ channel }) => (
-                channel.postMessage({ action, data, messageID, noAck: false })
-            ));
+          this.channels.get(target).forEach(({ channel }) => {
+            channel.postMessage({ action, data, messageID, noAck: false })
+            logger.debug(`posted action ${ action } to ${ target }`)
+          });
         });
     }
 }

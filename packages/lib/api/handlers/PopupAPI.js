@@ -279,7 +279,7 @@ export default {
     },
 
     setTransactionDetail(hash) {
-       return this.duplex.send('setTransactionDetail', hash);
+       return this.duplex.send('setTransactionDetail', hash); // requiresAck = false!
     },
 
     setAuthorizeDapps(authorizeDapps) {
