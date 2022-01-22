@@ -6,7 +6,9 @@ import { BigNumber } from 'bignumber.js';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import { PopupAPI } from '@tronlink/lib/api';
 import { APP_STATE, CONTRACT_ADDRESS, ACCOUNT_TYPE, WELSCAN_API } from '@tronlink/lib/constants';
+import Logger from '@tronlink/lib/logger'
 
+const logger = new Logger("TransactionsController")
 BigNumber.config({ EXPONENTIAL_AT: [-20, 30] });
 const token10DefaultImg = require('@tronlink/popup/src/assets/images/new/token_10_default.png');
 
@@ -175,7 +177,7 @@ class TransactionsController extends React.Component {
                         <div className={index == 2 ? 'active' : ''} onClick={async () => {
                             this.setState({ index: 2 });
                             Toast.loading('', 0);
-                            const transactions = await PopupAPI.getTransactionsByTokenId(id, '', 'from');
+                            const transactions = await PopupAPI.getTransactionsByTokenId(id, '', 'to');
                             Toast.hide();
                             this.setState({ transactions, currentPage: 1, isRequest: false });
 
@@ -185,7 +187,7 @@ class TransactionsController extends React.Component {
                         <div className={index === 1 ? 'active' : ''} onClick={async () => {
                             this.setState({ index: 1 });
                             Toast.loading('', 0);
-                            const transactions = await PopupAPI.getTransactionsByTokenId(id, '', 'to');
+                            const transactions = await PopupAPI.getTransactionsByTokenId(id, '', 'from');
                             Toast.hide();
                             this.setState({ transactions, currentPage: 1, isRequest: false });
                         }}>
@@ -228,7 +230,8 @@ class TransactionsController extends React.Component {
                                                 <div className={`item ${direction}`} key={transIndex}
                                                      onClick={async () => {
                                                          Toast.loading('', 0);
-                                                         await PopupAPI.setTransactionDetail(v.hash);
+                                                         const res = await PopupAPI.setTransactionDetail(v.hash);
+                                                       logger.debug("setTransactionDetail result: ", res)
                                                          Toast.hide();
                                                          PopupAPI.changeState(APP_STATE.TRANSACTION_DETAIL);
                                                      }}>
