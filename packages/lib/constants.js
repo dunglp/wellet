@@ -96,6 +96,8 @@ export const CONFIRMATION_TYPE = {
     TRANSACTION: 1
 };
 
+export const devMode = true
+
 export const CONTRACT_ADDRESS = {
     USDT:"TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t",
     MAIN:"TWaPZru6PR5VjgT4sJrrZ481Zgp3iJ8Rfo",
@@ -158,18 +160,24 @@ export const USDT_ACTIVITY_STAGE = {
 };
 
 export const TOP_TOKEN = {
-    mainchain:[
-        //"WT4ffbanqK67PBQqF9axbQmRQjY99sptrV", //mLunar
-        //"WX3TqrQhKQwsr9JmffDCpvnHPQEjTSsLo2", //Meipoint
-        //"WNv26nED9uEiq2QUg8jKLraANGsvePVKNh", //PAYA
-        //"WFynPHV2JMz18BsB4HREcuNGoRuh9SBUJ8", //AWEShares
-        //"WGhwAci8yc9iUG49EYHHG4dYRWUmtJ6HX4", //SmileToken
-        //"WUbqyEmnqw9VnGX9HgNNwjCTCWDc4NvY2T"  //Neenote
-        //'_',
-        //'TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t',
-        //'1002000',
-        //'TLa2f6VPqDgRE67v1736s7bJ8Ray5wYjU7'
-    ],
+  mainchain: (!devMode)? 
+  [
+    "WT4ffbanqK67PBQqF9axbQmRQjY99sptrV", //mLunar
+    "WX3TqrQhKQwsr9JmffDCpvnHPQEjTSsLo2", //Meipoint
+    "WNv26nED9uEiq2QUg8jKLraANGsvePVKNh", //PAYA
+    "WFynPHV2JMz18BsB4HREcuNGoRuh9SBUJ8", //AWEShares
+    "WGhwAci8yc9iUG49EYHHG4dYRWUmtJ6HX4", //SmileToken
+    "WUbqyEmnqw9VnGX9HgNNwjCTCWDc4NvY2T",  //Neenote
+    //'_',
+    //'TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t',
+    //'1002000',
+    //'TLa2f6VPqDgRE67v1736s7bJ8Ray5wYjU7'
+  ]
+  :
+  [
+    "WXXybedJRgXd6G675VFaGo14U6YzzfGY9A", //SmileToken
+    "WQS3XpoumEJaxTryDASV6YAttLphqBPnmh", //Meipoint
+  ],
     //sidechain:['1002000']
 };
 
@@ -178,7 +186,6 @@ export const SIDE_CHAIN_ID = '41E209E4DE650F0150788E8EC5CAFA240A23EB8EB7';
 
 
 //
-export const devMode = true
 
 const devWelscan = 'https://explorer-dev.welscan.io'
 const devWelscanAPI =  'https://api-devnet.welscan.io'
