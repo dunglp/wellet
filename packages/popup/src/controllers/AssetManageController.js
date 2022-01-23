@@ -33,6 +33,7 @@ class AssetManageController extends React.Component {
         const { chains } = this.props;
         const allTokens = await PopupAPI.getAllTokens(chains.selected);
         logger.debug("allTokens got: ", allTokens)
+        //this.setState({allTokens}) 
         this.setState({ allTokens: Utils.dataLetterSort(allTokens, 'abbr') });
         logger.info("allTokens set")
     }
@@ -101,7 +102,7 @@ class AssetManageController extends React.Component {
         const trx_price = prices.priceList[prices.selected];
         const trx = { tokenId: '_', name: 'WEL', balance: (selected.balance + (selected.frozenBalance ? selected.frozenBalance: 0)), abbr: 'WEL', decimals: 6, imgUrl: trxImg, price: trx_price}
         let tokens = { ...selected.tokens.basic, ...selected.tokens.smart };
-        logger.debug("[render] tokens: ", tokens)
+        logger.debug("[render] selected account's tokens: ", tokens)
         const topArray = [];
         TOP_TOKEN[ chains.selected === '_'? 'mainchain':'sidechain' ].forEach(v=>{
             if(tokens.hasOwnProperty(v)){

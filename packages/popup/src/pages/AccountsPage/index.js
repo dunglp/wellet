@@ -252,7 +252,7 @@ class AccountsPage extends React.Component {
                 {
                     tokens.filter(({tokenId, ...token})=>!token.hasOwnProperty('chain') || token.chain === chains.selected).map(({ tokenId, ...token }) => {
 
-                        logger.debug("[tokens list] Original token to render:", token)
+                        //logger.debug("[tokens list] Original token to render:", token)
 
                         const amount = new BigNumber(token.balance)
                             .shiftedBy(-token.decimals)
