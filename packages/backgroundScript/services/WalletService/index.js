@@ -153,7 +153,12 @@ class Wallet extends EventEmitter {
             logger.debug("original tokens list retrieved: ", smartTokenPriceList)
             //basicPrice = basicTokenPriceList;
             basicPrice = [];
-            smartPrice = smartTokenPriceList.filter( ({token_record_type}) => token_record_type === "WRC20");
+            smartPrice = smartTokenPriceList.filter( (tok/*{token_record_type}*/) => {
+              if (!tok.token_record_type) {
+                //logger.debug("filtering:", tok);
+                return false;
+              } else { return tok.token_record_type.toUpperCase() === "WRC20" } });
+            
             logger.debug("smartPrice retrieved: ", smartPrice)
 
             //usdtPrice = prices.usdtPriceList ? prices.usdtPriceList[ prices.selected ] : 0;
