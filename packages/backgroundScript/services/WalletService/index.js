@@ -1078,7 +1078,8 @@ class Wallet extends EventEmitter {
       }
     logger.debug("[getTransbyTokenId] requestURL: ", requestUrl)
 
-    const transFilter = ({ contract: { parameter: { raw: { owner_address: fromAddress, to_address: toAddress } } } }) => {
+    const transFilter = ({ contract: { parameter: { raw: { name, owner_address: fromAddress, to_address: toAddress } } } }) => {
+      if (tokenId === '_' && name !== 'WEL' ) return false
       switch (direction) {
         case 'to':
           return toAddress === address
