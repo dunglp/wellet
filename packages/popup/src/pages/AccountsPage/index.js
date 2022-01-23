@@ -412,7 +412,10 @@ class AccountsPage extends React.Component {
                 topArray.push({...allTokens.filter(({tokenId})=> tokenId === v)[0],tokenId:v,price:'0',balance:'0',isLocked:false})
             }
         });
+        logger.debug("presort tokens: ", tokens)
         tokens = Utils.dataLetterSort(Object.entries(tokens).filter(([tokenId, token])=> typeof token === 'object').map(v => { v[1].isMapping = v[1].hasOwnProperty('isMapping')?v[1].isMapping:true;v[ 1 ].tokenId = v[ 0 ];return v[ 1 ]; }).filter(v => !v.isLocked ), 'abbr', 'symbol',topArray);
+        logger.debug("postsort tokens: ", tokens)
+        tokens = tokens.sort((x,y) => x.balance < y.balance)
         tokens = [trx, ...tokens];
         tokens = tokens.map(({ tokenId, ...token }) => {
             token.decimals = token.decimals || 0;

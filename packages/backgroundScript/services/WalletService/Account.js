@@ -389,7 +389,9 @@ class Account {
             logger.debug("[update account] this.tokens before update: ", this.tokens)
             for (let { _id: tokenAddress, token_icon: logoUrl = false, precision: decimals = 6, isMapping = false, token_name: name, token_abbreviation: shortName,  /*balance,*/ price_wel } of allWRC20s) {
                 let token = this.tokens.smart[tokenAddress] || false;
-                //logger.debug("[update account] current token in allWRC20s: ", token)
+                //if (!smartTokensMap[tokenAddress]) {
+                //  continue
+                //}
 
                 //const filter = smartTokenPriceList.filter(({ _id: fTokenAddr }) => fTokenAddr === tokenAddress);
                 //const price = filter.length ? new BigNumber(filter[0].price_wel).shiftedBy(-decimals).toString() : 0;

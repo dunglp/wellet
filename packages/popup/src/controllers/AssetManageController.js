@@ -117,6 +117,7 @@ class AssetManageController extends React.Component {
         });
         logger.debug("[render] topArray: ", topArray)
         tokens = Utils.dataLetterSort(Object.entries(tokens).filter(([tokenId, token]) => typeof token === 'object' ).map(v => { v[ 1 ].tokenId = v[ 0 ];return v[ 1 ]; }).filter(v => v.balance > 0 || (v.balance == 0 && !v.isLocked) ), 'abbr', 'symbol',topArray);
+        tokens = tokens.sort((x,y) => x.balance < y.balance)
         tokens = [trx, ...tokens];
         tokens = tokens.filter(({tokenId, ...token})=>!token.hasOwnProperty('chain') || token.chain === chains.selected).map(({tokenId,...token})=>{
             if(TOP_TOKEN[ chains.selected === '_'? 'mainchain':'sidechain' ].includes(tokenId) || tokenId === '_')
