@@ -457,6 +457,7 @@ class SendController extends React.Component {
             }
         });
         tokens = Utils.dataLetterSort(Object.entries(tokens).filter(([tokenId, token]) => typeof token === 'object' && !token.hasOwnProperty('chain') || token.chain === chains.selected ).map(v => { v[1].isMapping = v[1].hasOwnProperty('isMapping')?v[1].isMapping:true;v[ 1 ].tokenId = v[ 0 ];return v[ 1 ]; }), 'abbr' ,'symbol',topArray);
+        tokens.sort((x,y) => x.balance < y.balance)
         tokens = [trx, ...tokens];
         return (
             <div className='insetContainer send' onClick={() => this.setState({ isOpen: { account: false, token: false } }) }>

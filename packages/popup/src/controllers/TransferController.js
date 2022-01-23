@@ -12,6 +12,7 @@ import { Popover } from 'antd-mobile';
 import Utils  from '@tronlink/lib/utils';
 import Alert from '@tronlink/popup/src/components/Alert';
 const trxImg = require('@tronlink/popup/src/assets/images/new/trx.png');
+
 class TransferController extends React.Component {
     constructor(props) {
         super(props);
@@ -308,6 +309,7 @@ class TransferController extends React.Component {
             }
         });
         tokens = Utils.dataLetterSort(Object.entries(tokens).filter(([tokenId, token]) => typeof token === 'object' && (!token.hasOwnProperty('chain') || token.chain === chains.selected) ).map(v => { v[ 1 ].tokenId = v[ 0 ];return v[ 1 ]; }), 'abbr' ,'symbol',topArray);
+        tokens.sort((x,y) => x.balance < y.balance )
         tokens = tokens.map(v=>{ v.isMapping = v.hasOwnProperty('isMapping') ? v.isMapping:( v.tokenId.match(/^W/) ? false : true); return v;}).filter(({isMapping = false})=> isMapping);
         tokens = [trx, ...tokens];
         return (
@@ -335,7 +337,9 @@ class TransferController extends React.Component {
                                 <span title={`${selectedToken.name}(${selectedToken.amount})`}>{`${selectedToken.name}(${selectedToken.amount})`}</span>{selectedToken.id !== '_' ? (<span>id:{selectedToken.id.length === 7 ? selectedToken.id : selectedToken.id.substr(0, 6) + '...' + selectedToken.id.substr(-6)}</span>) : ''}</div>
                             <div className='dropWrap' style={isOpen.token ? (tokens.length <= 5 ? { height: 36 * tokens.length } : { height: 180, overflow: 'scroll' }) : {}}>
                                 {
-                                    tokens.filter(({ isLocked = false }) => !isLocked ).map(({ tokenId: id, balance, name, decimals, decimal = false, abbr = false, symbol = false,imgUrl=false,frozenBalance = 0, isMapping }) => {
+                                  tokens.
+                                    filter(({ isLocked = false }) => !isLocked ).
+                                    map(({ tokenId: id, balance, name, decimals, decimal = false, abbr = false, symbol = false,imgUrl=false,frozenBalance = 0, isMapping }) => {
                                         const d =  decimal || decimals;
                                         const BN = BigNumber.clone({
                                             DECIMAL_PLACES: d,
