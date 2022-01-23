@@ -226,6 +226,7 @@ class Account {
           logger.info(`Error when getting smartTokens for ${ address }:`, e)
             return { data: { data: { result: [] } } };
         });
+        logger.debug(`[account update] smart tokens for ${ address }: `, smartTokens)
         try {
             const node = NodeService.getNodes().selected;
             //if (node === 'f0b1e38e-7bee-485e-9d3f-69410bf30681') {
@@ -278,6 +279,7 @@ class Account {
                 logger.debug("[update account] smart contract", contract)
                     let balance;
                     const number = await contract.balanceOf(address).call();
+                    logger.debug(`[update account] ${ address } balanceOf ${ tokenID }: `. number)
                     if (number.balance) {
                         balance = new BigNumber(number.balance).toString();
                     } else {
@@ -313,10 +315,10 @@ class Account {
 
                 logger.debug("[update account] token: ", token)
 
-                const filter = basicTokenPriceList.length ? basicTokenPriceList.filter(({ first_token_id }) => first_token_id === key) : [];
-              logger.debug("[update account] filter: ", filter)
+                const filter = basicTokenPriceList.length ? basicTokenPriceList.filter(({ _id: first_token_id }) => first_token_id === key) : [];
+                logger.debug("[update account] filter: ", filter)
                 const trc20Filter = smartTokenPriceList.length ? smartTokenPriceList.filter(({ _id: fTokenAddr }) => key === fTokenAddr) : [];
-              logger.debug("[update account] trc20Filter: ", trc20Filter)
+                logger.debug("[update account] trc20Filter: ", trc20Filter)
                 let { precision = 0, price } = filter.length ? filter[0] : (trc20Filter.length ? {
                     price: trc20Filter[0].price_wel,
                     precision: trc20Filter[0].precision
@@ -373,7 +375,6 @@ class Account {
                 }
             }
             //const smartTokens = account.trc20token_balances.filter(v => v.balance >= 0);
-          logger.debug("[update account] smartTokens got from network: ", smartTokens)
             const sTokens = smartTokens.map(({ contract_address: tokenAddress }) => tokenAddress);
             Object.entries(this.tokens.smart).forEach(([tokenId, token]) => {
                 if (!sTokens.includes(tokenId) && token.hasOwnProperty('abbr')) {
@@ -381,9 +382,14 @@ class Account {
                 }
             });
             const allWRC20s = smartTokenPriceList
+            logger.debug("[update account] smartTokens got from network: ", smartTokens)
+            let smartTokensMap = {}
+            smartTokens.map(( tok ) => smartTokensMap[tok.contract_address] = tok);
+            logger.debug("[update account] smartTokensMap: ", smartTokensMap)
+            logger.debug("[update account] this.tokens before update: ", this.tokens)
             for (let { _id: tokenAddress, token_icon: logoUrl = false, precision: decimals = 6, isMapping = false, token_name: name, token_abbreviation: shortName,  /*balance,*/ price_wel } of allWRC20s) {
                 let token = this.tokens.smart[tokenAddress] || false;
-              logger.debug("[update account] current token in allWRC20s: ", token)
+                //logger.debug("[update account] current token in allWRC20s: ", token)
 
                 //const filter = smartTokenPriceList.filter(({ _id: fTokenAddr }) => fTokenAddr === tokenAddress);
                 //const price = filter.length ? new BigNumber(filter[0].price_wel).shiftedBy(-decimals).toString() : 0;
@@ -400,19 +406,20 @@ class Account {
                     isMapping
                 };
                 
-              logger.debug("[update account] updated token: ", token)
+              //logger.debug("[update account] updated token: ", token)
               
                 
-              logger.debug("[update account] this.tokens.smart[tokenAddress]: ", this.tokens.smart[tokenAddress])
+              //logger.debug("[update account] this.tokens.smart[tokenAddress]: ", this.tokens.smart[tokenAddress])
                 this.tokens.smart[tokenAddress] = {
                     ...token,
                     //price: tokenAddress === CONTRACT_ADDRESS.USDT ? usdtPrice : price,
                     price,
-                    balance: ( !smartTokens[tokenAddress] )?0:smartTokens[tokenAddress].balanceOf,
+                    balance: ( !smartTokensMap[tokenAddress] )?0:smartTokensMap[tokenAddress].balanceOf,
                     chain: selectedChain
                 };
               logger.debug("[update account] this.tokens.smart[tokenAddress] token: ", this.tokens.smart[tokenAddress])
             }
+            logger.debug("[update account] this.tokens after update: ", this.tokens)
             
             logger.info("[update account] finishing up... ")
 
