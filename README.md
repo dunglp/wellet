@@ -45,19 +45,18 @@ $ yarn install
 $ yarn lerna bootstrap 
 ```
 If the next build step failed with this, it's a known issue with lerna. More detail
-[here](https://stackoverflow.com/a/59529327).
+[here](https://stackoverflow.com/a/59529327) and [here](https://github.com/lerna/lerna/issues/2352).
 
 In short:
   1. Add `"@tronlink/tronweb": "^0.1.0",` to the `dependencies` property in the
   `package.json` of `packages/backgroundScript`, `packages/lib`, `packages/pageHook` and `packages/popup`
   2. run `yarn lerna bootstrap --force-local` (as per the link above's instruction)
   3. proceed to **Building**
-  4. (optional) after lerna successfully, it's recommended to revert step **1** i.e.
-     removing the `"@tronlink/tronweb": "^0.1.0"` line in the 4 subpackages'
-     `package.json` files. Without doing so everything would build ok, but
-     `@tronlink/tronweb` would be built 4 more times in each `node_modules` of the
-     other subpackages, which greatly increases build time.
-More info here: https://github.com/lerna/lerna/issues/2352
+  4. (optional) after lerna linked successfully, it's recommended to revert step **1** i.e.
+  removing the `"@tronlink/tronweb": "^0.1.0"` line in the 4 subpackages'
+  `package.json` files. Everything would build ok regardless, but keeping that in
+  4 `dependencies` will result in `@tronlink/tronweb` being built 4 more times in each `node_modules` of the
+  other subpackages, which greatly increases build time.
 
 ### Building
 ```sh
