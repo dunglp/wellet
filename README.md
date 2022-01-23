@@ -44,6 +44,14 @@ $ yarn install
 ```sh
 $ yarn lerna bootstrap 
 ```
+If the next build step failed with this, it's a known issue with lerna. More detail
+[here](https://stackoverflow.com/a/59529327).
+
+In short:
+  * Add `"@tronlink/tronweb": "^0.1.0",` to the `dependencies` property in the
+  `package.json` of `packages/backgroundScript`, `packages/lib`, `packages/pageHook` and `packages/popup`
+  * run `yarn lerna bootstrap --force-local` (as per the link above's instruction)
+More info here: https://github.com/lerna/lerna/issues/2352
 
 ### Building
 ```sh
