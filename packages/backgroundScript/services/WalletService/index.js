@@ -1208,7 +1208,7 @@ class Wallet extends EventEmitter {
     const {data : { data : res } } = await axios.get(`${requestUrl}/transactions/${ _hash }`).
       catch( (e) => {
         logger.debug("[setTransactionDetail] error: ", e)
-        return {data: { data: { confirmed: false, 
+        return {data: { data: {
           contract: 
           { parameter: 
             { raw : 

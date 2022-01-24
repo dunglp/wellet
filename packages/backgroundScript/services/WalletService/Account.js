@@ -494,7 +494,6 @@ class Account {
             isMapping,
             name
         };
-      logger.debug(`[Add smart token] All tokens in account after added ${ tokenID }:` , this.tokens )
 
         return this.save();
     }
