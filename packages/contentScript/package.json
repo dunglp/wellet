@@ -1,15 +1,15 @@
 {
-  "name": "@tronlink/contentScript",
-  "main": "index.js",
-  "repository": "https://github.com/nhatanh002/wellet",
-  "author": "nhatanh002 <nhatanh02@gmail.com>",
-  "private": true,
-  "version": "3.0.0",
-  "scripts": {
-    "build": "webpack --config ../../webpack.config.js --progress --colors -o ../../dist/contentScript.js",
-    "lint": "npx eslint . --fix"
-  },
-  "dependencies": {
-    "extensionizer": "^1.0.1"
-  }
+	"name": "@tronlink/contentScript",
+	"main": "index.js",
+	"repository": "https://github.com/nhatanh002/wellet",
+	"author": "nhatanh002 <nhatanh02@gmail.com>",
+	"private": true,
+	"version": "3.0.0",
+	"scripts": {
+		"build": "webpack --config ../../webpack.config.js --progress --colors -o ../../dist/contentScript.js",
+		"lint": "npx eslint . --fix"
+	},
+	"dependencies": {
+		"extensionizer": "^1.0.1"
+	}
 }

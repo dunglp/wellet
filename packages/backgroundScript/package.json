@@ -11,7 +11,8 @@
     "bip39": "^2.5.0",
     "buffer": "^5.2.1",
     "eventemitter3": "^3.1.0",
-    "sunweb": "^1.0.7"
+    "sunweb": "^1.0.7",
+    "@tronlink/tronweb": "0.1.0"
   },
   "scripts": {
     "build": "webpack --config ../../webpack.config.js --progress --colors -o ../../dist/backgroundScript.js",
