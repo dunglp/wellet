@@ -62,7 +62,6 @@ class LoginController extends React.Component {
                 <div className='pageHeader'>
                     <div className='pageHeaderLogoWrap'>
                         <div className='logo1'></div>
-                        <div className='logo2'></div>
                     </div>
                     <div className='pageHeaderText'>
                         <FormattedMessage id='LOGIN.PASSWORD.BACK' />

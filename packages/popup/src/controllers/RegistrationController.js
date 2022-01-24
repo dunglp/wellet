@@ -129,7 +129,6 @@ class RegistrationController extends React.Component {
                 <div className='pageHeader hasBottomMargin'>
                     <div className="pageHeaderLogoWrap">
                         <div className="logo1"></div>
-                        <div className="logo2"></div>
                     </div>
                 </div>
                 { error ? (

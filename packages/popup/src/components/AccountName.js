@@ -82,7 +82,6 @@ class AccountName extends React.Component {
                 <div className='pageHeader'>
                     <div className="pageHeaderLogoWrap hasBottomMargin">
                         <div className="logo1"></div>
-                        <div className="logo2"></div>
                     </div>
                 </div>
                 <div className='greyModal registrationModel'>
