@@ -78,7 +78,7 @@ class RestoreAccountController extends React.Component {
                         name={ walletName }
                         onCancel={ () => this.changeStage(RESTORATION_STAGE.CHOOSING_TYPE) }
                     />
-                );    
+                );
             default:
                 return null;
         }

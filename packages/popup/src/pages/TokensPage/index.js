@@ -168,7 +168,7 @@ class TokensPage extends React.Component {
                                     <span className='tokenSymbol'>
                                         { token.name }
                                     </span>
-                                    <span className="show_id">
+                                    <span className='show_id'>
                                         id:{tokenID}
                                     </span>
                                 </div>

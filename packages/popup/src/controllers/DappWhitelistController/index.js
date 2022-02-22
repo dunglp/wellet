@@ -8,7 +8,6 @@ import CopyToClipboard from 'react-copy-to-clipboard';
 import './DappWhitelistController.scss';
 
 class DappWhitelistController extends React.Component {
-
     render() {
         const { authorizeDapps, onCancel } = this.props;
         const { formatMessage } = this.props.intl;
@@ -21,30 +20,32 @@ class DappWhitelistController extends React.Component {
                 <div className='greyModal scroll'>
                     <div className='white'>
                     {
-                        Object.values(authorizeDapps).sort((a,b)=>b.addTime - a.addTime).map(({url, addTime, contract},index)=>{
+                        Object.values(authorizeDapps).sort((a, b) => b.addTime - a.addTime).map(({ url, addTime, contract }, index) => {
                             return (
                                 <div className='dapp'>
                                     <div className='url'>
                                         <FormattedMessage id='DAPP_WHITELIST.URL' />
-                                        <a target="_blank" href={'http://'+url}>{url}</a>
-                                        <div className='delete' onClick={()=>{
-                                            const dapps = Object.values(authorizeDapps).filter(({contract:address}) => contract !== address ).reduce((v,c)=>{v[c.contract] = c;return v;},{});
+                                        <a target='_blank' href={`http://${url}`} rel='noreferrer'>{url}</a>
+                                        <div className='delete' onClick={() => {
+                                            const dapps = Object.values(authorizeDapps).filter(({ contract: address }) => contract !== address ).reduce((v, c) => { v[c.contract] = c;return v; }, {});
                                             PopupAPI.setAuthorizeDapps(dapps);
-                                        }}>&nbsp;</div>
+                                        }}
+                                        >&nbsp;</div>
                                     </div>
                                     <div className='row'>
                                         <FormattedMessage id='DAPP_WHITELIST.CONTRACT_ADDRESS' />
                                         <CopyToClipboard text={ contract } onCopy={() => {
-                                                Object.keys(authorizeDapps).forEach((v,i)=>{
-                                                    if(i === index){
-                                                        document.getElementById('contract'+i).innerText = formatMessage({ id: 'TRANSACTION_DETAIL.HAVE_COPIED' });
-                                                    }  else {
-                                                        document.getElementById('contract'+i).innerText = formatMessage({ id: 'TRANSACTION_DETAIL.ENABLE_COPY' });
-                                                    }                                              })
-                                            }}>
-                                            <span data-tip={formatMessage({ id: 'TRANSACTION_DETAIL.ENABLE_COPY' })} data-for={'contract'+index}>
-                                                { contract.substr(0,10)+'...'+contract.substr(-10) }
-                                                <ReactTooltip id={'contract'+index} effect='solid' />
+                                                Object.keys(authorizeDapps).forEach((v, i) => {
+                                                    if(i === index)
+                                                        document.getElementById(`contract${i}`).innerText = formatMessage({ id: 'TRANSACTION_DETAIL.HAVE_COPIED' });
+                                                     else
+                                                        document.getElementById(`contract${i}`).innerText = formatMessage({ id: 'TRANSACTION_DETAIL.ENABLE_COPY' });
+                                                                                                  });
+                                            }}
+                                        >
+                                            <span data-tip={formatMessage({ id: 'TRANSACTION_DETAIL.ENABLE_COPY' })} data-for={`contract${index}`}>
+                                                { `${contract.substr(0, 10)}...${contract.substr(-10)}` }
+                                                <ReactTooltip id={`contract${index}`} effect='solid' />
                                             </span>
                                         </CopyToClipboard>
                                     </div>
@@ -52,7 +53,7 @@ class DappWhitelistController extends React.Component {
                                         <FormattedMessage id='DAPP_WHITELIST.ADD_TIME' />
                                         <span>{moment(addTime).format('YYYY-MM-DD HH:mm')}</span>
                                     </div>
-                                </div>)
+                                </div>);
                         })
                     }
                     {
@@ -61,7 +62,7 @@ class DappWhitelistController extends React.Component {
                     </div>
                 </div>
             </div>
-        )
+        );
     }
 }
 

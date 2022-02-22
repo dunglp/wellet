@@ -84,7 +84,7 @@ class LoginController extends React.Component {
                         onEnter={ this.onButtonClick }
                         tabIndex={ 1 }
                     />
-            
+
                     <Button
                         id='BUTTON.CONTINUE'
                         isValid={ password.isValid }

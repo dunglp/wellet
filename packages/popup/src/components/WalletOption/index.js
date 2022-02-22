@@ -17,9 +17,9 @@ const WalletOption = props => {
 
     return (
         <div className={ `walletOption ${ className }`} >
-            <div className="iconWrap"></div>
+            <div className='iconWrap'></div>
             <Button id={titleKey} onClick={ onClick } />
-            <div className="tip"><FormattedMessage id={descKey}/></div>
+            <div className='tip'><FormattedMessage id={descKey}/></div>
         </div>
     );
 };

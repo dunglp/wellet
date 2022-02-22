@@ -16,7 +16,7 @@ const WritingPhrase = props => {
     return (
         <div className='insetContainer writingPhrase'>
             <div className='pageHeader'>
-                <div className="back" onClick={ onCancel }></div>
+                <div className='back' onClick={ onCancel }></div>
                 <FormattedMessage id='CREATION.CREATE.TITLE' />
             </div>
             <div className='greyModal'>

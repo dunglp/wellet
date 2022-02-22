@@ -1,1 +1,1 @@
-export const tokensMap = {}
+export const tokensMap = {};

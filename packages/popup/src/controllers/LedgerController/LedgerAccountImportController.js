@@ -18,11 +18,11 @@ class LedgerAccountImportController extends React.Component {
     state = {
         subStage: 'choose account',
         isLoading: false,
-        error:'',
-        accounts:[],
-        address:'',
-        name:'',
-        isValid:false
+        error: '',
+        accounts: [],
+        address: '',
+        name: '',
+        isValid: false
     };
 
     constructor() {
@@ -30,73 +30,70 @@ class LedgerAccountImportController extends React.Component {
         this.import = this.import.bind(this);
     }
 
-    async componentDidMount(){
+    async componentDidMount() {
         const { chains } = this.props;
         const accounts = [];
         const { ledgerImportAddress } = this.props;
-        for(const address of ledgerImportAddress){
+        for(const address of ledgerImportAddress) {
             const account = await PopupAPI.getAccountInfo(address);
-            let balance = account[chains === '_'? 'mainchain':'sidechain'].balance;
-            balance = balance ? balance:0;
-            accounts.push({address,balance:balance});
+            let balance = account[chains === '_' ? 'mainchain' : 'sidechain'].balance;
+            balance = balance ? balance : 0;
+            accounts.push({ address, balance });
         }
-        this.setState({accounts});
+        this.setState({ accounts });
     }
 
-    handleCancel(){
-        this.setState({subStage: 'choose account'});
+    handleCancel() {
+        this.setState({ subStage: 'choose account' });
     }
 
-    async handleSubmit(name){
-
+    async handleSubmit(name) {
         const { address } = this.state;
 
         const res = await PopupAPI.importAccount(
             address,
             name
         );
-        PopupAPI.setGaEvent('Ledger','Login',address);
+        PopupAPI.setGaEvent('Ledger', 'Login', address);
         if(res)PopupAPI.resetState();
     }
 
-    toggleAddress(address,index) {
+    toggleAddress(address, index) {
         const { ledgerImportAddress } = this.props;
-        ledgerImportAddress.forEach((v,i)=>{
-            if(i === index){
-                this.refs['option' + index].classList.toggle('isSelected');
-                this.refs['option' + index].getElementsByClassName('checkbox')[0].classList.toggle('isSelected');
-                if(this.refs['option' + index].classList.contains('isSelected')){
-                    this.setState({address,isValid:true});
-                } else {
-                    this.setState({address:'',isValid:false});
-                }
+        ledgerImportAddress.forEach((v, i) => {
+            if(i === index) {
+                this.refs[`option${ index}`].classList.toggle('isSelected');
+                this.refs[`option${ index}`].getElementsByClassName('checkbox')[0].classList.toggle('isSelected');
+                if(this.refs[`option${ index}`].classList.contains('isSelected'))
+                    this.setState({ address, isValid: true });
+                 else
+                    this.setState({ address: '', isValid: false });
             }else{
-                this.refs['option'+i].classList.remove('isSelected');
-                this.refs['option'+i].getElementsByClassName('checkbox')[0].classList.remove('isSelected');
+                this.refs[`option${i}`].classList.remove('isSelected');
+                this.refs[`option${i}`].getElementsByClassName('checkbox')[0].classList.remove('isSelected');
             }
         });
     }
-
 
     async import() {
         const { formatMessage } = this.props.intl;
         const { accounts } = this.props;
         const { address } = this.state;
-        if(Object.keys(accounts).includes(address)){
-            Toast.fail(formatMessage({id:'CREATION.LEDGER.REPEAT_IMPORT'}), 3, () => {}, true);
+        if(Object.keys(accounts).includes(address)) {
+            Toast.fail(formatMessage({ id: 'CREATION.LEDGER.REPEAT_IMPORT' }), 3, () => {}, true);
             return;
         }
-        this.setState({subStage:'fill name'});
+        this.setState({ subStage: 'fill name' });
     }
 
     renderAccounts() {
-        const { accounts,isValid } = this.state;
+        const { accounts, isValid } = this.state;
         const { isLoading } = this.state;
         return (
             <div className='insetContainer mnemonicImport'>
                 <div className='pageHeader'>
-                    <div className="back" onClick={ () => PopupAPI.changeState(APP_STATE.LEDGER) }>&nbsp;</div>
-                    <FormattedMessage id="CREATION.RESTORE.MNEMONIC.RELATED_TO.ACCOUNT.TITLE" />
+                    <div className='back' onClick={ () => PopupAPI.changeState(APP_STATE.LEDGER) }>&nbsp;</div>
+                    <FormattedMessage id='CREATION.RESTORE.MNEMONIC.RELATED_TO.ACCOUNT.TITLE' />
                 </div>
                 <div className='greyModal'>
                     <div className='modalDesc'>
@@ -104,19 +101,19 @@ class LedgerAccountImportController extends React.Component {
                     </div>
                     <div className='addressList'>
 
-                        { accounts.map(({address,balance}, index) => {
+                        { accounts.map(({ address, balance }, index) => {
                             return (
                                 <div
-                                    ref={ 'option'+index }
+                                    ref={ `option${index}` }
                                     className='addressOption'
                                     key={ index }
                                     tabIndex={ index + 1 }
-                                    onClick={ () => !isLoading && this.toggleAddress(address,index) }
+                                    onClick={ () => !isLoading && this.toggleAddress(address, index) }
                                 >
                                     <div className='checkbox'>&nbsp;</div>
-                                    <span className="address">
-                                        <span>{ `${address.substr(0,10)}...${address.substr(-10)}` }</span>
-                                        <span><FormattedMessage id="COMMON.BALANCE" /> <FormattedMessage id="ACCOUNT.BALANCE" values={{amount:balance/1000000}} /></span>
+                                    <span className='address'>
+                                        <span>{ `${address.substr(0, 10)}...${address.substr(-10)}` }</span>
+                                        <span><FormattedMessage id='COMMON.BALANCE' /> <FormattedMessage id='ACCOUNT.BALANCE' values={{ amount: balance / 1000000 }} /></span>
                                     </span>
                                 </div>
                             );
@@ -137,19 +134,16 @@ class LedgerAccountImportController extends React.Component {
 
     render() {
         const { subStage } = this.state;
-        if(subStage === 'choose account'){
+        if(subStage === 'choose account')
             return this.renderAccounts();
-        } else {
+
             return <AccountName onCancel={this.handleCancel.bind(this)} onSubmit={this.handleSubmit.bind(this)} />;
-        }
-
-
     }
 }
 
 export default injectIntl(
     connect(state => ({
-        accounts:state.accounts.accounts,
+        accounts: state.accounts.accounts,
         ledgerImportAddress: state.app.ledgerImportAddress
     }))(LedgerAccountImportController)
 );

@@ -104,7 +104,7 @@ class SendPage extends React.Component {
                     name: basic[ token ].name,
                     mode
                 }
-            },() => this.validateAmount());
+            }, () => this.validateAmount());
         }
 
         this.setState({

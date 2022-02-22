@@ -39,7 +39,7 @@ class AddTokenController extends React.Component {
         const { formatMessage } = this.props.intl;
         const { onCancel } = this.props;
         return (
-            <div className='insetContainer send' onClick={ () => { this.setState({ isOpen: {account: false, token: false } }); } }>
+            <div className='insetContainer send' onClick={ () => { this.setState({ isOpen: { account: false, token: false } }); } }>
                 <div className='pageHeader'>
                     <div className='back' onClick={onCancel}> </div>
                     <FormattedMessage id='MENU.ADD_TRC20_TOKEN'/>
@@ -53,10 +53,11 @@ class AddTokenController extends React.Component {
                                 this.state.address.value = value;
                                 this.state.address.valid = TronWeb.isAddress(value);
                                 this.setState({ address: this.state.address });
-                            }} placeholder={formatMessage({ id: 'MENU.ADD_TRC20_TOKEN.INPUT_PLACE_HOLDER' })} />
+                            }} placeholder={formatMessage({ id: 'MENU.ADD_TRC20_TOKEN.INPUT_PLACE_HOLDER' })}
+                            />
                         </div>
                     </div>
-                    <button onClick={ () => this.addToken(this.state.address.value) } className={('customButton primary addToken') + ( this.state.address.valid ? ' is-valid' : ' is-invalid') }>
+                    <button onClick={ () => this.addToken(this.state.address.value) } className={`customButton primary addToken${ this.state.address.valid ? ' is-valid' : ' is-invalid'}` }>
                         <FormattedMessage id='BUTTON.ADD_TOKEN' />
                     </button>
                 </div>

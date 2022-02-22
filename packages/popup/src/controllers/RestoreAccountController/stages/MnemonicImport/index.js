@@ -21,7 +21,7 @@ class MnemonicImport extends React.Component {
         mnemonic: '',
         isValid: false,
         isLoading: false,
-        error:''
+        error: ''
     };
 
     constructor() {
@@ -46,9 +46,8 @@ class MnemonicImport extends React.Component {
     async changeStage(newStage) {
         if(newStage === IMPORT_STAGE.SELECTING_ACCOUNTS) {
             const res = await this.generateAccounts();
-            if(!res) {
+            if(!res)
                 return false;
-            }
         }
         this.setState({
             subStage: newStage
@@ -66,32 +65,30 @@ class MnemonicImport extends React.Component {
         const { formatMessage } = this.props.intl;
         const addresses = [];
         for(let i = 0; i < 5; i++) {
-            let account = Utils.getAccountAtIndex(
+            const account = Utils.getAccountAtIndex(
                 mnemonic,
                 i
             );
             if(!(account.address in this.props.accounts)) {
                 const accountInfo = await PopupAPI.getAccountInfo(account.address);
-                let balance = accountInfo[chains === '_'? 'mainchain':'sidechain'].balance;
-                balance = balance ? balance:0;
+                let balance = accountInfo[chains === '_' ? 'mainchain' : 'sidechain'].balance;
+                balance = balance ? balance : 0;
                 account.balance = balance;
                 addresses.push(account);
             }
-
         }
         if(addresses.length === 0) {
             this.setState({
                 isLoading: false
             });
-            T.notify(formatMessage({id:'CHOOSING_TYPE.MNEMONIC.NO_OPTIONS'}))
+            T.notify(formatMessage({ id: 'CHOOSING_TYPE.MNEMONIC.NO_OPTIONS' }));
             return false;
-        } else {
+        }
             this.setState({
                 addresses,
                 isLoading: false
             });
             return true;
-        }
     }
 
     toggleAddress(index) {
@@ -144,15 +141,15 @@ class MnemonicImport extends React.Component {
         return (
             <div className='insetContainer mnemonicImport'>
                 <div className='pageHeader'>
-                    <div className="back" onClick={ () => this.changeStage(IMPORT_STAGE.ENTERING_MNEMONIC) }></div>
-                    <FormattedMessage id="CREATION.RESTORE.MNEMONIC.RELATED_TO.ACCOUNT.TITLE" />
+                    <div className='back' onClick={ () => this.changeStage(IMPORT_STAGE.ENTERING_MNEMONIC) }></div>
+                    <FormattedMessage id='CREATION.RESTORE.MNEMONIC.RELATED_TO.ACCOUNT.TITLE' />
                 </div>
                 <div className='greyModal'>
                     <div className='modalDesc'>
                         <FormattedMessage id='MNEMONIC_IMPORT.SELECTION' />
                     </div>
                     <div className='addressList'>
-                        { addresses.map(({ address,balance }, index) => {
+                        { addresses.map(({ address, balance }, index) => {
                             const isSelected = selected.includes(index);
                             // const icon = isSelected ? 'dot-circle' : 'circle';
                             const className = `addressOption ${ isSelected ? 'isSelected' : '' } ${ isLoading ? 'isLoading' : '' }`;
@@ -165,9 +162,9 @@ class MnemonicImport extends React.Component {
                                     onClick={ () => !isLoading && this.toggleAddress(index) }
                                 >
                                     <div className={ `checkbox ${ isSelected ? 'isSelected' : '' }` }>&nbsp;</div>
-                                    <span className="address">
-                                        <span>{ `${address.substr(0,10)}...${address.substr(-10)}` }</span>
-                                        <span><FormattedMessage id="COMMON.BALANCE" /> <FormattedMessage id="ACCOUNT.BALANCE" values={{amount:balance/1000000}} /></span>
+                                    <span className='address'>
+                                        <span>{ `${address.substr(0, 10)}...${address.substr(-10)}` }</span>
+                                        <span><FormattedMessage id='COMMON.BALANCE' /> <FormattedMessage id='ACCOUNT.BALANCE' values={{ amount: balance / 1000000 }} /></span>
                                     </span>
                                 </div>
                             );
@@ -201,10 +198,10 @@ class MnemonicImport extends React.Component {
         return (
             <div className='insetContainer mnemonicImport'>
                 <div className='pageHeader'>
-                    <div className="back" onClick={ onCancel }></div>
-                    <FormattedMessage id="CREATION.RESTORE.MNEMONIC.TITLE" />
+                    <div className='back' onClick={ onCancel }></div>
+                    <FormattedMessage id='CREATION.RESTORE.MNEMONIC.TITLE' />
                 </div>
-                <div className={'greyModal'+(!isValid && error?' error':'')}>
+                <div className={`greyModal${!isValid && error ? ' error' : ''}`}>
                     <Toast />
                     <div className='modalDesc'>
                         <FormattedMessage id='MNEMONIC_IMPORT.DESC' />

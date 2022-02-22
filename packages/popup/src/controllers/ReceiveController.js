@@ -3,8 +3,8 @@ import QRCode from 'qrcode-react';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import { Toast } from 'antd-mobile';
 import { FormattedMessage, injectIntl } from 'react-intl';
-import { PopupAPI } from "@tronlink/lib/api";
-import { APP_STATE } from "@tronlink/lib/constants";
+import { PopupAPI } from '@tronlink/lib/api';
+import { APP_STATE } from '@tronlink/lib/constants';
 
 class ReceiveController extends React.Component {
 // const ReceiveController = props => {
@@ -23,14 +23,13 @@ class ReceiveController extends React.Component {
                 imgUrl: selectedToken.imgUrl ? selectedToken.imgUrl : token10DefaultImg,
                 balance: selectedToken.balance || 0,
                 frozenBalance: selectedToken.frozenBalance || 0,
-                isMapping : selectedToken.isMapping
+                isMapping: selectedToken.isMapping
             };
             PopupAPI.setSelectedToken(selectedCurrency);
             PopupAPI.changeState(APP_STATE.TRANSACTIONS);
             PopupAPI.changeDealCurrencyPage(0);
-        }else {
+        }else
             PopupAPI.changeState(APP_STATE.READY);
-        }
     }
 
     render() {
@@ -39,23 +38,23 @@ class ReceiveController extends React.Component {
         return (
             <div className='insetContainer receive'>
                 <div className='pageHeader'>
-                    <div className="back" onClick={(e) => this.onCancel() }></div>
-                    <FormattedMessage id="ACCOUNT.RECEIVE" />
+                    <div className='back' onClick={(e) => this.onCancel() }></div>
+                    <FormattedMessage id='ACCOUNT.RECEIVE' />
                 </div>
                 <div className='greyModal'>
-                    <div className="desc">
-                        <FormattedMessage id="ACCOUNT.RECEIVE.DESC" />
+                    <div className='desc'>
+                        <FormattedMessage id='ACCOUNT.RECEIVE.DESC' />
                     </div>
                     <QRCode
                         value={address}
                     />
-                    <div class="address">
+                    <div className='address'>
                         {address}
                     </div>
                     <div>
                         <CopyToClipboard text={address} onCopy={ () => { Toast.info(formatMessage({ id: 'TOAST.COPY' }), 2); }}>
-                            <a className="copyAddressBtn">
-                                <FormattedMessage id="ACCOUNT.RECEIVE.BUTTON" />
+                            <a className='copyAddressBtn'>
+                                <FormattedMessage id='ACCOUNT.RECEIVE.BUTTON' />
                             </a>
                         </CopyToClipboard>
                     </div>
@@ -63,7 +62,6 @@ class ReceiveController extends React.Component {
             </div>
         );
     }
-
-};
+}
 
 export default injectIntl(ReceiveController);

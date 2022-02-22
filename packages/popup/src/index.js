@@ -18,7 +18,7 @@ import { version } from '@tronlink/popup/package';
 import { tokensMap } from './tokensMap.js';
 import axios from 'axios';
 
-import { WELSCAN, WELSCAN_API } from '@tronlink/lib/constants'
+import { WELSCAN, WELSCAN_API } from '@tronlink/lib/constants';
 
 import {
     setAppState,
@@ -59,22 +59,20 @@ localStorage.setItem('tokensMap', JSON.stringify(tokensMap));
 
 const logger = new Logger('Popup');
 
-let getTokensMap = async function () {
-    logger.info("Begin querying for the tokensMap")
+const getTokensMap = async function () {
+    logger.info('Begin querying for the tokensMap');
     //let { data } = await axios.get(`https://apilist.tronscan.org/api/tokens?showAll=1&limit=4000`); //FIX
-    let { data } = await axios.get(`${ WELSCAN_API }/tokenrecords?page=1&limit=4000`); //FIX!
-    logger.info("Done querying for the tokensMap")
+    const { data } = await axios.get(`${ WELSCAN_API }/tokenrecords?page=1&limit=4000`); //FIX!
+    logger.info('Done querying for the tokensMap');
     for (let i = 0; i < data.data.result.length; i++) {
-        if (!tokensMap[data.data.result[i]._id]) {
-            tokensMap[data.data.result[i]._id] = data.data.result[i].token_name + '_' + data.data.result[i]._id + '_' + data.data.result[i].precision + '_' + data.data.result[i].token_abbreviation;
-        }
+        if (!tokensMap[data.data.result[i]._id])
+            tokensMap[data.data.result[i]._id] = `${data.data.result[i].token_name }_${ data.data.result[i]._id }_${ data.data.result[i].precision }_${ data.data.result[i].token_abbreviation}`;
     }
-    
+
     localStorage.setItem('tokensMap', JSON.stringify(tokensMap));
 };
 
 getTokensMap();
-
 
 export const app = {
     duplex: new MessageDuplex.Popup(),
@@ -113,9 +111,9 @@ export const app = {
     async getAppState() {
         PopupAPI.init(this.duplex);
         const setting = await PopupAPI.getSetting();
-        if (setting.lock.duration !== 0 && new Date().getTime() - setting.lock.lockTime > setting.lock.duration) {
+        if (setting.lock.duration !== 0 && new Date().getTime() - setting.lock.lockTime > setting.lock.duration)
             PopupAPI.lockWallet();
-        }
+
         let [
             appState,
             nodes,
@@ -165,9 +163,8 @@ export const app = {
         //this.store.dispatch(setLedgerImportAddress(ledgerImportAddress));
         this.store.dispatch(setVTokenList(vTokenList));
         this.store.dispatch(setChains(chains));
-        if (selectedAccount) {
+        if (selectedAccount)
             this.store.dispatch(setAccount(selectedAccount));
-        }
 
         logger.info('Set application state');
     },
@@ -206,8 +203,8 @@ export const app = {
         ));
 
         this.duplex.on('setPriceList', priceList => {
-          logger.debug("Set price list in redux store: ", priceList)
-          this.store.dispatch(setPriceList(priceList))
+          logger.debug('Set price list in redux store: ', priceList);
+          this.store.dispatch(setPriceList(priceList));
         });
 
         this.duplex.on('setCurrency', currency => this.store.dispatch(
@@ -257,7 +254,6 @@ export const app = {
         this.duplex.on('setChain', chains => this.store.dispatch(
             setChains(chains)
         ));
-
     },
 
     render() {

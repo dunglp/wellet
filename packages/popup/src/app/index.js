@@ -45,10 +45,10 @@ class App extends React.Component {
         en: enMessages,
         //zh: zhMessages,
         //ja: jaMessages
-    }
+    };
 
     render() {
-        const { appState,accounts,prices,nodes,language='en',lock,version,/*authorizeDapps,*/vTokenList,chains } = this.props;
+        const { appState, accounts, prices, nodes, language = 'en', lock, version, /*authorizeDapps,*/vTokenList, chains } = this.props;
         let dom = null;
         switch(appState) {
             case APP_STATE.UNINITIALISED:
@@ -79,13 +79,13 @@ class App extends React.Component {
                 dom = <SendController chains={chains} accounts={accounts} />;
                 break;
             case APP_STATE.TRANSFER:
-                dom = <TransferController accounts={accounts} chains={chains} onCancel={ () => PopupAPI.changeState(APP_STATE.TRANSACTIONS) }  />;
+                dom = <TransferController accounts={accounts} chains={chains} onCancel={ () => PopupAPI.changeState(APP_STATE.TRANSACTIONS) } />;
                 break;
             case APP_STATE.TRANSACTIONS:
                 dom = <TransactionsController chains={chains} prices={prices} accounts={accounts} onCancel={ () => PopupAPI.changeState(APP_STATE.READY) } />;
                 break;
             case APP_STATE.SETTING:
-                dom = <SettingController lock={lock} version={version} language={language} prices={prices} onCancel={ () => PopupAPI.changeState(APP_STATE.READY) } />
+                dom = <SettingController lock={lock} version={version} language={language} prices={prices} onCancel={ () => PopupAPI.changeState(APP_STATE.READY) } />;
                 break;
             case APP_STATE.ADD_TRC20_TOKEN:
                 dom = <AddTokenController tokens={accounts.selected.tokens} onCancel={ () => PopupAPI.changeState(APP_STATE.READY) } />;
@@ -127,7 +127,7 @@ class App extends React.Component {
             //    dom = <LedgerAccountImportController chains={chains}  />;
             //    break;
             case APP_STATE.NODE_MANAGE:
-                dom = <NodeManageController nodes={nodes} chains={chains}  onCancel={ () => PopupAPI.changeState(APP_STATE.SETTING) } />;
+                dom = <NodeManageController nodes={nodes} chains={chains} onCancel={ () => PopupAPI.changeState(APP_STATE.SETTING) } />;
                 break;
             default:
                 dom =

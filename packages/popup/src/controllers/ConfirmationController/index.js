@@ -215,30 +215,26 @@ class ConfirmationController extends React.Component {
 
         let showParameters = false;
 
-        if (input.call_value) {
+        if (input.call_value)
             meta.push({ key: 'CONFIRMATIONS.COST', value: formatNumber(input.call_value / 1000000) });
-        }
 
-        if (input.amount && contractType === 'TransferContract') {
+        if (input.amount && contractType === 'TransferContract')
             meta.push({ key: 'CONFIRMATIONS.COST', value: formatNumber(input.amount / 1000000) });
-        } else if (input.amount) {
+         else if (input.amount)
             meta.push({ key: 'CONFIRMATIONS.COST', value: formatNumber(input.amount) });
-        }
 
-        if (input.frozen_balance) {
+        if (input.frozen_balance)
             meta.push({ key: 'CONFIRMATIONS.COST', value: formatNumber(input.frozen_balance / 1000000) });
-        }
 
         if (input.asset_name) {
             meta.push({
                 key: 'CONFIRMATIONS.TOKEN',
-                value: this.tokensMap[TronWeb.toUtf8(input.asset_name)].split('_')[0] + ' (' + TronWeb.toUtf8(input.asset_name) + ')'
+                value: `${this.tokensMap[TronWeb.toUtf8(input.asset_name)].split('_')[0] } (${ TronWeb.toUtf8(input.asset_name) })`
             });
         }
 
-        if (input.token_id) {
+        if (input.token_id)
             meta.push({ key: 'CONFIRMATIONS.TOKEN', value: input.token_id });
-        }
 
         if (input.to_address) {
             const address = TronWeb.address.fromHex(input.to_address);
@@ -257,35 +253,28 @@ class ConfirmationController extends React.Component {
             });
         }
 
-        if (input.function_selector) {
+        if (input.function_selector)
             meta.push({ key: 'CONFIRMATIONS.FUNCTION', value: input.function_selector });
             //args.length && args.map(({name,type,value})=>({key:name,value})).forEach(v=>meta.push(v))
-        }
 
-        if (input.trx_num) {
+        if (input.trx_num)
             meta.push({ key: 'CONFIRMATIONS.TRX_RATIO', value: formatNumber(input.trx_num) });
-        }
 
-        if (input.num) {
+        if (input.num)
             meta.push({ key: 'CONFIRMATIONS.TOKEN_RATIO', value: formatNumber(input.num) });
-        }
 
-        if (input.account_name) {
+        if (input.account_name)
             meta.push({ key: 'CONFIRMATIONS.ACCOUNT_NAME', value: input.account_name });
-        }
 
-        if (input.proposal_id) {
+        if (input.proposal_id)
             meta.push({ key: 'CONFIRMATIONS.PROPOSAL_ID', value: input.proposal_id });
-        }
 
-        if (input.quant) {
+        if (input.quant)
             meta.push({ key: 'CONFIRMATIONS.QUANTITY', value: formatNumber(input.quant) });
-        }
 
         // This should be translated
-        if ('is_add_approval' in input) {
+        if ('is_add_approval' in input)
             meta.push({ key: 'CONFIRMATIONS.APPROVE', value: input.is_add_approval });
-        }
 
         switch (contractType) {
             case 'ProposalCreateContract':
@@ -314,18 +303,19 @@ class ConfirmationController extends React.Component {
                     <div className='meta'>
                         {meta.map(({ key, value }) => (
                             key === 'CONFIRMATIONS.FUNCTION' ?
-                                <div className={'function' + (showArgs ? ' show' : '')}>
+                                <div className={`function${ showArgs ? ' show' : ''}`}>
                                     <div data-tip={formatMessage({ id: 'CONFIRMATIONS.CLICK_SHOW_PARAMS' })}
                                          data-for='showArgs' className='metaLine'
                                          onClick={() => args.length && this.setState({ showArgs: !showArgs })}
-                                         key={key}>
+                                         key={key}
+                                    >
                                         <FormattedMessage id={key}/>
                                         <span className='value'>
                                         {value}
                                         </span>
                                         {args.length ? <ReactTooltip id='showArgs' effect='solid'/> : null}
                                     </div>
-                                    <div className="show_arg" onClick={e => e.stopPropagation()}>
+                                    <div className='show_arg' onClick={e => e.stopPropagation()}>
                                         {
                                             JSON.stringify(args.map(({ name, value }) => {
                                                 const v = {};
@@ -383,8 +373,9 @@ class ConfirmationController extends React.Component {
                             const { whitelisting } = this.state;
                             whitelisting.isAutoAuthorize = !whitelisting.isAutoAuthorize;
                             this.setState({ whitelisting });
-                        }}>
-                            <div className={'radio' + (isAutoAuthorize ? ' checked' : '')}>&nbsp;</div>
+                        }}
+                        >
+                            <div className={`radio${ isAutoAuthorize ? ' checked' : ''}`}>&nbsp;</div>
                             <div className='txt'>
                                 <FormattedMessage id='CONFIRMATIONS.AUTO_AUTHORIZE.DESC'/>
                             </div>

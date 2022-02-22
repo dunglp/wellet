@@ -1,16 +1,17 @@
 {
-  "name": "@tronlink/pageHook",
-  "main": "index.js",
-  "repository": "https://github.com/nhatanh002/wellet",
-  "author": "nhatanh002 <nhatanh02@gmail.com>",
-  "private": true,
-  "version": "3.1.0",
-  "scripts": {
-    "build": "webpack --config ../../webpack.config.js --progress --colors -o ../../dist/pageHook.js",
-    "lint": "npx eslint . --fix"
-  },
-  "dependencies": {
-    "ethers": "^4.0.33",
-    "sunweb": "^1.0.7"
-  }
+	"name": "@tronlink/pageHook",
+	"main": "index.js",
+	"repository": "https://github.com/nhatanh002/wellet",
+	"author": "nhatanh002 <nhatanh02@gmail.com>",
+	"private": true,
+	"version": "3.1.0",
+	"scripts": {
+		"build": "webpack --config ../../webpack.config.js --progress --colors -o ../../dist/pageHook.js",
+		"lint": "npx eslint . --fix"
+	},
+	"dependencies": {
+		"@tronlink/tronweb": "^0.1.0",
+		"ethers": "^4.0.33",
+		"sunweb": "^1.0.7"
+	}
 }

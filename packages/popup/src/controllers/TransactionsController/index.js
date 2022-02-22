@@ -6,9 +6,9 @@ import { BigNumber } from 'bignumber.js';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import { PopupAPI } from '@tronlink/lib/api';
 import { APP_STATE, CONTRACT_ADDRESS, ACCOUNT_TYPE, WELSCAN_API } from '@tronlink/lib/constants';
-import Logger from '@tronlink/lib/logger'
+import Logger from '@tronlink/lib/logger';
 
-const logger = new Logger("TransactionsController")
+const logger = new Logger('TransactionsController');
 BigNumber.config({ EXPONENTIAL_AT: [-20, 30] });
 const token10DefaultImg = require('@tronlink/popup/src/assets/images/new/token_10_default.png');
 
@@ -56,12 +56,13 @@ class TransactionsController extends React.Component {
                         () => {
                             Toast.hide();
                             onCancel();
-                        }}></div>
+                        }}
+                    ></div>
                     <span className='title'>{name}</span>
                     {
                         id !== '_' ?
                             <span className='detail' onClick={() => {
-                                let url = `${ WELSCAN_API }/tokenrecord/`+id;
+                                const url = `${ WELSCAN_API }/tokenrecord/${id}`;
                                 //url += (id.match(/^W/) ? 'token20/' + id : 'token721/' + id);
                                 window.open(url);
                             }
@@ -81,9 +82,11 @@ class TransactionsController extends React.Component {
                     } : {
                         overflow: id === CONTRACT_ADDRESS.USDT ? 'visible' : 'hidden',
                         height: (id === '_' || (id === CONTRACT_ADDRESS.USDT && airdropInfo.isShow) ? 216 : 'auto')
-                    }}>
+                    }}
+                    >
                         <img src={imgUrl ? imgUrl : token10DefaultImg}
-                             onError={(e) => e.target.src = token10DefaultImg}/>
+                             onError={(e) => e.target.src = token10DefaultImg}
+                        />
                         <div className='amount'>
                             {amount}
                         </div>
@@ -120,13 +123,15 @@ class TransactionsController extends React.Component {
                                             id === CONTRACT_ADDRESS.USDT && airdropInfo.isShow ?
                                                 <div className='desc usdt'>
                                                     <div className='usdt_inner'
-                                                         onClick={() => PopupAPI.changeState(APP_STATE.USDT_INCOME_RECORD)}>
+                                                         onClick={() => PopupAPI.changeState(APP_STATE.USDT_INCOME_RECORD)}
+                                                    >
                                                         <div className='usdt_inner_bg'>
                                                             <div className='cell'>
                                                                 <div className='income'>
                                                                     <div className='txt'>
                                                                         <FormattedMessage
-                                                                            id='USDT.TEXT.YESTERDAY_INCOME'/>
+                                                                            id='USDT.TEXT.YESTERDAY_INCOME'
+                                                                        />
                                                                     </div>
                                                                     <div className='number'>
                                                                         +{new BigNumber(new BigNumber(airdropInfo.yesterdayEarnings).shiftedBy(-6).toFixed(2)).toFormat()}
@@ -154,7 +159,8 @@ class TransactionsController extends React.Component {
                                             ID:&nbsp;{id}
                                             <CopyToClipboard text={id} onCopy={() => {
                                                 Toast.info(formatMessage({ id: 'TOAST.COPY' }));
-                                            }}>
+                                            }}
+                                            >
                                                 <span className='copy'>&nbsp;</span>
                                             </CopyToClipboard>
                                         </div>
@@ -170,8 +176,8 @@ class TransactionsController extends React.Component {
                             const transactions = await PopupAPI.getTransactionsByTokenId(id, '', 'all');
                             Toast.hide();
                             this.setState({ transactions, currentPage: 1, isRequest: false });
-
-                        }}>
+                        }}
+                        >
                             <FormattedMessage id='ACCOUNT.ALL'/>
                         </div>
                         <div className={index == 2 ? 'active' : ''} onClick={async () => {
@@ -180,8 +186,8 @@ class TransactionsController extends React.Component {
                             const transactions = await PopupAPI.getTransactionsByTokenId(id, '', 'to');
                             Toast.hide();
                             this.setState({ transactions, currentPage: 1, isRequest: false });
-
-                        }}>
+                        }}
+                        >
                             <FormattedMessage id='ACCOUNT.RECEIVE'/>
                         </div>
                         <div className={index === 1 ? 'active' : ''} onClick={async () => {
@@ -190,7 +196,8 @@ class TransactionsController extends React.Component {
                             const transactions = await PopupAPI.getTransactionsByTokenId(id, '', 'from');
                             Toast.hide();
                             this.setState({ transactions, currentPage: 1, isRequest: false });
-                        }}>
+                        }}
+                        >
                             <FormattedMessage id='ACCOUNT.SEND'/>
                         </div>
                     </div>
@@ -205,9 +212,9 @@ class TransactionsController extends React.Component {
                                     Toast.loading('', 0);
                                     const records = await PopupAPI.getTransactionsByTokenId(id, typeof transactions.finger === 'string' ? transactions.finger : ++transactions.finger, key);
                                     Toast.hide();
-                                    if (records.records.length === 0 || !records.finger) {
+                                    if (records.records.length === 0 || !records.finger)
                                         this.setState({ isRequest: true });
-                                    } else {
+                                     else {
                                         transactions.records = transactions.records.concat(records.records);
                                         transactions.finger = records.finger;
                                         this.setState({ transactions, isRequest: false });
@@ -222,7 +229,6 @@ class TransactionsController extends React.Component {
                                 <div className='lists'>
                                     {
                                         transactions.records.map((v, transIndex) => {
-
                                             const direction = v.toAddress === v.fromAddress ? 'send' : (v.toAddress === address ? 'receive' : 'send');
                                             const addr = v.toAddress === address ? v.fromAddress : v.toAddress;
 
@@ -231,15 +237,18 @@ class TransactionsController extends React.Component {
                                                      onClick={async () => {
                                                          Toast.loading('', 0);
                                                          const res = await PopupAPI.setTransactionDetail(v.hash);
-                                                       logger.debug("setTransactionDetail result: ", res)
+                                                       logger.debug('setTransactionDetail result: ', res);
                                                          Toast.hide();
                                                          PopupAPI.changeState(APP_STATE.TRANSACTION_DETAIL);
-                                                     }}>
+                                                     }}
+                                                >
                                                     <div className='left'>
                                                         <div
-                                                            className='address'>{`${addr.substr(0, 4)}...${addr.substr(-12)}`}</div>
+                                                            className='address'
+                                                        >{`${addr.substr(0, 4)}...${addr.substr(-12)}`}</div>
                                                         <div
-                                                            className='time'>{moment(v.timestamp).format('YYYY-MM-DD HH:mm:ss')}</div>
+                                                            className='time'
+                                                        >{moment(v.timestamp).format('YYYY-MM-DD HH:mm:ss')}</div>
                                                     </div>
                                                     <div className='right'>
                                                         {new BigNumber(v.amount).shiftedBy(-decimals).toString()}
@@ -264,16 +273,17 @@ class TransactionsController extends React.Component {
                     >
                         <FormattedMessage id='ACCOUNT.RECEIVE'/>
                     </button>
-                    <div className="line">&nbsp;</div>
+                    <div className='line'>&nbsp;</div>
                     <button className='send' onClick={(e) => {
                         PopupAPI.changeDealCurrencyPage(1);
                         PopupAPI.changeState(APP_STATE.SEND);
-                    }}>
+                    }}
+                    >
                         <FormattedMessage id='ACCOUNT.SEND'/>
                     </button>
                     {
                         accounts.selectedToken.isMapping && type !== ACCOUNT_TYPE.LEDGER ?
-                            <div className="line">&nbsp;</div>
+                            <div className='line'>&nbsp;</div>
                             :
                             null
                     }

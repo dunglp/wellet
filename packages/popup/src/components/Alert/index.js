@@ -9,32 +9,32 @@ import { injectIntl } from 'react-intl';
 import './Alert.scss';
 
 class Alert extends React.Component {
-    constructor(props){
+    constructor(props) {
         super(props);
     }
 
-    componentDidMount(){
+    componentDidMount() {
 
     }
 
     render() {
-        const {formatMessage} = this.props.intl;
+        const { formatMessage } = this.props.intl;
         const {
             className = '',
             show = true,
-            title = formatMessage({id: 'CREATION.LEDGER.ALERT.TIP'}),
-            body = formatMessage({id: 'CREATION.LEDGER.ALERT.BODY'}),
+            title = formatMessage({ id: 'CREATION.LEDGER.ALERT.TIP' }),
+            body = formatMessage({ id: 'CREATION.LEDGER.ALERT.BODY' }),
             buttonText = 'BUTTON.CONFIRM'
         } = this.props;
 
         return (
             show
                 ?
-                <div className={"alert"+(className?' '+className:"")}>
-                    <div className="title">
+                <div className={`alert${className ? ` ${ className}` : ''}`}>
+                    <div className='title'>
                         {title}
                     </div>
-                    <div className="body">
+                    <div className='body'>
                         {body}
                     </div>
                     <Button id={buttonText} onClick={this.props.onClose}/>
@@ -43,6 +43,6 @@ class Alert extends React.Component {
                 null
         );
     }
-};
+}
 
 export default injectIntl(Alert);

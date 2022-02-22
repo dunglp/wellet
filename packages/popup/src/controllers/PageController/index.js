@@ -77,11 +77,7 @@ class PageController extends React.Component {
                                     transform: `translateX(${ pageOffset }px)`
                                 }}
                             >
-                                <Page
-                                    //changePage={ this.changePage }
-                                    //setSubTitle={ this.setSubTitle }
-                                    //onPageChange={ callback => this.onPageChange(index, callback) }
-                                />
+                                <Page />
                             </div>
                         );
                     }) }
