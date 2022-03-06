@@ -14,9 +14,9 @@ const ChoosingType = (props) => {
 				<FormattedMessage id='CHOOSING_TYPE.TITLE' />
 			</div>
 			<div className='greyModal'>
-				{/* <div className='option' onClick={ () => onSubmit(RESTORATION_STAGE.IMPORT_MNEMONIC) }>
+				<div className='option' onClick={ () => onSubmit(RESTORATION_STAGE.IMPORT_MNEMONIC) }>
                     <FormattedMessage id='CHOOSING_TYPE.MNEMONIC.TITLE' />
-                </div> */}
+                </div>
 				<div
 					className='option'
 					onClick={() =>

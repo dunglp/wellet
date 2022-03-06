@@ -1,3 +1,4 @@
+/* eslint-disable react/no-string-refs */
 import React from 'react';
 import Button from '@tronlink/popup/src/components/Button';
 import Utils from '@tronlink/lib/utils';
@@ -7,7 +8,7 @@ import { FormattedMessage, injectIntl } from 'react-intl';
 import { PopupAPI } from '@tronlink/lib/api';
 import { bytesToString } from '@tronscan/client/src/utils/bytes';
 import { hexStr2byteArray } from '@tronscan/client/src/lib/code';
-import { pkToAddress, tronBase58toWel, welBase58toTron } from '@tronlink/tronweb/src/utils/crypto';
+import { pkToAddress, tronBase58toWel } from '@tronlink/tronweb/src/utils/crypto';
 
 import './KeystoreImport.scss';
 

@@ -4,7 +4,6 @@ import TronWeb from '@tronlink/tronweb';
 //import SunWeb from 'sunweb';
 
 import Utils from '@tronlink/lib/utils';
-import { CONTRACT_ADDRESS, SIDE_CHAIN_ID, NODE } from '@tronlink/lib/constants'
 import RequestHandler from './handlers/RequestHandler';
 import ProxiedProvider from './handlers/ProxiedProvider';
 //import SunWeb from './SunWeb';
@@ -23,16 +22,16 @@ const pageHook = {
         this._bindEventChannel();
         this._bindEvents();
 
-        this.request('init').then(({ address, node, name, type, phishingList}) => {
+        this.request('init').then(({ address, node, name, type, phishingList }) => {
             if(address)
-                this.setAddress({address,name,type});
+                this.setAddress({ address, name, type });
 
             if(node.fullNode)
                 this.setNode(node);
-            logger.info("Fullnode: ", node.fullNode)
+            logger.info('Fullnode: ', node.fullNode);
             logger.info('Wellet initiated');
             const href = window.location.origin;
-            const c = phishingList.filter(({url})=>{
+            const c = phishingList.filter(({ url }) => {
                 const reg = new RegExp(url);
                 return href.match(reg);
             });
@@ -54,17 +53,6 @@ const pageHook = {
             new ProxiedProvider()
         );
 
-        const welWeb1 = new TronWeb(
-            new ProxiedProvider(),
-            new ProxiedProvider(),
-            new ProxiedProvider()
-        );
-
-        const welWeb2 = new TronWeb(
-            new ProxiedProvider(),
-            new ProxiedProvider(),
-            new ProxiedProvider()
-        );
        // const sunWeb = new SunWeb(
        //     tronWeb1,
        //     tronWeb2,
@@ -77,10 +65,8 @@ const pageHook = {
        //     SIDE_CHAIN_ID
        // );
 
-
-
         welWeb.extension = {}; //add a extension object for black list
-        welWeb.extension.setVisited=(href)=>{
+        welWeb.extension.setVisited = (href) => {
             this.setVisited(href);
         };
         this.proxiedMethods = {
@@ -107,7 +93,6 @@ const pageHook = {
         //    this.sign(...args)
         //);
 
-
         //window.sunWeb = sunWeb;
         window.welWeb = welWeb;
     },
@@ -127,9 +112,9 @@ const pageHook = {
         ));
     },
 
-    setAddress({address,name,type}) {
+    setAddress({ address, name, type }) {
         // logger.info('TronLink: New address configured');
-        if(!welWeb.isAddress(address)){
+        if(!welWeb.isAddress(address)) {
             welWeb.defaultAddress = {
                 hex: false,
                 base58: false
@@ -140,14 +125,13 @@ const pageHook = {
             //this.proxiedMethods.setMainAddress(address);
             //this.proxiedMethods.setSideAddress(address);
             welWeb.defaultAddress.name = name;
-            welWeb.defaultAddress.type =  type;
+            welWeb.defaultAddress.type = type;
             //sunWeb.mainchain.defaultAddress.name = name;
             //sunWeb.mainchain.defaultAddress.type = type;
             //sunWeb.sidechain.defaultAddress.name = name;
             //sunWeb.sidechain.defaultAddress.type = type;
             welWeb.ready = true;
         }
-
     },
 
     setNode(node) {
@@ -165,7 +149,7 @@ const pageHook = {
         //sunWeb.sidechain.eventServer.configure(NODE.SIDE.eventServer);
     },
 
-    setVisited(href){
+    setVisited(href) {
         this.request('setVisited', {
             href
         }).then(res => res).catch(err => {
