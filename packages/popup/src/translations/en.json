@@ -10,6 +10,7 @@
   "ERRORS.INVALID_TOKEN": "Not a valid WRC20 token",
   "ERRORS.TOKEN_ADDED": "Token already added exists in wallet",
   "ERRORS.SEND": "Error Occurred",
+  "ERRORS.NOT_UNLOCKED": "Wellet is not unlocked",
 
   "BUTTON.UNKNOWN": "Unknown button type",
   "BUTTON.CONTINUE": "Continue",
@@ -240,7 +241,7 @@
   "ACCOUNTS.EXPORT": "Export Account",
   "ACCOUNTS.EXPORT.MNEMONIC": "Mnemonic Phrase",
   "ACCOUNTS.EXPORT.PRIVATE_KEY": "Private Key",
-
+  "ACCOUNTS.EXPORT.CONFIRM_PASSWORD": "Please Enter Your Password",
   "LOGIN.PASSWORD.BACK": "Welcome back",
 
   "COMMON.BALANCE": "Balance",

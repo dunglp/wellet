@@ -140,11 +140,17 @@ const Utils = {
 
   getAccountAtIndex(mnemonic, index = 0) {
     const seed = bip39.mnemonicToSeed(mnemonic);
+    console.log('========= seed ============', seed);
     const node = bip32.fromSeed(seed);
+    console.log('========= node ============', node);
     const child = node.derivePath(`m/44'/195'/${index}'/0/0`);
-    const privateKey = child.privateKey.toString('hex');
-    const address = TronWeb.address.fromPrivateKey(privateKey);
+    console.log('========= child ============', child);
 
+    const privateKey = child.privateKey.toString('hex');
+    console.log('========= privateKey ============', privateKey);
+
+    const address = TronWeb.address.fromPrivateKey(privateKey);
+    console.log('========= address ============', address);
     return {
       privateKey,
       address,

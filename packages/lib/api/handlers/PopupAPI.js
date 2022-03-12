@@ -79,6 +79,10 @@ export default {
     return this.duplex.send('exportAccount');
   },
 
+  unlockExport(password) {
+    return this.duplex.send('unlockExport', password);
+  },
+
   getSelectedAccount() {
     return this.duplex.send('getSelectedAccount');
   },
@@ -284,6 +288,8 @@ export default {
   },
 
   getAccountInfo(address) {
+    console.log('========= account.address ============', address);
+
     return this.duplex.send('getAccountInfo', address);
   },
 

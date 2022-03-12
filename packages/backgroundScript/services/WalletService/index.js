@@ -402,6 +402,16 @@ class Wallet extends EventEmitter {
     });
   }
 
+  async unlockExport(password) {
+    const unlockFailed = await StorageService.unlockExport(password);
+    if (unlockFailed) {
+      logger.error(`Failed to unlock wallet: ${unlockFailed}`);
+      return Promise.reject(unlockFailed);
+    }
+
+    return Promise.resolve(true);
+  }
+
   async unlockWallet(password) {
     if (this.state !== APP_STATE.PASSWORD_SET) {
       logger.error(
@@ -1247,6 +1257,7 @@ class Wallet extends EventEmitter {
 
   async getAccountInfo(address) {
     logger.debug('[getAccountInfo] receiving address: ', address);
+    console.log('============[getAccountInfo] receiving address: ', address);
     const account = await NodeService.tronWeb.trx.getUnconfirmedAccount(
       address
     );

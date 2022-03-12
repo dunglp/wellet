@@ -1,22 +1,17 @@
 /* eslint-disable camelcase */
-/* eslint-disable new-cap */
 /* eslint-disable func-style */
 import { ADDRESS_PREFIX, ADDRESS_PREFIX_BYTE, ADDRESS_SIZE } from './address';
 import {
-  base64EncodeToString,
   base64DecodeFromString,
   hexStr2byteArray,
+  base64EncodeToString,
 } from './code';
 import { encode58, decode58 } from './base58';
 import { byte2hexStr, byteArray2hexStr } from './bytes';
 import { ec as EC } from 'elliptic';
-import {keccak256} from './ethersUtils';
+import { keccak256 } from './ethersUtils';
 
-import * as jsSHA from './sha256';
-import Logger from '@tronlink/lib/logger';
-
-const logger = new Logger('utils/crypto');
-
+import * as JsSHA from './sha256';
 export function getBase58CheckAddress(addressBytes) {
   const hash0 = SHA256(addressBytes);
   const hash1 = SHA256(hash0);
@@ -27,38 +22,35 @@ export function getBase58CheckAddress(addressBytes) {
   return encode58(checkSum);
 }
 
-export function decodeBase58Address(addressStr) {
-  if (typeof addressStr != 'string') return false;
+export function decodeBase58Address(base58Sting) {
+  console.log(' --------------decodeBase58Address ----------', base58Sting);
+  if (typeof base58Sting != 'string') return false;
 
-  if (addressStr.length <= 4) return false;
-  const decodeCheck = decode58(addressStr);
+  if (base58Sting.length <= 4) return false;
 
-  if (decodeCheck.length <= 4) return false;
+  let address = decode58(base58Sting);
 
-  // const len = address.length;
-  // const offset = len - 4;
-  // const checkSum = address.slice(offset);
-  const decodeData = decodeCheck.slice(0, decodeCheck.length - 4);
+  if (base58Sting.length <= 4) return false;
 
-  const hash0 = SHA256(decodeData);
+  const len = address.length;
+  const offset = len - 4;
+  const checkSum = address.slice(offset);
+
+  address = address.slice(0, offset);
+
+  const hash0 = SHA256(address);
   const hash1 = SHA256(hash0);
-
-  logger.info('============================ hash1 ================', hash1);
+  const checkSum1 = hash1.slice(0, 4);
 
   if (
-    hash1[0] === decodeCheck[decodeData.length] &&
-    hash1[1] === decodeCheck[decodeData.length + 1] &&
-    hash1[2] === decodeCheck[decodeData.length + 2] &&
-    hash1[3] === decodeCheck[decodeData.length + 3]
+    checkSum[0] == checkSum1[0] &&
+    checkSum[1] == checkSum1[1] &&
+    checkSum[2] == checkSum1[2] &&
+    checkSum[3] == checkSum1[3]
   )
-    return decodeData;
+    return address;
 
-  logger.info(
-    '============================ decodeData ================',
-    decodeData
-  );
-  return decodeData;
-  // throw new Error('Invalid address provided');
+  throw new Error('Invalid address provided');
 }
 
 export function signTransaction(priKeyBytes, transaction) {
@@ -277,8 +269,16 @@ export function ECKeySign(hashBytes, priKeyBytes) {
   return signHex;
 }
 
+// export function SHA256(msgBytes) {
+//   const msgHex = byteArray2hexStr(msgBytes);
+//   const hashHex = sha256(`0x${msgHex}`).replace(/^0x/, '');
+//   return hexStr2byteArray(hashHex);
+// }
+
+//toDO:
+//return 32 bytes
 export function SHA256(msgBytes) {
-  const shaObj = new jsSHA('SHA-256', 'HEX');
+  const shaObj = new JsSHA('SHA-256', 'HEX');
   const msgHex = byteArray2hexStr(msgBytes);
   shaObj.update(msgHex);
   const hashHex = shaObj.getHash('HEX');

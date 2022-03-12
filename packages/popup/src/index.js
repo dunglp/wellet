@@ -15,7 +15,7 @@ import { configureStore, getDefaultMiddleware } from 'redux-starter-kit';
 import { PopupAPI } from '@tronlink/lib/api';
 import { setConfirmations } from './reducers/confirmationsReducer';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { version } from '@tronlink/popup/package';
+import * as pkgInfo from '@tronlink/popup/package';
 import { tokensMap } from './tokensMap.js';
 import axios from 'axios';
 
@@ -158,7 +158,7 @@ export const app = {
     this.store.dispatch(setToken(selectedToken));
     this.store.dispatch(setLanguage(language));
     this.store.dispatch(setSetting(setting));
-    this.store.dispatch(setVersion(version));
+    this.store.dispatch(setVersion(pkgInfo.version));
     //this.store.dispatch(setAuthorizeDapps(authorizeDapps));
     //this.store.dispatch(setLedgerImportAddress(ledgerImportAddress));
     this.store.dispatch(setVTokenList(vTokenList));

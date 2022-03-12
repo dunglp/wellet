@@ -238,6 +238,7 @@
   "ACCOUNTS.EXPORT": "アカウントをエクスポートする",
   "ACCOUNTS.EXPORT.MNEMONIC": "ニーモニック",
   "ACCOUNTS.EXPORT.PRIVATE_KEY": "秘密鍵",
+  "ACCOUNTS.EXPORT.CONFIRM_PASSWORD": "Please Enter Your Password",
 
   "LOGIN.PASSWORD.BACK": "お帰りなさい",
 

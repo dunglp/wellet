@@ -96,7 +96,7 @@ export const CONFIRMATION_TYPE = {
   TRANSACTION: 1,
 };
 
-export const devMode = true;
+export const devMode = false;
 
 export const CONTRACT_ADDRESS = {
   USDT: 'TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t',
@@ -203,7 +203,6 @@ const MAIN = {
   solidityNode: 'http://13.213.231.230:16668',
   eventServer: 'http://13.213.231.230:16667',
 };
-
 export const NODE = {
   //MAIN: {fullNode:'http://47.252.84.158:8070',solidityNode:'http://47.252.84.158:8071',eventServer:'http://47.252.81.14:8070'},
   //SIDE: {fullNode:'http://47.252.85.90:8070',solidityNode:'http://47.252.85.90:8071',eventServer:'http://47.252.87.129:8070'},

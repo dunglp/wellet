@@ -24,6 +24,7 @@ import {
 import { FormattedMessage, injectIntl } from 'react-intl';
 import { app } from '@tronlink/popup/src';
 import Alert from '@tronlink/popup/src/components/Alert';
+import Input from '@tronlink/popup/src/components/Input';
 import Logger from '@tronlink/lib/logger';
 import './AccountsPage.scss';
 import '@tronlink/popup/src/controllers/PageController/Header/Header.scss';
@@ -39,16 +40,25 @@ class AccountsPage extends React.Component {
     this.onClick = this.onClick.bind(this);
     this.onDelete = this.onDelete.bind(this);
     this.onExport = this.onExport.bind(this);
+    this.onConfirm = this.onConfirm.bind(this);
+    this.onPasswordChange = this.onPasswordChange.bind(this);
     this.state = {
       mnemonic: false,
       privateKey: false,
       showMenuList: false,
       showChainList: false,
       showBackUp: false,
+      showConfirm: false,
       showDelete: false,
       news: [],
       ieos: [],
       allTokens: [],
+      password: {
+        value: '',
+        isValid: false,
+      },
+      loading: false,
+      error: false,
     };
   }
 
@@ -134,13 +144,44 @@ class AccountsPage extends React.Component {
     }
   }
 
-  async onExport() {
-    const { mnemonic, privateKey } = await PopupAPI.exportAccount();
+  onConfirm() {
     this.setState({
-      mnemonic,
-      privateKey,
-      showBackUp: true,
+      showConfirm: true,
     });
+  }
+
+  async onExport() {
+    const { password } = this.state;
+    console.log(password);
+    this.setState({
+      loading: true,
+    });
+
+    PopupAPI.unlockExport(password.value.trim())
+      .then(async () => {
+        const { mnemonic, privateKey } = await PopupAPI.exportAccount();
+        this.setState({
+          mnemonic,
+          privateKey,
+          showConfirm: false,
+          showBackUp: true,
+          error: false,
+          password: {
+            value: '',
+            isValid: false,
+          },
+        });
+      })
+      .catch((error) =>
+        this.setState({
+          error,
+        })
+      )
+      .then(() =>
+        this.setState({
+          loading: false,
+        })
+      );
   }
 
   handleShowChainList() {
@@ -245,7 +286,7 @@ class AccountsPage extends React.Component {
               ) : null}
               {accounts.selected.type !== ACCOUNT_TYPE.LEDGER &&
               chains.selected === '_' ? (
-                <div onClick={this.onExport} className='item'>
+                <div onClick={this.onConfirm} className='item'>
                   <span className='icon backup'>&nbsp;</span>
                   <FormattedMessage id='ACCOUNTS.EXPORT' />
                 </div>
@@ -490,9 +531,117 @@ class AccountsPage extends React.Component {
     return dom;
   }
 
+  onPasswordChange(value) {
+    this.setState({
+      password: {
+        isValid: value.trim().length,
+        value,
+      },
+    });
+  }
+
+  renderConfirmBackup() {
+    const { showConfirm, password, loading, error } = this.state;
+
+    return (
+      showConfirm && (
+        <div className='popUp'>
+          <div className='backUp'>
+            <div className='title'>
+              <FormattedMessage id='ACCOUNTS.EXPORT.CONFIRM_PASSWORD' />
+            </div>
+
+            <div className='greyModal confirmPassword'>
+              <div className='option'>
+                {error ? (
+                  <Input
+                    type='password'
+                    className='error'
+                    placeholder='INPUT.PASSWORD'
+                    value={password.value}
+                    isDisabled={loading}
+                    onChange={this.onPasswordChange}
+                    onEnter={this.onExport}
+                    tabIndex={1}
+                  />
+                ) : (
+                  <Input
+                    type='password'
+                    className=''
+                    placeholder='INPUT.PASSWORD'
+                    value={password.value}
+                    isDisabled={loading}
+                    onChange={this.onPasswordChange}
+                    onEnter={this.onExport}
+                    tabIndex={1}
+                  />
+                )}
+
+                {error ? (
+                  <div className='errTip'>
+                    <FormattedMessage className='modalBody' id={error} />
+                  </div>
+                ) : (
+                  ''
+                )}
+              </div>
+            </div>
+
+            <div className='buttonRow'>
+              <Button
+                id='BUTTON.CANCEL'
+                onClick={() => {
+                  this.setState({ showConfirm: false });
+                }}
+                tabIndex={1}
+              />
+
+              <Button
+                id='BUTTON.CONTINUE'
+                isValid={password.isValid}
+                isLoading={loading}
+                onClick={this.onExport}
+                tabIndex={2}
+              />
+            </div>
+          </div>
+        </div>
+
+        // <div className='authPasswordWrap'>
+        //   <div className='confirmPassword'>
+        //     <div className='title'>
+        //       <span>Please Enter Your Password</span>
+        //     </div>
+        //     <div className='option'>
+        //       <div className='customInput '>
+        //         <input
+        //           id='input'
+        //           className=''
+        //           placeholder='Password'
+        //           type='password'
+        //           value=''
+        //         />
+        //       </div>
+        //     </div>
+        //     <div className='buttonRow'>
+        //       <button className='customButton gray  is-valid'>
+        //         <span>Cancel</span>
+        //       </button>
+        //       <button
+        //         className='customButton primary  is-invalid'
+        //         onClick={this.onExport}
+        //       >
+        //         <span>Confirm</span>
+        //       </button>
+        //     </div>
+        //   </div>
+        // </div>
+      )
+    );
+  }
+
   renderBackup(mnemonic, privateKey) {
     const { showBackUp } = this.state;
-    console.log('========== mnemonic, privateKey', mnemonic, privateKey);
     const dom = showBackUp ? (
       <div className='popUp'>
         <div className='backUp'>
@@ -644,6 +793,7 @@ class AccountsPage extends React.Component {
           });
         }}
       >
+        {this.renderConfirmBackup()}
         {this.renderBackup(mnemonic, privateKey)}
         {this.renderDeleteAccount()}
         <Header

@@ -416,6 +416,28 @@
           }
         }
       }
+      .confirmPassword {
+        margin-bottom: 20px;
+        .option {
+          .customInput {
+            input {
+              background: #f7f8fa;
+              border-radius: 2px;
+              text-align: center;
+              height: 38px;
+              color: #505160;
+            }
+
+            .error {
+              color: #db705c;
+            }
+          }
+
+          .errTip {
+            color: #db705c;
+          }
+        }
+      }
     }
   }
   .accountInfo {
