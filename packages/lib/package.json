@@ -7,7 +7,7 @@
 	"version": "3.0.1",
 	"dependencies": {
 		"@tronlink/tronweb": "^0.1.0",
-		"@tronscan/client": "^0.2.48",
+		"@tronscan/client": "github:clownsss/tronscan-node-client#v2.2.42",
 		"@ledgerhq/hw-transport-u2f": "^4.31.0",
 		"aes-js": "^3.1.2",
 		"bip32": "^1.0.2",
@@ -17,8 +17,7 @@
 		"eventemitter3": "^3.1.0",
 		"extensionizer": "^1.0.1",
 		"pbkdf2": "^3.0.17",
-		"uuid": "^3.3.2",
-		"ethers": "^4.0.7"
+		"uuid": "^3.3.2"
 	},
 	"scripts": {
 		"lint": "npx eslint . --fix"

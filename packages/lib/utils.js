@@ -6,13 +6,13 @@ import crypto from 'crypto';
 import bip39 from 'bip39';
 import bip32 from 'bip32';
 import TronWeb from '@tronlink/tronweb';
+import { utils } from '@tronlink/tronweb/index';
 import pbkdf2 from 'pbkdf2';
 import aesjs from 'aes-js';
 import {
   isAddressValid,
   pkToAddress,
 } from '@tronlink/tronweb/src/utils/crypto';
-import { utils } from 'ethers';
 
 const encryptKey = (password, salt) => {
   return pbkdf2.pbkdf2Sync(password, salt, 1, 256 / 8, 'sha512');
@@ -140,17 +140,12 @@ const Utils = {
 
   getAccountAtIndex(mnemonic, index = 0) {
     const seed = bip39.mnemonicToSeed(mnemonic);
-    console.log('========= seed ============', seed);
     const node = bip32.fromSeed(seed);
-    console.log('========= node ============', node);
     const child = node.derivePath(`m/44'/195'/${index}'/0/0`);
-    console.log('========= child ============', child);
 
     const privateKey = child.privateKey.toString('hex');
-    console.log('========= privateKey ============', privateKey);
 
     const address = TronWeb.address.fromPrivateKey(privateKey);
-    console.log('========= address ============', address);
     return {
       privateKey,
       address,

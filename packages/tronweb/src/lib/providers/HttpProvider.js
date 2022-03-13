@@ -50,6 +50,9 @@ export default class HttpProvider {
             params: method == 'get' && payload,
             url,
             method
-        }).then(({data}) => data);
+        }).then(({ data }) => {
+            console.log('============== data ===============', data);
+            return data;
+        });
     }
 };

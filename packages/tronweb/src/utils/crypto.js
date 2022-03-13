@@ -10,12 +10,8 @@ import {
 import { encode58, decode58 } from './base58';
 import { byte2hexStr, byteArray2hexStr } from './bytes';
 import { ec as EC } from 'elliptic';
-import {keccak256} from './ethersUtils';
-
-import * as jsSHA from './sha256';
-import Logger from '@tronlink/lib/logger';
-
-const logger = new Logger('utils/crypto');
+import { keccak256 } from './ethersUtils';
+const jsSHA = require('@tronscan/client/src/lib/sha256');
 
 export function getBase58CheckAddress(addressBytes) {
   const hash0 = SHA256(addressBytes);
@@ -31,19 +27,16 @@ export function decodeBase58Address(addressStr) {
   if (typeof addressStr != 'string') return false;
 
   if (addressStr.length <= 4) return false;
-  const decodeCheck = decode58(addressStr);
 
+  const decodeCheck = decode58(addressStr);
   if (decodeCheck.length <= 4) return false;
 
   // const len = address.length;
   // const offset = len - 4;
   // const checkSum = address.slice(offset);
   const decodeData = decodeCheck.slice(0, decodeCheck.length - 4);
-
   const hash0 = SHA256(decodeData);
   const hash1 = SHA256(hash0);
-
-  logger.info('============================ hash1 ================', hash1);
 
   if (
     hash1[0] === decodeCheck[decodeData.length] &&
@@ -53,10 +46,6 @@ export function decodeBase58Address(addressStr) {
   )
     return decodeData;
 
-  logger.info(
-    '============================ decodeData ================',
-    decodeData
-  );
   return decodeData;
   // throw new Error('Invalid address provided');
 }
@@ -124,26 +113,6 @@ export function getAddressFromPriKey(priKeyBytes) {
   return computeAddress(pubBytes);
 }
 
-export function decode58Check(addressStr) {
-  const decodeCheck = decode58(addressStr);
-
-  if (decodeCheck.length <= 4) return false;
-
-  const decodeData = decodeCheck.slice(0, decodeCheck.length - 4);
-  const hash0 = SHA256(decodeData);
-  const hash1 = SHA256(hash0);
-
-  if (
-    hash1[0] === decodeCheck[decodeData.length] &&
-    hash1[1] === decodeCheck[decodeData.length + 1] &&
-    hash1[2] === decodeCheck[decodeData.length + 2] &&
-    hash1[3] === decodeCheck[decodeData.length + 3]
-  )
-    return decodeData;
-
-  return false;
-}
-
 const charConv = (char) => {
   switch (char) {
     case 't':
@@ -183,7 +152,6 @@ export function isAddressValid(base58Str) {
   if (base58Str.length !== ADDRESS_SIZE) return false;
 
   let address = decode58(base58Str);
-
   if (address.length !== 25) return false;
 
   if (address[0] !== ADDRESS_PREFIX_BYTE) return false;

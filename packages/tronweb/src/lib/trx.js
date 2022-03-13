@@ -518,11 +518,12 @@ export default class Trx {
 
     address = this.tronWeb.address.toHex(address);
 
-    console.log('------HEXED address', address);
     this.tronWeb.fullNode
-      .request(`wallet/getaccount/${address}`, {}, 'get')
+      .request('wallet/getaccount', { address }, 'post')
       .then((account) => {
         callback(null, account);
+
+        return account;
       })
       .catch((err) => callback(err));
   }

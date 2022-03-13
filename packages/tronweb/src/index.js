@@ -19,13 +19,15 @@ import { ADDRESS_PREFIX } from 'utils/address';
 import { byteArray2hexStr } from './utils/bytes';
 import Logger from '@tronlink/lib/logger';
 import { toChecksumAddress } from './utils/ethersUtils';
-
+import { getBase58CheckAddress } from '@tronscan/client/src/utils/crypto';
+import code from '@tronscan/client/src/lib/code';
 
 const DEFAULT_VERSION = '3.5.0';
 
 const FEE_LIMIT = 150000000;
 const logger = new Logger('@tronlink/tronweb');
 
+export { utils as etherUtils } from 'ethers';
 export default class TronWeb extends EventEmitter {
   static providers = providers;
 
@@ -344,42 +346,18 @@ export default class TronWeb extends EventEmitter {
         return tronBase58;
       },
       toHex(address) {
-        console.log('------------------TO-HEX ----------------', address);
-        console.log(
-          '------------------utils.isHex(address) ----------------',
-          utils.isHex(address)
-        );
-
         if (utils.isHex(address))
           return address.toLowerCase().replace(/^0x/, ADDRESS_PREFIX);
-        console.log('1234566789');
+          let decordAddr = toChecksumAddress(
+            '0x' +
+              byteArray2hexStr(
+                decodeBase58Address(address)
+              ).substring(2)
+          );
 
-        console.log(
-          'return utils.code.byteArray2hexStr(utils.crypto.decodeBase58Address(utils.crypto.welBase58toTron(address))).toLowerCase();',
-          byteArray2hexStr(
-            utils.crypto.decodeBase58Address(
-              utils.crypto.welBase58toTron(address)
-            )
-          ).toLowerCase()
-        );
-
-        console.log(
-            '------------------byteArray2hexStr(decodeBase58Address(address)).substring(2)----------------',
-            byteArray2hexStr(decodeBase58Address(address)).substring(2)
-        );
-
-        console.log(
-          '------------------toWelChecksumAddress----------------',
-            toChecksumAddress(
-            '0x' + byteArray2hexStr(decodeBase58Address(address)).substring(2)
-          )
-        );
-        return toChecksumAddress(
-          '0x' +
-            byteArray2hexStr(
-              utils.crypto.decodeBase58Address(address)
-            ).substring(2)
-        );
+          if (decordAddr.length > 2)
+            decordAddr = '41' + decordAddr.slice(2, decordAddr.length);
+        return decordAddr;
         // return utils.code
         //   .byteArray2hexStr(
         //     utils.crypto.decodeBase58Address(
@@ -506,19 +484,13 @@ export default class TronWeb extends EventEmitter {
   }
 
   static isAddress(address = false) {
-    logger.info('========================= isAddress? ', address);
     if (!utils.isString(address)) return false;
-    console.log(
-      '========================= utils.crypto.isAddressValid(utils.crypto.welBase58toTron(address)) ',
-      utils.crypto.isAddressValid(utils.crypto.welBase58toTron(address))
-    );
-
     // Convert HEX to Base58
     if (address.length === 42) {
       try {
         return TronWeb.isAddress(
-          utils.crypto.getBase58CheckAddress(
-            utils.code.hexStr2byteArray(address) // it throws an error if the address starts with 0x
+            getBase58CheckAddress(
+            code.hexStr2byteArray(address) // it throws an error if the address starts with 0x
           )
         );
       } catch (err) {
@@ -526,7 +498,7 @@ export default class TronWeb extends EventEmitter {
       }
     }
     try {
-      return utils.crypto.isAddressValid(utils.crypto.welBase58toTron(address));
+      return utils.crypto.isAddressValid(address);
     } catch (err) {
       return false;
     }

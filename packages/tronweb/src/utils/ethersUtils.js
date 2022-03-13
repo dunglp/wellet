@@ -2,6 +2,7 @@
 import { utils } from 'ethers';
 // const keccak256 = require('keccak256');
 const keccak256 = utils.keccak256;
+// import keccak256 from 'keccak256';
 const sha256 = utils.sha256;
 const toUtf8Bytes = utils.toUtf8Bytes;
 const toUtf8String = utils.toUtf8String;
@@ -25,26 +26,18 @@ function toChecksumAddress(address, chainId = null) {
   const stripAddress = stripHexPrefix(address).toLowerCase();
   const prefix = chainId != null ? `${chainId.toString()}0x` : '';
 
-  console.log('================== prefix - stripAddress', prefix + stripAddress);
-  console.log('keccak256', keccak256);
-  const c256 = keccak256.id(prefix + stripAddress);
-  console.log('================== c256', c256);
-
+  const c256 = utils.id(prefix + stripAddress);
   const hex = c256.toString('hex');
-  console.log('================== hex', hex);
 
   const keccakHash = hex.replace(/^0x/i, '');
   let checksumAddress = '0x';
 
-  console.log('================== keccakHash', keccakHash);
   for (let i = 0; i < stripAddress.length; i++) {
     checksumAddress +=
       parseInt(keccakHash[i], 16) >= 8
         ? stripAddress[i].toUpperCase()
         : stripAddress[i];
   }
-
-  console.log('================== checksumAddress', checksumAddress);
 
   return checksumAddress;
 }

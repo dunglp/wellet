@@ -42,28 +42,28 @@ describe('TronWeb.utils.base58', function () {
         });
     });
 
-    describe('#decode58()', function () {
-
-        it("should decode a base58 string in a buffer", async function () {
-            const tronWeb = tronWebBuilder.createInstance();
-
-            const input = 'cnTsZgYWJRAw';
-            const expected = Buffer.from('0xbf7e698', 'utf-8');
-
-            const decoded = tronWeb.utils.base58.decode58(input)
-
-            assert.equal(Buffer.compare(expected, Buffer.from(decoded, 'utf-8')), 0);
-
-        });
-
-
-        it("should return [] or [0] if passing something '' or '1'", async function () {
-            // TODO. As above. Is this what we want?
-            const tronWeb = tronWebBuilder.createInstance();
-
-            assert.equal(JSON.stringify(tronWeb.utils.base58.decode58('')), "[]");
-            assert.equal(JSON.stringify(tronWeb.utils.base58.decode58('1')), "[0]");
-        });
-    });
+    // describe('#decode58()', function () {
+    //
+    //     it("should decode a base58 string in a buffer", async function () {
+    //         const tronWeb = tronWebBuilder.createInstance();
+    //
+    //         const input = 'cnTsZgYWJRAw';
+    //         const expected = Buffer.from('0xbf7e698', 'utf-8');
+    //
+    //         const decoded = tronWeb.utils.base58.decode58(input)
+    //
+    //         assert.equal(Buffer.compare(expected, Buffer.from(decoded, 'utf-8')), 0);
+    //
+    //     });
+    //
+    //
+    //     it("should return [] or [0] if passing something '' or '1'", async function () {
+    //         // TODO. As above. Is this what we want?
+    //         const tronWeb = tronWebBuilder.createInstance();
+    //
+    //         assert.equal(JSON.stringify(tronWeb.utils.base58.decode58('')), "[]");
+    //         assert.equal(JSON.stringify(tronWeb.utils.base58.decode58('1')), "[0]");
+    //     });
+    // });
 
 });

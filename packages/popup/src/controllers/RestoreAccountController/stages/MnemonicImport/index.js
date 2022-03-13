@@ -56,6 +56,7 @@ class MnemonicImport extends React.Component {
   async generateAccounts() {
     // Move this to Utils (generateXAccounts)
 
+    console.log('-------------- generateAccounts -------------');
     this.setState({
       isLoading: true,
     });
@@ -63,23 +64,27 @@ class MnemonicImport extends React.Component {
     const { mnemonic } = this.state;
     const { formatMessage } = this.props.intl;
     const addresses = [];
+    const chain = chains.selected === '_' ? 'mainchain' : 'sidechain';
     for (let i = 0; i < 5; i++) {
       const account = Utils.getAccountAtIndex(mnemonic, i);
       console.log('========= account ============', account);
       console.log('========= this.props ============', this.props);
+      console.log('========= chains ============', chains);
       if (!(account.address in this.props.accounts)) {
         const accountInfo = await PopupAPI.getAccountInfo(account.address);
-        console.log('========= account.address ============', account.address);
-        console.log('========= accountInfo ============', accountInfo);
-        console.log('========= chains ============', chains);
 
+        console.log('========= accountInfo ============', accountInfo);
+
+        if (!accountInfo[chain].address)
+          continue;
         let balance =
-          accountInfo[chains === '_' ? 'mainchain' : 'sidechain'].balance;
+          accountInfo[chain].balance;
         balance = balance ? balance : 0;
         account.balance = balance;
         addresses.push(account);
       }
     }
+    console.log('---------generateAccounts: addresses----------', addresses);
     if (addresses.length === 0) {
       this.setState({
         isLoading: false,
